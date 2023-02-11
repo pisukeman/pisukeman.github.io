@@ -58,7 +58,7 @@ a {
 		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
 		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
 		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
-		<li><a href='https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh'>[11/04/2022] Autoencoders to add exposure to Galaxy Images</a> [POST]</li>
+		<li><a href='#autoencoders'>[11/04/2022] Autoencoders to add exposure to Galaxy Images</a> [POST]</li>
 	</ul>
 	<li>Links</li>
 	<ul>
@@ -75,7 +75,7 @@ eventos como la Mobile Week Igualada.
 </ul>
 <br>
 <p id="meteors"></p>
-<p>--Meteor detection and tracking--</p>
+<h2>[Meteor detection and tracking]</h2>
 <p>>I was working on a model to automatically detect meteors in images/videos and also calculate the position of the meteor to be able to track. The tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
 <p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network.</p>
 <p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
@@ -97,10 +97,12 @@ eventos como la Mobile Week Igualada.
 </div>-->
 <br>
 <div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">learn = load_learner(<span style="color: #87ceeb">&quot;guAIta_latest_version.pkl&quot;</span>)
-predict = learn.predict(image)
-<span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
-       <span style="color: #00ff00">#Captured!</span>
-</pre></div>
+  predict = learn.predict(image)
+  <span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
+         <span style="color: #00ff00">#Captured!</span>
+  </pre></div>
+  
+  
 
 
 <p>>The interesting point here is to be able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using CAM.</p>
@@ -114,8 +116,8 @@ predict = learn.predict(image)
 
 <br>
 <div style="text-align: center;">
-  <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" height="300px">
-  <img src="example3_final.gif" alt="Meteor Detection Trajectory" height="300px">
+  <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" height="400px">
+  <img src="example3_final.gif" alt="Meteor Detection Trajectory" height="400px">
 </div>
 <br>
 <br>
@@ -145,7 +147,7 @@ level = -5
 <br>
 <br>
 <p id="orion"></p>
-<p>--Image of Orion Nebula (M42, NGC 1976)--</p>
+<h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
   <img src="orion.jpeg" alt="Orion Nebula" height="800px">
@@ -154,7 +156,7 @@ level = -5
 <br>
 <br>
 <p id="whirpool"></p>
-<p>--Image of Whirpool Galaxy (M51a, NGC 5194)--</p>
+<h2>[Image of Whirpool Galaxy (M51a, NGC 5194)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 180 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
   <img src="whirpool.jpeg" alt="whirpool Galaxy" height="800px">
@@ -163,123 +165,144 @@ level = -5
 <br>
 <br>
 <p id="dumbbell"></p>
-<p>--Image of Dumbbell Nebula (M27 o NGC 6853)--</p>
+<h2>[Image of Dumbbell Nebula (M27 o NGC 6853)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
   <img src="dumbbell.jpeg" alt="dumbbell Nebula" height="100%">
   <p  style="font-size: 9px">Dumbbell Nebula</p>
 </div>
 
-Autoencoders to add exposure to Galaxy Images
+<p id="autoencoders"></p>
+<h2>[Autoencoders to add exposure to Galaxy Images]</h2>
+<p>>To understand this post is important to understand what autoencoders are. I'm working with autoencoders a long time ago, and i'm absolutelly in love about the properties they have.</p>
+<p>>An autoencoder is just a Neural Network but with a specific topology, used to learn data encodings in an unsupervised manner. The autoencoders can learn a set of data, producing a dimensional reduction, while training the network to be able to ignore noise.</p>
+<p>>In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
+Credits: https://www.jeremyjordan.me/autoencoders/)</p>
+<div style="text-align: center;">
+  <img src="autoencoder.png" alt="Autoencoder" height="50%">
+  <p  style="font-size: 9px">https://www.jeremyjordan.me/autoencoders/</p>
+</div>
 
-To understand this post is important to understand what autoencoders are. I'm working with autoencoders a long time ago, and i'm absolutelly in love about the properties they have.
 
-An autoencoder is just a Neural Network but with a specific topology, used to learn data encodings in an unsupervised manner. The autoencoders can learn a set of data, producing a dimensional reduction, while training the network to be able to ignore noise.
+<p>>Now let's imagine that we train this autoencoder to be able to reproduce the input. We can feed the neural network with galaxy images and train it to produce the exit as a reconstruction of the input. Note: the dataset used comes from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 
-In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
+<div style="text-align: center;">
+  <img src="autoencoder2.jpg" alt="Autoencoder2" height="50%">
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
 
 
-Credits: https://www.jeremyjordan.me/autoencoders/)
+<p>>At this point we'll have a neural network that is able to reconstruct a galaxy image from a input image galaxy...mmm...maybe not so spectacular, but with some interesting features.</p>
 
-IMAGE
+<p>>If we split our autoencoder in 2 parts, the encoder and the decoder, we'll have the following features.
+With the encoder we'll be able to generate a dimensional reduction of each galaxy. Note that the bootleneck layer is also known as latent space.</p>
 
-Now let's imagine that we train this autoencoder to be able to reproduce the input. We can feed the neural network with galaxy images and train it to produce the exit as a reconstruction of the input. Note: the dataset used comes from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/
+<div style="text-align: center;">
+  <img src="autoencoder3.jpg" alt="Autoencoder3" height="50%">
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
 
-IMAGE
 
-At this point we'll have a neural network that is able to reconstruct a galaxy image from a input image galaxy...mmm...maybe not so spectacular, but with some interesting features.
+<p>>And the other part of the autoencoder, the decoder, can be used to choose a point in our latent space ang reconstruct the corresponding galaxy.</p>
 
-If we split our autoencoder in 2 parts, the encoder and the decoder, we'll have the following features.
-With the encoder we'll be able to generate a dimensional reduction of each galaxy. Note that the bootleneck layer is also known as latent space.
+<div style="text-align: center;">
+  <img src="autoencoder4.jpg" alt="Autoencoder4" height="50%">
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
 
-IMAGE
-And the other part of the autoencoder, the decoder, can be used to choose a point in our latent space ang reconstruct the corresponding galaxy.
 
-IMAGE
-
-Ok, now that we understand what an autoencoder can do for us, let's try something different.
+<p>>Ok, now that we understand what an autoencoder can do for us, let's try something different.
 Imagine that we create a dataset with galaxy images with some noise added and train the network to genereate the same galaxy without noise.
 Then we train the autoencoder with the noisy data as the inputs, and the clean data the outputs.
-Some examples i did:
+Some examples i did:</p>
 
-EX1
-EX2
+<div style="text-align: center;">
+  <img src="ex1.jpg" alt="Example1" height="50%">
+  <img src="ex2.jpg" alt="Example2" height="50%">
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
 
-Note that these are test images, separated from the train set in order to test the autoencoder once the training was finished. So the autoencoder had never seen those images, and was able to reproduce a version without noise. Nice.
 
-Now, let's think about another use of the autoencoder.
+<p>>Note that these are test images, separated from the train set in order to test the autoencoder once the training was finished. So the autoencoder had never seen those images, and was able to reproduce a version without noise. Nice.</p>
+
+<p>>Now, let's think about another use of the autoencoder.
 Some amateur astronomers (i'm one of them), have small telescopes wich give very faint galaxy images. To be able to generate good galaxy images with a amateur telescope is needed a good CCD, several exposure time, and a very good telescope calibration (polar alignment). In some cases, is very dificult to have long exposure images.
+So, why not to train our autoencoder with galaxy images manipulated to have low exposure as inputs, and the original galaxy images as the output?</p>
+<p>>We are going to train the autoencoder with more than 61k galaxy images of (106x106 pixels), and the autoencoder will learn how to generate a "normal" galaxy image from a low exposure one.</p>
 
-So, why not to train our autoencoder with galaxy images manipulated to have low exposure as inputs, and the original galaxy images as the output?
-We are going to train the autoencoder with more than 61k galaxy images of (106x106 pixels), and the autoencoder will learn how to generate a "normal" galaxy image from a low exposure one.
+<div style="text-align: center;">
+  <img src="all.jpg" alt="Galaxies" height="50%">
+  <p  style="font-size: 9px"> https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
 
-ALL
+<p>>The result is not perfect, but looks nice.
+  <ul>
+    <li>Original: is the original image in the dataset.</li>
+    <li>Low exposure: is the image modified to force a low exposure version and the input of the autoencoder.</li>
+    <li>Reconstructed: is the resulting autoencoder output) :</li></p>
 
-The result is not perfect, but looks nice.
+    <div style="text-align: center;">
+      <img src="comparision.jpg" alt="Comparision" height="50%">
+      <p  style="font-size: 9px"> Own creation</p>
+    </div>
+    
 
-Original: is the original image in the dataset.
-Low exposure: is the image modified to force a low exposure version and the input of the autoencoder.
-Reconstructed: is the resulting autoencoder output) :
-
-COMPARISION
-
-Note that the point here is to get a reconstructed image as similar as possible to the Original one. And, also keep in mind that these are galaxy images never seen by our autoencoder, so the trick here is that the autoencoder, when receive a low exposure image of a galaxy (that the autoencoder had never seen), is able to reproduce a galaxy image without the low exposure.
-And last, with Keras, the definition of this autoencoder is pretty easy.
-First, we read the dataset and split it into training set and test (10% of the data set to test).
+<p>>Note that the point here is to get a reconstructed image as similar as possible to the Original one. And, also keep in mind that these are galaxy images never seen by our autoencoder, so the trick here is that the autoencoder, when receive a low exposure image of a galaxy (that the autoencoder had never seen), is able to reproduce a galaxy image without the low exposure.</p>
+<p>>And last, with Keras, the definition of this autoencoder is pretty easy.
+First, we read the dataset and split it into training set and test (10% of the data set to test).</p>
 
 
-x_train, x_test = train_test_split(x_train, test_size=0.1, random_state=42)
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">x_train, x_test = train_test_split(x_train, test_size=0.1, random_state=42)
 x_train_noise = simulate_low_exposure(x_train)
 x_test_noise = simulate_low_exposure(x_test)
-
-def simulate_low_exposure(x,max,min,perc): 
-    return np.where(x-perc>min,x-perc, min)
+  
+  <span style="color: #ff0000">def</span> <span style="color: #ffff00">simulate_low_exposure</span>(x,max,min,perc): 
+      <span style="color: #ff0000">return</span> np.where(x-perc&gt;min,x-perc, min)
+  </pre></div>
+    
 	
 	
+  <p>>The simulate low exposure function is just a noisy function not exactly a low exposure (to be honest), but do the trick.
+And finally we define the autoencoder, a very simple one:</p>
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #ff0000">def</span> <span style="color: #ffff00">build_one_layer_autoencoder</span>(img_shape, code_size):
+  <span style="color: #00ff00"># The encoder</span>
+  encoder = Sequential()
+  encoder.add(InputLayer(img_shape))
+  encoder.add(Flatten())
+  encoder.add(Dense(code_size))
+
+  <span style="color: #00ff00"># The decoder</span>
+  decoder = Sequential()
+  decoder.add(InputLayer((code_size,)))
+  decoder.add(Dense(np.prod(img_shape))) 
+  decoder.add(Reshape(img_shape))
+
+  <span style="color: #ff0000">return</span> encoder, decoder
+
+</pre></div>
+
 	
-	The simulate low exposure function is just a noisy function not exactly a low exposure (to be honest), but do the trick.
-And finally we define the autoencoder, a very simple one:
-
-def build_one_layer_autoencoder(img_shape, code_size):
-    # The encoder
-    encoder = Sequential()
-    encoder.add(InputLayer(img_shape))
-    encoder.add(Flatten())
-    encoder.add(Dense(code_size))
-
-    # The decoder
-    decoder = Sequential()
-    decoder.add(InputLayer((code_size,)))
-    decoder.add(Dense(np.prod(img_shape))) 
-    decoder.add(Reshape(img_shape))
-
-    return encoder, decoder
+<p>>The function parameters are the image shape and the size of the bootleneck layer (number of nodes), and returns the encoder and the decoder sepparately in order to allow us to play :)</p>
 	
-	
-	
-	The function parameters are the image shape and the size of the bootleneck layer (number of nodes), and returns the encoder and the decoder sepparately in order to allow us to play :)
-	
-	#The size of the first layer will be width x Height of the IMAGE_SHAPE, and the bootleneck layer will be, for example 1000 nodes.
-encoder, decoder = build_one_layer_autoencoder(IMG_SHAPE, 1000)
-inp_shape = Input(IMG_SHAPE)
-code = encoder(inp_shape )
-reconstruction = decoder(code)
-autoencoder = Model(inp,reconstruction)
-autoencoder.compile(optimizer='adamax', loss='mse')
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#The size of the first layer will be width x Height of the IMAGE_SHAPE, and the bootleneck layer will be, for example 1000 nodes.</span>
+  encoder, decoder = build_one_layer_autoencoder(IMG_SHAPE, 1000)
+  inp_shape = Input(IMG_SHAPE)
+  code = encoder(inp_shape )
+  reconstruction = decoder(code)
+  autoencoder = Model(inp,reconstruction)
+  autoencoder.compile(optimizer=<span style="color: #87ceeb">&#39;adamax&#39;</span>, loss=<span style="color: #87ceeb">&#39;mse&#39;</span>)
+  
+  <span style="color: #00ff00">#And now we are ready to train the autoencoder with the noisy galaxies (x_train_noise) as input and the original galaxies (x_train) as output.</span>
+  <span style="color: #00ff00">#Also x_test_noise and x_test are the test dataset.</span>
+  history = autoencoder.fit(x=x_train_noise, y=x_train, epochs=10, validation_data=[x_test_noise, x_test])
+  </pre></div>
+  
 
-#And now we are ready to train the autoencoder with the noisy galaxies (x_train_noise) as input and the original galaxies (x_train) as output.
-#Also x_test_noise and x_test are the test dataset.
-history = autoencoder.fit(x=x_train_noise, y=x_train, epochs=10, validation_data=[x_test_noise, x_test])
-
-And that's all. Just posted a little bit of the code, the most interesting. Promise i will clean the code and publish to github. :)
-
-There are a lot of posts of noise reduction using autoencoders, i got the idea and some code snippets reading some of them.
-
-I like the approach to treating low exposure as noise.
-
-Thanks for reading!
-
-
+<p>>that's all. Just posted a little bit of the code, the most interesting.
+There are a lot of posts of noise reduction using autoencoders, i got the idea and some code snippets reading some of them.</p>
+<p>>I like the approach to treating low exposure as noise.</p>
+<p>This post was orignary posted at:https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh</p>
 
 </body>
 </html>
