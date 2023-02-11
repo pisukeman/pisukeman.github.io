@@ -6,7 +6,7 @@ html {
 	overflow-y: scroll; 
 }
 body {
-  position: absolute;
+  /*position: absolute;*/
   background-color: black;
   background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
   margin: 0;
@@ -23,7 +23,7 @@ body::after {
   left: 0;
   width: 100vw;
   height: 100%;
-  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+  /*background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);*/
   pointer-events: none;
 }
 
@@ -40,15 +40,14 @@ a {
 }
 
 
-
 </style>
 </head>
 <body>
 <h1>Pisukeman Site</h1>
 <p>>I'm David Regordosa, you can find more info about me in my <a href='https://www.linkedin.com/in/davidregordosa/'>linkedin</a> profile, or contact me using Twitter <a href="http://twitter.com/pisukeman">@pisukeman</a></p>
 <div>
-<img src="pxart.png" alt="Nerd" height="150px">
-<p  style="font-size: 9px">C:/nerd.png</p>
+<img src="pisukeman.png" alt="Nerd" height="300px">
+<!--<p  style="font-size: 9px">C:/nerd.png</p>-->
 </div>
 <br>
 <p>>My Stuff:</p>
@@ -81,7 +80,9 @@ eventos como la Mobile Week Igualada.
 <p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network.</p>
 <p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
 <br>
-<img src="imgs.png" alt="Nerd" height="200px">
+<div style="text-align: center;">
+  <img src="imgs.png" alt="Nerd" height="200px">
+</div>
 <br>
 <p>>The resulting model has a 0.98 recall on meteor detection. The model is available to download and use <a href='https://github.com/pisukeman/guAIta/tree/master/models'>here (guAIta_latest_version.pkl) </a></p> 
 <p>>You can use the model installing first the <a href='https://anaconda.org/'>Anaconda</a> environment using <a href='https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml'>this yaml file</a></p>
@@ -102,10 +103,6 @@ predict = learn.predict(image)
 </pre></div>
 
 
-
-
-
-
 <p>>The interesting point here is to be able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using CAM.</p>
 <p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
 <p>>Our proposal method is to use CAM from different layers of the CNN. We analyze deeper layers of the CNN that have higher resolution, but less acurate in the prediction, and we keep the region of greatest interest in the image based on the CAM. Then we cross the information of this region with outer layers of lower resolution but higher accuracy. This allow us to obtain the group of pixels that the CNN is looking at when classifies an image as Meteor. This pixels correspons to the position of the Meteor.
@@ -116,9 +113,10 @@ predict = learn.predict(image)
 <p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
 
 <br>
-<img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" height="300px">
-<img src="example3_final.gif" alt="Meteor Detection Trajectory" height="300px">
-
+<div style="text-align: center;">
+  <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" height="300px">
+  <img src="example3_final.gif" alt="Meteor Detection Trajectory" height="300px">
+</div>
 <br>
 <br>
 <p>>The code to analyze the CAM and get the weighted array:</p>
@@ -149,23 +147,28 @@ level = -5
 <p id="orion"></p>
 <p>--Image of Orion Nebula (M42, NGC 1976)--</p>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
-<img src="orion.jpeg" alt="Orion Nebula" height="800px">
-<p  style="font-size: 9px">Orion Nebula</p>
+<div style="text-align: center;">
+  <img src="orion.jpeg" alt="Orion Nebula" height="800px">
+  <p  style="font-size: 9px">Orion Nebula</p>
+</div>
 <br>
 <br>
 <p id="whirpool"></p>
 <p>--Image of Whirpool Galaxy (M51a, NGC 5194)--</p>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 180 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
-<img src="whirpool.jpeg" alt="whirpool Galaxy" height="800px">
-<p  style="font-size: 9px">Whirpool Galaxy</p>
+<div style="text-align: center;">
+  <img src="whirpool.jpeg" alt="whirpool Galaxy" height="800px">
+  <p  style="font-size: 9px">Whirpool Galaxy</p>
+</div>
 <br>
 <br>
 <p id="dumbbell"></p>
 <p>--Image of Dumbbell Nebula (M27 o NGC 6853)--</p>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
-<img src="dumbbell.jpeg" alt="dumbbell Nebula" height="100%">
-<p  style="font-size: 9px">Dumbbell Nebula</p>
-
+<div style="text-align: center;">
+  <img src="dumbbell.jpeg" alt="dumbbell Nebula" height="100%">
+  <p  style="font-size: 9px">Dumbbell Nebula</p>
+</div>
 
 Autoencoders to add exposure to Galaxy Images
 
