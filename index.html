@@ -1,0 +1,285 @@
+<html>
+<head>
+<style>
+
+html { 
+	overflow-y: scroll; 
+}
+body {
+  position: absolute;
+  background-color: black;
+  background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  color: white;
+  font: 1.0rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #C8C8C8;
+  }
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+  pointer-events: none;
+}
+
+::selection {
+  background: #0080FF;
+  text-shadow: none;
+}
+
+pre {
+  margin: 0;
+}
+a {
+  color: white;
+}
+
+
+
+</style>
+</head>
+<body>
+<h1>Pisukeman Site</h1>
+<p>>I'm David Regordosa, you can find more info about me in my <a href='https://www.linkedin.com/in/davidregordosa/'>linkedin</a> profile, or contact me using Twitter <a href="http://twitter.com/pisukeman">@pisukeman</a></p>
+<div>
+<img src="pxart.png" alt="Nerd" height="150px">
+<p  style="font-size: 9px">C:/nerd.png</p>
+</div>
+<br>
+<p>>My Stuff:</p>
+<ul>
+	<li>Space Stuff</li>
+	<ul>
+		<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using deep learning models</a> [POST]</li>
+		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
+		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
+		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
+		<li><a href='https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh'>[11/04/2022] Autoencoders to add exposure to Galaxy Images</a> [POST]</li>
+	</ul>
+	<li>Links</li>
+	<ul>
+		<li><a href='#meteors'>[14/01/2023] Meteor detection and tracking using deep learning models</a></li>
+		<li><a href='https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh'>[11/04/2022] Autoencoders to add exposure to Galaxy Images</a></li>
+	</ul>
+  <!--Co-founder at meetup group IGD Tech&Drinks
+https://www.meetup.com/es-ES/IGD-Tech-Drinks/
+o Co-founder at Astroanoia (https://astroanoia.cat/)
+o Co-founder at TEDx Igualada (https://astroanoia.cat/)
+o Miembro de la junta de TIC Anoia. Organizando charlas y
+eventos como la Mobile Week Igualada.
+(https://www.ticanoia.cat/)-->
+</ul>
+<br>
+<p id="meteors"></p>
+<p>--Meteor detection and tracking--</p>
+<p>>I was working on a model to automatically detect meteors in images/videos and also calculate the position of the meteor to be able to track. The tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
+<p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network.</p>
+<p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
+<br>
+<img src="imgs.png" alt="Nerd" height="200px">
+<br>
+<p>>The resulting model has a 0.98 recall on meteor detection. The model is available to download and use <a href='https://github.com/pisukeman/guAIta/tree/master/models'>here (guAIta_latest_version.pkl) </a></p> 
+<p>>You can use the model installing first the <a href='https://anaconda.org/'>Anaconda</a> environment using <a href='https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml'>this yaml file</a></p>
+<p>>Once you set up the Anaconda environment, the inference can be done using this code snippet:</p>
+<!--<div style = "  width: 20em;background-color: #3eff3f;border: 2px solid #ccc;">
+<div style="width: fit-content;block-size: fit-content;padding=10px">
+<p style="font-size:10px;">>>learn = load_learner("guAIta_latest_version.pkl")</p>
+<p style="font-size:10px">>>predict = learn.predict(image)</p>
+<p style="font-size:10px">>>if (predict[0]=="meteor" and predict[2][0]>scoring):</p>
+<p style="font-size:10px">>>          #Captured!</p>
+</div>
+</div>-->
+<br>
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">learn = load_learner(<span style="color: #87ceeb">&quot;guAIta_latest_version.pkl&quot;</span>)
+predict = learn.predict(image)
+<span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
+       <span style="color: #00ff00">#Captured!</span>
+</pre></div>
+
+
+
+
+
+
+<p>>The interesting point here is to be able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using CAM.</p>
+<p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
+<p>>Our proposal method is to use CAM from different layers of the CNN. We analyze deeper layers of the CNN that have higher resolution, but less acurate in the prediction, and we keep the region of greatest interest in the image based on the CAM. Then we cross the information of this region with outer layers of lower resolution but higher accuracy. This allow us to obtain the group of pixels that the CNN is looking at when classifies an image as Meteor. This pixels correspons to the position of the Meteor.
+<br>
+<p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif):</p>
+<img src="SPMN_Detection.gif" alt="SPMN meteor" height="200px">
+<p>>And Here you can see the resulting process of Meteor tracking using CAM from different layers (below left image). The blue box shows the region of interest of the outer layer (with less resolution but more accuracy). This region of interest comes from a layer from the CNN with low resolution and because of this, represents a huge area of the image. We can use the CAM analysis of this layer to be sure that we are pointing to the right image portion, but we need more accuracy. Once the algorithm finds this blue box, then start finding the region of interest of the inner layer of the CNN (using CAM), but only take into consideration the ones that are inside the blue box. As explained, the inner layers have higher resolution but less accuracy. We then select the weighted region of interest as the red box, and it corresponds to the Meteor.</p>
+<p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
+
+<br>
+<img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" height="300px">
+<img src="example3_final.gif" alt="Meteor Detection Trajectory" height="300px">
+
+<br>
+<br>
+<p>>The code to analyze the CAM and get the weighted array:</p>
+<br>
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#First let&#39;s capture the -1 level on the neural network</span>
+level = -1
+<span style="color: #ff0000">with</span> hook_output(learn.model[0][level]) <span style="color: #ff0000">as</span> hook_a:
+	<span style="color: #ff0000">with</span> hook_output(learn.model[0][level], grad=True) <span style="color: #ff0000">as</span> hook_g:
+		preds=learn.model(x1)
+        preds[0,0].backward()
+acts = hook_a.stored[0].cpu()
+avg_acts = acts.mean(0)
+<span style="color: #00ff00">#Normalize the weights </span>
+avg_acts = torch.div(avg_acts,torch.max(avg_acts))
+<span style="color: #00ff00">#At this point you&#39;ll find in avg_acts an array of weights, indicating the regions of interest in the image</span>
+<span style="color: #00ff00">#The dimension of the array depends on the layer you are watching at</span>
+				
+<span style="color: #00ff00">#Now, repeat the same with the level -5</span>
+level = -5
+<span style="color: #00ff00">#...</span>
+
+<span style="color: #00ff00">#At the end you&#39;ll have two arrays with different sizes, both having the weights, from 0 to 1 (0 means no interest, 1 means the highest interest)</span>
+</pre></div>
+<p> You can find more information about the model training in my Masters degree dissertation (in spanish), in my github library <a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf'>GuAIta</a></p>
+<br>
+<br>
+<p id="orion"></p>
+<p>--Image of Orion Nebula (M42, NGC 1976)--</p>
+<p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
+<img src="orion.jpeg" alt="Orion Nebula" height="800px">
+<p  style="font-size: 9px">Orion Nebula</p>
+<br>
+<br>
+<p id="whirpool"></p>
+<p>--Image of Whirpool Galaxy (M51a, NGC 5194)--</p>
+<p>>20cm Newton telescope, with DSLR camera. 30 images of 180 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
+<img src="whirpool.jpeg" alt="whirpool Galaxy" height="800px">
+<p  style="font-size: 9px">Whirpool Galaxy</p>
+<br>
+<br>
+<p id="dumbbell"></p>
+<p>--Image of Dumbbell Nebula (M27 o NGC 6853)--</p>
+<p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
+<img src="dumbbell.jpeg" alt="dumbbell Nebula" height="100%">
+<p  style="font-size: 9px">Dumbbell Nebula</p>
+
+
+Autoencoders to add exposure to Galaxy Images
+
+To understand this post is important to understand what autoencoders are. I'm working with autoencoders a long time ago, and i'm absolutelly in love about the properties they have.
+
+An autoencoder is just a Neural Network but with a specific topology, used to learn data encodings in an unsupervised manner. The autoencoders can learn a set of data, producing a dimensional reduction, while training the network to be able to ignore noise.
+
+In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
+
+
+Credits: https://www.jeremyjordan.me/autoencoders/)
+
+IMAGE
+
+Now let's imagine that we train this autoencoder to be able to reproduce the input. We can feed the neural network with galaxy images and train it to produce the exit as a reconstruction of the input. Note: the dataset used comes from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/
+
+IMAGE
+
+At this point we'll have a neural network that is able to reconstruct a galaxy image from a input image galaxy...mmm...maybe not so spectacular, but with some interesting features.
+
+If we split our autoencoder in 2 parts, the encoder and the decoder, we'll have the following features.
+With the encoder we'll be able to generate a dimensional reduction of each galaxy. Note that the bootleneck layer is also known as latent space.
+
+IMAGE
+And the other part of the autoencoder, the decoder, can be used to choose a point in our latent space ang reconstruct the corresponding galaxy.
+
+IMAGE
+
+Ok, now that we understand what an autoencoder can do for us, let's try something different.
+Imagine that we create a dataset with galaxy images with some noise added and train the network to genereate the same galaxy without noise.
+Then we train the autoencoder with the noisy data as the inputs, and the clean data the outputs.
+Some examples i did:
+
+EX1
+EX2
+
+Note that these are test images, separated from the train set in order to test the autoencoder once the training was finished. So the autoencoder had never seen those images, and was able to reproduce a version without noise. Nice.
+
+Now, let's think about another use of the autoencoder.
+Some amateur astronomers (i'm one of them), have small telescopes wich give very faint galaxy images. To be able to generate good galaxy images with a amateur telescope is needed a good CCD, several exposure time, and a very good telescope calibration (polar alignment). In some cases, is very dificult to have long exposure images.
+
+So, why not to train our autoencoder with galaxy images manipulated to have low exposure as inputs, and the original galaxy images as the output?
+We are going to train the autoencoder with more than 61k galaxy images of (106x106 pixels), and the autoencoder will learn how to generate a "normal" galaxy image from a low exposure one.
+
+ALL
+
+The result is not perfect, but looks nice.
+
+Original: is the original image in the dataset.
+Low exposure: is the image modified to force a low exposure version and the input of the autoencoder.
+Reconstructed: is the resulting autoencoder output) :
+
+COMPARISION
+
+Note that the point here is to get a reconstructed image as similar as possible to the Original one. And, also keep in mind that these are galaxy images never seen by our autoencoder, so the trick here is that the autoencoder, when receive a low exposure image of a galaxy (that the autoencoder had never seen), is able to reproduce a galaxy image without the low exposure.
+And last, with Keras, the definition of this autoencoder is pretty easy.
+First, we read the dataset and split it into training set and test (10% of the data set to test).
+
+
+x_train, x_test = train_test_split(x_train, test_size=0.1, random_state=42)
+x_train_noise = simulate_low_exposure(x_train)
+x_test_noise = simulate_low_exposure(x_test)
+
+def simulate_low_exposure(x,max,min,perc): 
+    return np.where(x-perc>min,x-perc, min)
+	
+	
+	
+	The simulate low exposure function is just a noisy function not exactly a low exposure (to be honest), but do the trick.
+And finally we define the autoencoder, a very simple one:
+
+def build_one_layer_autoencoder(img_shape, code_size):
+    # The encoder
+    encoder = Sequential()
+    encoder.add(InputLayer(img_shape))
+    encoder.add(Flatten())
+    encoder.add(Dense(code_size))
+
+    # The decoder
+    decoder = Sequential()
+    decoder.add(InputLayer((code_size,)))
+    decoder.add(Dense(np.prod(img_shape))) 
+    decoder.add(Reshape(img_shape))
+
+    return encoder, decoder
+	
+	
+	
+	The function parameters are the image shape and the size of the bootleneck layer (number of nodes), and returns the encoder and the decoder sepparately in order to allow us to play :)
+	
+	#The size of the first layer will be width x Height of the IMAGE_SHAPE, and the bootleneck layer will be, for example 1000 nodes.
+encoder, decoder = build_one_layer_autoencoder(IMG_SHAPE, 1000)
+inp_shape = Input(IMG_SHAPE)
+code = encoder(inp_shape )
+reconstruction = decoder(code)
+autoencoder = Model(inp,reconstruction)
+autoencoder.compile(optimizer='adamax', loss='mse')
+
+#And now we are ready to train the autoencoder with the noisy galaxies (x_train_noise) as input and the original galaxies (x_train) as output.
+#Also x_test_noise and x_test are the test dataset.
+history = autoencoder.fit(x=x_train_noise, y=x_train, epochs=10, validation_data=[x_test_noise, x_test])
+
+And that's all. Just posted a little bit of the code, the most interesting. Promise i will clean the code and publish to github. :)
+
+There are a lot of posts of noise reduction using autoencoders, i got the idea and some code snippets reading some of them.
+
+I like the approach to treating low exposure as noise.
+
+Thanks for reading!
+
+
+
+</body>
+</html>
+
+
+
