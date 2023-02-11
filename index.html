@@ -110,7 +110,9 @@ eventos como la Mobile Week Igualada.
 <p>>Our proposal method is to use CAM from different layers of the CNN. We analyze deeper layers of the CNN that have higher resolution, but less acurate in the prediction, and we keep the region of greatest interest in the image based on the CAM. Then we cross the information of this region with outer layers of lower resolution but higher accuracy. This allow us to obtain the group of pixels that the CNN is looking at when classifies an image as Meteor. This pixels correspons to the position of the Meteor.
 <br>
 <p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif):</p>
-<img src="SPMN_Detection.gif" alt="SPMN meteor" height="200px">
+<div style="text-align: center;">
+  <img src="SPMN_Detection.gif" alt="SPMN meteor" height="200px">
+</div>
 <p>>And Here you can see the resulting process of Meteor tracking using CAM from different layers (below left image). The blue box shows the region of interest of the outer layer (with less resolution but more accuracy). This region of interest comes from a layer from the CNN with low resolution and because of this, represents a huge area of the image. We can use the CAM analysis of this layer to be sure that we are pointing to the right image portion, but we need more accuracy. Once the algorithm finds this blue box, then start finding the region of interest of the inner layer of the CNN (using CAM), but only take into consideration the ones that are inside the blue box. As explained, the inner layers have higher resolution but less accuracy. We then select the weighted region of interest as the red box, and it corresponds to the Meteor.</p>
 <p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
 
