@@ -76,7 +76,9 @@ a {
 <p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
 <br>
 <div style="text-align: center;">
-  <img src="imgs.png" alt="Nerd" height="200px">
+  <a href="./imgs.png" target="_blank">
+    <img src="imgs.png" alt="Nerd" width="50%">
+  </a>
 </div>
 <br>
 <p>>The resulting model has a 0.98 recall on meteor detection. The model is available to download and use <a href='https://github.com/pisukeman/guAIta/tree/master/models'>here (guAIta_latest_version.pkl) </a></p> 
@@ -106,15 +108,21 @@ a {
 <br>
 <p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif):</p>
 <div style="text-align: center;">
-  <img src="SPMN_Detection.gif" alt="SPMN meteor" height="200px">
+  <a href="./SPMN_Detection.gif" target="_blank">
+    <img src="SPMN_Detection.gif" alt="SPMN meteor" width="50%">
+  </a>
 </div>
 <p>>And Here you can see the resulting process of Meteor tracking using CAM from different layers (below left image). The blue box shows the region of interest of the outer layer (with less resolution but more accuracy). This region of interest comes from a layer from the CNN with low resolution and because of this, represents a huge area of the image. We can use the CAM analysis of this layer to be sure that we are pointing to the right image portion, but we need more accuracy. Once the algorithm finds this blue box, then start finding the region of interest of the inner layer of the CNN (using CAM), but only take into consideration the ones that are inside the blue box. As explained, the inner layers have higher resolution but less accuracy. We then select the weighted region of interest as the red box, and it corresponds to the Meteor.</p>
 <p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
 
 <br>
 <div style="text-align: center;">
-  <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" height="400px">
-  <img src="example3_final.gif" alt="Meteor Detection Trajectory" height="400px">
+  <a href="./IEEC_CAM_analysis_example.gif" target="_blank">
+    <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" width="30%">
+  </a>    
+  <a href="./example3_final.gif" target="_blank">
+    <img src="example3_final.gif" alt="Meteor Detection Trajectory" width="30%">
+  </a>
 </div>
 <br>
 <br>
@@ -147,7 +155,9 @@ level = -5
 <h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
-  <img src="orion.jpeg" alt="Orion Nebula" height="800px">
+  <a href="./orion.jpeg" target="_blank">
+    <img src="orion.jpeg" alt="Orion Nebula" width="50%">
+  </a>
   <p  style="font-size: 9px">Orion Nebula</p>
 </div>
 <br>
@@ -156,7 +166,9 @@ level = -5
 <h2>[Image of Whirpool Galaxy (M51a, NGC 5194)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 180 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
-  <img src="whirpool.jpeg" alt="whirpool Galaxy" height="800px">
+  <a href="./whirpool.jpeg" target="_blank">
+    <img src="whirpool.jpeg" alt="whirpool Galaxy" width="50%">
+  </a>    
   <p  style="font-size: 9px">Whirpool Galaxy</p>
 </div>
 <br>
@@ -165,7 +177,9 @@ level = -5
 <h2>[Image of Dumbbell Nebula (M27 o NGC 6853)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
-  <img src="dumbbell.jpeg" alt="dumbbell Nebula" height="100%">
+  <a href="./dumbbell.jpeg" target="_blank">
+    <img src="dumbbell.jpeg" alt="dumbbell Nebula" width="50%">
+  </a>
   <p  style="font-size: 9px">Dumbbell Nebula</p>
 </div>
 
@@ -176,7 +190,9 @@ level = -5
 <p>>In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
 Credits: https://www.jeremyjordan.me/autoencoders/)</p>
 <div style="text-align: center;">
-  <img src="autoencoder.png" alt="Autoencoder" height="50%">
+  <a href="./autoencoder.png" target="_blank">
+    <img src="autoencoder.png" alt="Autoencoder" width="50%">
+  </a>
   <p  style="font-size: 9px">https://www.jeremyjordan.me/autoencoders/</p>
 </div>
 
@@ -184,7 +200,9 @@ Credits: https://www.jeremyjordan.me/autoencoders/)</p>
 <p>>Now let's imagine that we train this autoencoder to be able to reproduce the input. We can feed the neural network with galaxy images and train it to produce the exit as a reconstruction of the input. Note: the dataset used comes from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 
 <div style="text-align: center;">
-  <img src="autoencoder2.jpg" alt="Autoencoder2" height="50%">
+  <a href="./autoencoder2.png" target="_blank">
+    <img src="autoencoder2.jpg" alt="Autoencoder2" width="50%">
+  </a>
   <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 </div>
 
@@ -195,7 +213,9 @@ Credits: https://www.jeremyjordan.me/autoencoders/)</p>
 With the encoder we'll be able to generate a dimensional reduction of each galaxy. Note that the bootleneck layer is also known as latent space.</p>
 
 <div style="text-align: center;">
-  <img src="autoencoder3.jpg" alt="Autoencoder3" height="50%">
+  <a href="./autoencoder3.png" target="_blank">
+    <img src="autoencoder3.jpg" alt="Autoencoder3" width="50%">
+  </a>
   <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 </div>
 
@@ -203,7 +223,9 @@ With the encoder we'll be able to generate a dimensional reduction of each galax
 <p>>And the other part of the autoencoder, the decoder, can be used to choose a point in our latent space ang reconstruct the corresponding galaxy.</p>
 
 <div style="text-align: center;">
-  <img src="autoencoder4.jpg" alt="Autoencoder4" height="50%">
+  <a href="./autoencoder4.png" target="_blank">
+    <img src="autoencoder4.jpg" alt="Autoencoder4" width="50%">
+  </a>
   <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 </div>
 
@@ -214,8 +236,12 @@ Then we train the autoencoder with the noisy data as the inputs, and the clean d
 Some examples i did:</p>
 
 <div style="text-align: center;">
-  <img src="ex1.jpg" alt="Example1" height="50%">
-  <img src="ex2.jpg" alt="Example2" height="50%">
+  <a href="./ex1.jpg" target="_blank">
+    <img src="ex1.jpg" alt="Example1" width="30%">
+  </a>
+  <a href="./ex2.jpg" target="_blank">
+    <img src="ex2.jpg" alt="Example2" width="30%">
+  </a>
   <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 </div>
 
@@ -228,7 +254,9 @@ So, why not to train our autoencoder with galaxy images manipulated to have low 
 <p>>We are going to train the autoencoder with more than 61k galaxy images of (106x106 pixels), and the autoencoder will learn how to generate a "normal" galaxy image from a low exposure one.</p>
 
 <div style="text-align: center;">
-  <img src="all.jpg" alt="Galaxies" height="50%">
+  <a href="./all.jpg" target="_blank">
+    <img src="all.jpg" alt="Galaxies" width="50%">
+  </a>
   <p  style="font-size: 9px"> https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
 </div>
 
@@ -239,7 +267,9 @@ So, why not to train our autoencoder with galaxy images manipulated to have low 
     <li>Reconstructed: is the resulting autoencoder output) :</li></p>
 
     <div style="text-align: center;">
-      <img src="comparision.jpg" alt="Comparision" height="50%">
+      <a href="./comparision.jpg" target="_blank">
+        <img src="comparision.jpg" alt="Comparision" width="50%">
+      </a>
       <p  style="font-size: 9px"> Own creation</p>
     </div>
     
