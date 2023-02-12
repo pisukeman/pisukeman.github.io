@@ -94,10 +94,12 @@ a {
 </div>-->
 <br>
 <div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">learn = load_learner(<span style="color: #87ceeb">&quot;guAIta_latest_version.pkl&quot;</span>)
-  predict = learn.predict(image)
-  <span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
-         <span style="color: #00ff00">#Captured!</span>
+predict = learn.predict(image)
+<span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
+           <span style="color: #00ff00">#Captured!</span>
   </pre></div>
+  
+  
   
   
 
@@ -133,8 +135,8 @@ a {
 level = -1
 <span style="color: #ff0000">with</span> hook_output(learn.model[0][level]) <span style="color: #ff0000">as</span> hook_a:
 	<span style="color: #ff0000">with</span> hook_output(learn.model[0][level], grad=True) <span style="color: #ff0000">as</span> hook_g:
-		preds=learn.model(x1)
-        preds[0,0].backward()
+           preds=learn.model(x1)
+           preds[0,0].backward()
 acts = hook_a.stored[0].cpu()
 avg_acts = acts.mean(0)
 <span style="color: #00ff00">#Normalize the weights </span>
@@ -283,9 +285,9 @@ First, we read the dataset and split it into training set and test (10% of the d
 x_train_noise = simulate_low_exposure(x_train)
 x_test_noise = simulate_low_exposure(x_test)
   
-  <span style="color: #ff0000">def</span> <span style="color: #ffff00">simulate_low_exposure</span>(x,max,min,perc): 
+<span style="color: #ff0000">def</span> <span style="color: #ffff00">simulate_low_exposure</span>(x,max,min,perc): 
       <span style="color: #ff0000">return</span> np.where(x-perc&gt;min,x-perc, min)
-  </pre></div>
+</pre></div>
     
 	
 	
