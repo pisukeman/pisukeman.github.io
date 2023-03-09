@@ -40,51 +40,48 @@ a {
 }
 
 
-
 </style>
 </head>
 <body>
 <h1>Pisukeman Site</h1>
-<!--<p style="font-size: 11px"><a href="./index_en.html">EN</a> | <a href="./index.html">ES</a></p>-->
-<p>>I'm David Regordosa. I love AI and Space, and that's why I created this page, to share the things I do.</p>
+<p style="font-size: 11px"><a href="./index_en.html">EN</a> | <a href="./index.html">ES</a></p>
+<p>>Hola, soy David Regordosa. Me encanta la IA y el espacio, y por este motivo he creado esta página, para compartir las cosas que hago.</p>
 <div>
 <img src="pisukeman.png" alt="Nerd" height="300px">
-<p  style="font-size: 9px">Image created using Midjourney AI</p>
+<p  style="font-size: 9px">Imagen creada usando Midjourney AI</p>
 </div>
 <br>
-<p>>My Stuff:</p>
+<p>>Mis Cosas:</p>
 <ul>
-	<li>Space Stuff</li>
+	<li>Cosas del Espacio</li>
 	<ul>
-		<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST]</li>
-		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
-		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
-		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
-		<li><a href='#autoencoders'>[11/04/2022] Using Autoencoders to add exposure to Galaxy Images</a> [POST]</li>
+		<li><a href='#meteors'>[08/02/2023] Detección y tracking de Meteoros usando transfer learning y multi layer CAM analysis</a> [POST]</li>
+		<li><a href='#orion'>[04/02/2023] Imagen de la Nebulosa de Orión (M42, NGC 1976)</a> [IMAGE]</li>
+		<li><a href='#whirpool'>[31/07/2022] Imagen de la Galaxia Whirpool (M51a, NGC 5194)</a> [IMAGE]</li>
+		<li><a href='#dumbbell'>[25/07/2022] Imagen de la Nebulosa de Dumbbell (M27, NGC 6853)</a> [IMAGE]</li>
+		<li><a href='#autoencoders'>[11/04/2022] Autoencoders para añadir exposición a imágenes de Galaxias</a> [POST]</li>
 	</ul>
   <br>
-	<li>Collaborating in:</li>
+	<li>Colaboro en:</li>
 	<ul>
-    <li><a href='https://observatoridepujalt.cat/'>Board member at Fundació Ernest Guille i Moliné</a></li>
-    <li><a href='https://www.tedxigualada.com'>Co-founder at TEDx Igualada</a></li>
-		<li><a href='https://www.meetup.com/es-ES/IGD-Tech-Drinks'>Co-founder at meetup group IGD Tech&Drinks</a></li>
-		<li><a href='https://astroanoia.cat'>Co-founder at Astroanoia</a></li>
-    <li><a href='https://www.ticanoia.cat'>Board member at TIC Anoia</a></li>
+    <li><a href='https://observatoridepujalt.cat/'>Miembro de la junta de la Fundació Ernest Guille i Moliné</a></li>
+    <li><a href='https://www.tedxigualada.com'>Co-fundador del TEDx Igualada</a></li>
+		<li><a href='https://www.meetup.com/es-ES/IGD-Tech-Drinks'>Co-fundador del grupo de meetup IGD Tech&Drinks</a></li>
+		<li><a href='https://astroanoia.cat'>Co-fundador de Astroanoia</a></li>
+    <li><a href='https://www.ticanoia.cat'>Miembro de la junta de TIC Anoia</a></li>
 	</ul>
   <br>
-  <li> Personal links:</li>
+  <li>Enlaces personales:</li>
   <ul>
-    <li><a href='https://www.linkedin.com/in/davidregordosa/'>Linkedin Profile</a></li>
-    <li><a href='http://twitter.com/pisukeman'>Twitter Profile</a></li>
-    <li><a href='https://www.instagram.com/pisukeman/'>Instagram Profile</a></li>
+    <li><a href='https://www.linkedin.com/in/davidregordosa/'>Linkedin</a></li>
+    <li><a href='http://twitter.com/pisukeman'>Twitter</a></li>
+    <li><a href='https://www.instagram.com/pisukeman/'>Instagram</a></li>
     <li><a href='https://github.com/pisukeman'>Github</a></li>
   </ul>
 </ul>
 <br>
 <p id="meteors"></p>
-<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
-  <h2>[Meteor detection and tracking using transfer learning and multi layer CAM analysis]</h2>
-</div>  
+<h2>[Detección y tracking de Meteoros usando transfer learning y multi layer CAM analysis]</h2>
 <p>>I was working on a model to automatically detect meteors in images/videos and also calculate the position of the meteor to be able to track. The tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
 <p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network</p>
 <p>>The dataset was not balanced due to the high number of no-meteor images compared to the ones with meteor on it. So, I used Data Augmentation to facilitate the model to generalize correctly and avoid overfitting.</p>
@@ -191,9 +188,7 @@ predict = learn.predict(img)
 <br>
 <br>
 <p id="orion"></p>
-<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
-  <h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
-</div>
+<h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
   <a href="./orion.jpeg" target="_blank">
@@ -204,9 +199,7 @@ predict = learn.predict(img)
 <br>
 <br>
 <p id="whirpool"></p>
-<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
-  <h2>[Image of Whirpool Galaxy (M51a, NGC 5194)]</h2>
-</div>
+<h2>[Image of Whirpool Galaxy (M51a, NGC 5194)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 180 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
   <a href="./whirpool.jpeg" target="_blank">
@@ -217,9 +210,7 @@ predict = learn.predict(img)
 <br>
 <br>
 <p id="dumbbell"></p>
-<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
-  <h2>[Image of Dumbbell Nebula (M27 o NGC 6853)]</h2>
-</div>
+<h2>[Image of Dumbbell Nebula (M27 o NGC 6853)]</h2>
 <p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
   <a href="./dumbbell.jpeg" target="_blank">
@@ -229,9 +220,7 @@ predict = learn.predict(img)
 </div>
 
 <p id="autoencoders"></p>
-<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
-  <h2>[Using Autoencoders to add exposure to Galaxy Images]</h2>
-</div>
+<h2>[Using Autoencoders to add exposure to Galaxy Images]</h2>
 <p>>To understand this post is important to understand what autoencoders are. I'm working with autoencoders a long time ago, and i'm absolutelly in love about the properties they have.</p>
 <p>>An autoencoder is just a Neural Network but with a specific topology, used to learn data encodings in an unsupervised manner. The autoencoders can learn a set of data, producing a dimensional reduction, while training the network to be able to ignore noise.</p>
 <p>>In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
