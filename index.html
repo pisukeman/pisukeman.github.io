@@ -88,7 +88,6 @@ a {
 <p>>I was working on a model to automatically detect meteors in images/videos and also calculate the position of the meteor to be able to track. The tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
 <p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network</p>
 <p>>The dataset was not balanced due to the high number of no-meteor images compared to the ones with meteor on it. So, I used Data Augmentation to facilitate the model to generalize correctly and avoid overfitting.</p>
-<p>></p>
 <p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
 <br>
 <div style="text-align: center;">
@@ -186,7 +185,7 @@ predict = learn.predict(img)
   <li>We used Data Augmentation to avoid overfitting</li>
   <li>Using multi layer CAM analysis allows us to track the meteor without the need of labeling the datset with the position of the meteor</li>
 </ul>
-<p>>With this approach an observatory will easily train it's own model (using transfer learning), and get a tool that detects and tracks the meteors without even having to label it's position before</p>
+<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning), and get a tool that detects and tracks the meteors without even having to label it's position before</p>
 <p>>Thanks for reading!</p>
 <br>
 <br>
