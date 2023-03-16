@@ -56,7 +56,7 @@ a {
 <ul>
 	<li>Space Stuff</li>
 	<ul>
-		<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST]</li>
+		<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>
 		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
 		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
 		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
@@ -131,7 +131,7 @@ predict = learn.predict(image)
 <p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
 <p>>Our proposal method is to use CAM from different layers of the CNN. We analyze deeper layers of the CNN that have higher resolution, but less acurate in the prediction, and we keep the region of greatest interest in the image based on the CAM. Then we cross the information of this region with outer layers of lower resolution but higher accuracy. This allow us to obtain the group of pixels that the CNN is looking at when classifies an image as Meteor. This pixels correspons to the position of the Meteor.
 <br>
-<p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif):</p>
+<p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif, wait for the meteor....):</p>
 <div style="text-align: center;">
   <a href="./SPMN_Detection.gif" target="_blank">
     <img src="SPMN_Detection.gif" alt="SPMN meteor" width="50%">
