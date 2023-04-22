@@ -55,7 +55,8 @@ a {
 <p>>My Stuff:</p>
 <ul>
 	<li>Space Stuff</li>
-	<ul>
+	<ul>    
+    <li><a href='#bingmeimages'>[21/04/2023] BingMeImages: a small tool to create image datasets using Bing API</a> [POST] [<a href='https://github.com/pisukeman/bingMeImages' target="_blank">Github library</a>]</li>
 		<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>
 		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
 		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
@@ -81,6 +82,49 @@ a {
   </ul>
 </ul>
 <br>
+<p id="bingmeimages"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[BingMeImages: a small tool to create image datasets using Bing API]</h2>
+</div>  
+<p>>I was working on some models to automatically colorize black and white deep space images.</p>
+<p>>So, the first step was to get some images from Galaxies, Nebulas, etc...I was searching for existing datasets, but I decided to build my own custom tool.</p>
+<p>>That's why I build BingMeImages, a custom python library that does some of the tasks needed to build a image dataset. Basically:</p>
+<ul>
+	<li>1-Uses the Bing API to query for images</li>
+  <li>2-The Bing API creates a set of folders with images, one folder for each query. The library, get all the images from the different folders and store them in a single one</li>
+  <li>3-Resize the images to a specific pixel size</li>
+  <li>4-Remove duplicates comparing image hashes</li>
+</ul>
+<p>>The result is that you can, for example, query for all the Messier and NGC objects, and the get a consolidated dataset of about 3k images, without duplicates, in less than an hour.</p>
+<p>>For example, you can run the library with:</p>
+<br>
+<!-- HTML generated using hilite.me --><div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#Example of how to generate queries</span>
+  my_objects=[]
+  <span style="color: #ff0000">for</span> num in range(1, 111,):
+      my_objects.append(<span style="color: #87ceeb">&#39;MESSIER &#39;</span>+str(num))
+  <span style="color: #ff0000">for</span> num in range(1, 7840,):
+      my_objects.append(<span style="color: #87ceeb">&#39;NGC &#39;</span>+str(num)+<span style="color: #87ceeb">&#39; space&#39;</span>)
+  
+  <span style="color: #00ff00">#And then finally execute all the process with something like:</span>
+  <span style="color: #00ff00"># my_objects: the queries we want to send to Bing API</span>
+  <span style="color: #00ff00"># 200: the number of images we want to download for each query</span>
+  <span style="color: #00ff00"># ./ufo: the folder to store all the images</span>
+  <span style="color: #00ff00"># 160: we want the images to be resized to 160x160 pixels</span>
+  createDataset(my_objects,200,<span style="color: #87ceeb">&quot;./ufo&quot;</span>,160)
+  </pre></div>
+  
+<p>>The resulting folder:</p>
+<div style="text-align: center;">
+  <a href="./dataset.png" target="_blank">
+    <img src="dataset.png" alt="Dataset" width="50%">
+  </a>
+</div>
+<br>
+<p>>You can download the python library on my Githbub: <a href='https://github.com/pisukeman/bingMeImages' target="_blank">BingMeImages</a></p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+
 <p id="meteors"></p>
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
   <h2>[Meteor detection and tracking using transfer learning and multi layer CAM analysis]</h2>
@@ -92,7 +136,7 @@ a {
 <br>
 <div style="text-align: center;">
   <a href="./imgs.png" target="_blank">
-    <img src="imgs.png" alt="Nerd" width="50%">
+    <img src="imgs.png" alt="Meteors" width="50%">
   </a>
 </div>
 <br>
