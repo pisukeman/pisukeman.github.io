@@ -61,7 +61,7 @@ a {
     <li><a href='#m57'>[12/06/2023] Image of Ring Nebula  (M57)</a> [IMAGE]</li>
     <li><a href='#m13'>[30/04/2023] Image of Hercules Cluster (M13)</a> [IMAGE]</li>
     <li><a href='#bingmeimages'>[21/04/2023] BingMeImages: a small tool to create image datasets using Bing API</a> [POST] [<a href='https://github.com/pisukeman/bingMeImages' target="_blank">Github library</a>]</li>
-		<!--<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>-->
+		<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>
 		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
 		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
 		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
@@ -169,7 +169,7 @@ a {
 <p>>Thanks for reading!</p>
 <br>
 <br>
-<!--
+
 <p id="meteors"></p>
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
   <h2>[Meteor detection and tracking using transfer learning and multi layer CAM analysis]</h2>
@@ -196,12 +196,26 @@ a {
 <br>
 <p>>You can use the model installing first the <a href='https://anaconda.org/'>Anaconda</a> environment using <a href='https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml'>this yaml file</a></p>
 <p>>Once you set up the Anaconda environment, the inference can be done using this code snippet:</p>
+<!--<div style = "  width: 20em;background-color: #3eff3f;border: 2px solid #ccc;">
+<div style="width: fit-content;block-size: fit-content;padding=10px">
+<p style="font-size:10px;">>>learn = load_learner("guAIta_latest_version.pkl")</p>
+<p style="font-size:10px">>>predict = learn.predict(image)</p>
+<p style="font-size:10px">>>if (predict[0]=="meteor" and predict[2][0]>scoring):</p>
+<p style="font-size:10px">>>          #Captured!</p>
+</div>
+</div>-->
 <br>
 <div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">learn = load_learner(<span style="color: #87ceeb">&quot;guAIta_latest_version.pkl&quot;</span>)
 predict = learn.predict(image)
 <span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
            <span style="color: #00ff00">#Captured!</span>
   </pre></div>
+  
+  
+  
+  
+
+
 <p>>The interesting point here is to be able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using Grad-CAM, and specifically using multi layer CAM analysis</p>
 <p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
 <p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. 
@@ -266,7 +280,6 @@ level = -5
 <p>>Thanks for reading!</p>
 <br>
 <br>
--->
 <p id="orion"></p>
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
   <h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
