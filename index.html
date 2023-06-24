@@ -61,7 +61,7 @@ a {
     <li><a href='#m57'>[12/06/2023] Image of Ring Nebula  (M57)</a> [IMAGE]</li>
     <li><a href='#m13'>[30/04/2023] Image of Hercules Cluster (M13)</a> [IMAGE]</li>
     <li><a href='#bingmeimages'>[21/04/2023] BingMeImages: a small tool to create image datasets using Bing API</a> [POST] [<a href='https://github.com/pisukeman/bingMeImages' target="_blank">Github library</a>]</li>
-		<!--<li><a href='#meteors'>[08/02/2023] Meteor detection and tracking using transfer learning and multi layer CAM analysis</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>-->
+		<li><a href='#meteors'>[08/02/2023] Meteor detection using transfer learning on a ResNet34</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>
 		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
 		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
 		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
@@ -169,12 +169,11 @@ a {
 <p>>Thanks for reading!</p>
 <br>
 <br>
-<!--
 <p id="meteors"></p>
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
-  <h2>[Meteor detection and tracking using transfer learning and multi layer CAM analysis]</h2>
+  <h2>[Meteor detection using transfer learning on a ResNet34]</h2>
 </div>  
-<p>>I was working on a model to automatically detect meteors in images/videos and also calculate the position of the meteor to be able to track. The tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
+<p>>I was working on a model to automatically detect meteors in images/videos </p>
 <p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network</p>
 <p>>The dataset was not balanced due to the high number of no-meteor images compared to the ones with meteor on it. So, I used Data Augmentation to facilitate the model to generalize correctly and avoid overfitting.</p>
 <p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
@@ -202,6 +201,7 @@ predict = learn.predict(image)
 <span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
            <span style="color: #00ff00">#Captured!</span>
   </pre></div>
+<!--
 <p>>The interesting point here is to be able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using Grad-CAM, and specifically using multi layer CAM analysis</p>
 <p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
 <p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. 
@@ -256,17 +256,18 @@ level = -5
 
 <p>>This code snippet is taken from this wonderful notebook from fast.ai <a href='https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb' target="_blank">repo</a></p>  
 <p>>You can find more information about the model training in my Masters degree dissertation (in spanish), in my github library <a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf'>GuAIta</a></p>
-<p>>As said before, the key topics on this are:</a></p>
+-->
+<p>>The key topics on this are:</a></p>
 <ul>
 	<li>We used a pre-trained ResNet34 network, and we use Transfer Learning with a set of 57k images. Using Transfer Learning allows us to prepare our model quickly and accurately with a reduced dataset</li>
   <li>We used Data Augmentation to avoid overfitting</li>
-  <li>Using multi layer CAM analysis allows us to track the meteor without the need of labeling the datset with the position of the meteor</li>
+  <li>We can process image or video and do inference on each frame</li>
 </ul>
-<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning), and get a tool that detects and tracks the meteors without even having to label it's position before</p>
+<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning), and get a tool that detects meteors on it's own camera setup</p>
+<p>>Everything can be found <a href='https://github.com/pisukeman/guAIta'>here</a></p>
 <p>>Thanks for reading!</p>
 <br>
 <br>
--->
 <p id="orion"></p>
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
   <h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
