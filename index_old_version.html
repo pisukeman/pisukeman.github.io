@@ -1,0 +1,565 @@
+<html>
+<head>
+<style>
+
+html { 
+	overflow-y: scroll; 
+}
+body {
+  /*position: absolute;*/
+  background-color: black;
+  background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  color: white;
+  font: 1.0rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #C8C8C8;
+  }
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  /*background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);*/
+  pointer-events: none;
+}
+
+::selection {
+  background: #0080FF;
+  text-shadow: none;
+}
+
+pre {
+  margin: 0;
+}
+a {
+  color: white;
+}
+
+
+
+</style>
+</head>
+<body>
+ 
+<h1>Pisukeman Site</h1>
+<!--<p style="font-size: 11px"><a href="./index_en.html">EN</a> | <a href="./index.html">ES</a></p>-->
+<p>>I'm David Regordosa. I love AI and Space, and that's why I created this page, to share the things I do.</p>
+<div>
+<img src="pisukeman.png" alt="Nerd" height="300px">
+<p  style="font-size: 9px">Image created using Midjourney AI</p>
+</div>
+<br>
+<p>>My Stuff:</p>
+<ul>
+	<li>Space Stuff</li>
+	<ul>    
+    <li><a href='#gradCAM'>[30/09/2023] Meteor tracking using multi layer Grad-CAM analysis</a> [POST] <!--[<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]--></li>
+    <li><a href='#m31'>[24/07/2023] Image of Andromeda Galaxy (M31)</a> [IMAGE]</li>
+    <li><a href='#m20'>[21/07/2023] Image of Trifid Nebula (M20)</a> [IMAGE]</li>
+    <li><a href='#m13'>[02/07/2023] Image of Hercules Cluster (M13)</a> [IMAGE]</li>
+    <li><a href='#m17'>[25/06/2023] Image of Omega Nebula (M17)</a> [IMAGE]</li>
+    <li><a href='#m101_sn'>[09/06/2023] Image of M101 with supernova SN2023ixf</a> [IMAGE]</li>
+    <li><a href='#m57'>[12/06/2023] Image of Ring Nebula  (M57)</a> [IMAGE]</li>
+    <li><a href='#bingmeimages'>[21/04/2023] BingMeImages: a small tool to create image datasets using Bing API</a> [POST] [<a href='https://github.com/pisukeman/bingMeImages' target="_blank">Github library</a>]</li>
+		<li><a href='#meteors'>[08/02/2023] Meteor detection using transfer learning on a ResNet34</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>
+		<li><a href='#orion'>[04/02/2023] Image of Orion Nebula (M42, NGC 1976)</a> [IMAGE]</li>
+		<li><a href='#whirpool'>[31/07/2022] Image of Whirpool Galaxy (M51a, NGC 5194)</a> [IMAGE]</li>
+		<li><a href='#dumbbell'>[25/07/2022] Image of Dumbbell Nebula (M27, NGC 6853)</a> [IMAGE]</li>
+		<li><a href='#autoencoders'>[11/04/2022] Using Autoencoders to add exposure to Galaxy Images</a> [POST]</li>
+	</ul>
+  <br>
+	<li>Collaborating in:</li>
+	<ul>
+    <li><a href='https://observatoridepujalt.cat/'>Board member at Fundació Ernest Guille i Moliné</a></li>
+    <li><a href='https://www.tedxigualada.com'>Co-founder at TEDx Igualada</a></li>
+		<li><a href='https://www.meetup.com/es-ES/IGD-Tech-Drinks'>Co-founder at meetup group IGD Tech&Drinks</a></li>
+		<li><a href='https://astroanoia.cat'>Co-founder at Astroanoia</a></li>
+    <li><a href='https://www.ticanoia.cat'>Board member at TIC Anoia</a></li>
+	</ul>
+  <br>
+  <li> Personal links:</li>
+  <ul>
+    <li><a href='https://www.linkedin.com/in/davidregordosa/'>Linkedin Profile</a></li>
+    <li><a href='http://twitter.com/pisukeman'>Twitter Profile</a></li>
+    <li><a href='https://www.instagram.com/pisukeman/'>Instagram Profile</a></li>
+    <li><a href='https://github.com/pisukeman'>Github</a></li>
+  </ul>
+</ul>
+<br>
+<br>
+<p id="gradCAM"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Meteor tracking using multi layer Grad-CAM analysis]</h2>
+</div>  
+<p>>Previously I was working on a <a href="#meteors">model to automatically detect meteors in images /videos</a>. This model allow us to detect if a meteor was on an image/video frame with huge precision. 
+<p>>But, as an extension to this work, we wanted to not only detect meteors but track it's position in the picture as well. This tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
+<p>>With this methodology and algorithm developed we are able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using CAM, and specifically using multi layer Grad-CAM analysis</p>
+<p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
+<p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. 
+<br>
+<p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif, wait for the meteor....):</p>
+<div style="text-align: center;">
+  <a href="./SPMN_Detection.gif" target="_blank">
+    <img src="SPMN_Detection.gif" alt="SPMN meteor" width="50%">
+  </a>
+</div>
+<p>>And Here you can see the resulting process of Meteor tracking using Grad-CAM from different layers (below left image). The blue box shows the region of interest of the outer layer (with less resolution but more accuracy). This region of interest comes from a layer from the CNN with low resolution and because of this, represents a huge area of the image. We can use the Grad-CAM analysis of this layer to be sure that we are pointing to the right image portion, but we need more accuracy. Once the algorithm finds this blue box, then start finding the region of interest of the inner layer of the CNN (using the activations of the layer), but only take into consideration the ones that are inside the blue box. As explained, the inner layers have higher resolution but less accuracy. We then select the weighted region of interest as the red box, and it corresponds to the Meteor.</p>
+<p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
+<br>
+<div style="text-align: center;">
+  <a href="./IEEC_CAM_analysis_example.gif" target="_blank">
+    <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" width="30%">
+  </a>    
+  <a href="./example3_final.gif" target="_blank">
+    <img src="example3_final.gif" alt="Meteor Detection Trajectory" width="30%">
+  </a>
+</div>
+<br>
+<br>
+<p>>The code to analyze the Grad-CAM and get the weighted array:</p>
+<br>
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<span style="color: #00ff00">
+#cls=0 is the meteor class on the classification process, and level=-1 is to focus on the last convolutional layer of the ResNet 34 </span><pre style="margin: 0; line-height: 125%">
+cls=0
+level=-1<span style="color: #ff0000">
+
+with</span> HookBwd(learn.model[0][level]) <span style="color: #ff0000">as</span> hookg:<span style="color: #ff0000"> 
+  with</span> Hook(learn.model[0][level]) <span style="color: #ff0000">as</span> hook:
+    output = learn.model(x1)
+    act = hook.stored
+  output[0,cls].backward()
+  grad = hookg.stored
+w = grad[0].mean(dim=[1,2], keepdim=True)
+cam_map = (w * act[0]).sum(0)
+<span style="color: #00ff00">#Normalize the weights </span>
+avg_acts = torch.div(cam_map,torch.max(cam_map))
+<span style="color: #00ff00">#At this point you&#39;ll find in avg_acts an array of weights, indicating the regions of interest in the image </span>
+<span style="color: #00ff00">#The dimension of the array depends on the layer you are watching at</span>
+<span style="color: #00ff00">#Now, repeat the same with the level -5, which is the first convolutional layer of the ResNet 34</span>
+level = -5
+<span style="color: #00ff00">#...</span>
+  
+<span style="color: #00ff00">#At the end you&#39;ll have two arrays with different sizes, both having the weights, from 0 to 1 (0 means no interest, 1 means the highest interest)</span>
+  </pre></div>
+<p>>This code snippet is taken from this wonderful notebook from fast.ai <a href='https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb' target="_blank">repo</a></p>  
+<p>>As said before, the key topics on this are:</a></p>
+<ul>
+	<li>We used a pre-trained ResNet34 network</li>
+  <li>We used Data Augmentation to avoid overfitting</li>
+  <li>Using multi layer Grad-CAM analysis allows us to track the meteor without the need of labeling the datset with the position of the meteor</li>
+</ul>
+<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning), and get a tool that detects and tracks the meteors without even having to label it's position before</p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+<p id="m31"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Andromeda Galaxy (M31)]</h2>
+</div>
+<br>
+<p>>ED APO 80mm f/6 Refractor telescope, with ASI 533 MC PRO Color. 10 images of 300 sec.  Stacked with Siril. Post-processed with Photoshop</p>
+<blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/CvFM2JCNcUo/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/CvFM2JCNcUo/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/CvFM2JCNcUo/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by David Regordosa Avellana (@pisukeman)</a></p></div></blockquote> <script async src="https:////www.instagram.com/embed.js"></script><br>
+<br>
+<p id="m20"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Trifid Nebula (M20)]</h2>
+</div>
+<br>
+<p>>ED APO 80mm f/6 Refractor telescope, with ASI 533 MC PRO Color. 10 images of 300 sec.  Stacked with Siril. Post-processed with Photoshop</p>
+<blockquote class="instagram-media" data-instgrm-permalink='https://www.instagram.com/p/Cu81EvYNQPY/?utm_source=ig_embed&amp;utm_campaign=loading' data-instgrm-version="14" style=" text-align: center;background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/Cu81EvYNQPY/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/Cu81EvYNQPY/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by David Regordosa Avellana (@pisukeman)</a></p></div></blockquote> <script async src="https://www.instagram.com/embed.js"></script><p id="m13"></p>
+<br>
+<br>
+<p id="m13"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Hercules Cluster (M13)]</h2>
+</div>
+<p>>20cm Newton telescope, with ASI 533 MC PRO Color. 8 images of 30 sec +  7 images of 500 sec. Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="./r_M13_ok.png" target="_blank">
+    <img src="r_M13_ok.png" alt="Hercules Cluster" width="30%">
+  </a>
+  <p  style="font-size: 9px">Hercules Cluster</p>
+</div>
+<br>
+<br>
+<p id="m17"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Omega Nebula (M17)]</h2>
+</div>
+<p>>20cm Newton telescope, with ASI 533 MC PRO Color. 20 images of 180 sec + 4 images of 500 sec. Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="./m17_EPIC3.png" target="_blank">
+    <img src="m17_EPIC3.png" alt="M17" width="30%">
+  </a>
+  <p  style="font-size: 9px">Omega Nebula M17</p>
+</div>
+<br>
+<br>
+<p id="m101_sn"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Galaxy M101 with supernova SN2023ixf]</h2>
+</div>
+<p>>20cm Newton telescope, with ASI 533 MC PRO Color. 5 images of 180 sec. Stacked with Siril. Post-processed with Photoshop</p>
+<p>>Highlighted in the image the supernova <a href="https://en.wikipedia.org/wiki/SN_2023ixf">SN2023ixf</a></p>
+<div style="text-align: center;">
+  <a href="./m101_SN.png" target="_blank">
+    <img src="m101_SN.png" alt="M101" width="30%">
+  </a>
+  <p  style="font-size: 9px">Galaxy M101 with supernova SN2023ixf</p>
+</div>
+<br>
+<br>
+<p id="m57"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Ring Nebula (M57)]</h2>
+</div>
+<p>>20cm Newton telescope, with ASI 533 MC PRO Color. 10 images of 120 sec. Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="./ring_ok_2.png" target="_blank">
+    <img src="ring_ok_2.png" alt="Ring Nebula" width="30%">
+  </a>
+  <p  style="font-size: 9px">Ring Nebula</p>
+</div>
+<br>
+<br>
+<p id="bingmeimages"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[BingMeImages: a small tool to create image datasets using Bing API]</h2>
+</div>  
+<p>>I was working on some models to automatically colorize black and white deep space images.</p>
+<p>>So, the first step was to get some images from Galaxies, Nebulas, etc...I was searching for existing datasets, but I decided to build my own custom tool.</p>
+<p>>That's why I build BingMeImages, a custom python library that does some of the tasks needed to build a image dataset. Basically:</p>
+<ul>
+	<li>1-Uses the Bing API to query for images</li>
+  <li>2-The Bing API creates a set of folders with images, one folder for each query. The library, get all the images from the different folders and store them in a single one</li>
+  <li>3-Resize the images to a specific pixel size</li>
+  <li>4-Remove duplicates comparing image hashes</li>
+</ul>
+<p>>The result is that you can, for example, query for all the Messier and NGC objects, and the get a consolidated dataset of about 3k images, without duplicates, in less than an hour.</p>
+<p>>For example, you can run the library with:</p>
+<br>
+<!-- HTML generated using hilite.me --><div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#Example of how to generate queries</span>
+  my_objects=[]
+  <span style="color: #ff0000">for</span> num in range(1, 111,):
+      my_objects.append(<span style="color: #87ceeb">&#39;MESSIER &#39;</span>+str(num))
+  <span style="color: #ff0000">for</span> num in range(1, 7840,):
+      my_objects.append(<span style="color: #87ceeb">&#39;NGC &#39;</span>+str(num)+<span style="color: #87ceeb">&#39; space&#39;</span>)
+  
+  <span style="color: #00ff00"># And then finally execute all the process with something like:</span>
+  <span style="color: #00ff00"># my_objects: the queries we want to send to Bing API</span>
+  <span style="color: #00ff00"># 200: the number of images we want to download for each query</span>
+  <span style="color: #00ff00"># ./ufo: the folder to store all the images</span>
+  <span style="color: #00ff00"># 160: we want the images to be resized to 160x160 pixels</span>
+  createDataset(my_objects,200,<span style="color: #87ceeb">&quot;./ufo&quot;</span>,160)
+  </pre></div>
+  
+<p>>The resulting folder:</p>
+<div style="text-align: center;">
+  <a href="./dataset.png" target="_blank">
+    <img src="dataset.png" alt="Dataset" width="50%">
+  </a>
+</div>
+<br>
+<p>>You can download the python library on my Githbub: <a href='https://github.com/pisukeman/bingMeImages' target="_blank">BingMeImages</a></p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+
+
+<p id="meteors"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Meteor detection and tracking using transfer learning and multi layer CAM analysis]</h2>
+</div>  
+<p>>I was working on a model to automatically detect meteors in images/videos and also calculate the position of the meteor to be able to track. The tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
+<p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network</p>
+<p>>The dataset was not balanced due to the high number of no-meteor images compared to the ones with meteor on it. So, I used Data Augmentation to facilitate the model to generalize correctly and avoid overfitting.</p>
+<p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
+<br>
+<div style="text-align: center;">
+  <a href="./imgs.png" target="_blank">
+    <img src="imgs.png" alt="Meteors" width="50%">
+  </a>
+</div>
+<br>
+<p>>The resulting model has a 0.98 recall on meteor detection. The model is available to download and use <a href='https://github.com/pisukeman/guAIta/tree/master/models'>here (guAIta_latest_version.pkl) </a></p> 
+<br>
+<div style="text-align: center;">
+  <a href="./result.png" target="_blank">
+    <img src="result.png" alt="Result" width="25%">
+  </a>
+  <p  style="font-size: 9px">Model evaluation on test dataset</p>
+</div>
+<br>
+<p>>You can use the model installing first the <a href='https://anaconda.org/'>Anaconda</a> environment using <a href='https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml'>this yaml file</a></p>
+<p>>Once you set up the Anaconda environment, the inference can be done using this code snippet:</p>
+<br>
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">learn = load_learner(<span style="color: #87ceeb">&quot;guAIta_latest_version.pkl&quot;</span>)
+predict = learn.predict(image)
+<span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
+           <span style="color: #00ff00">#Captured!</span>
+  </pre></div>
+<p>>The interesting point here is to be able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using Grad-CAM, and specifically using multi layer CAM analysis</p>
+<p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
+<p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. 
+<br>
+<p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif, wait for the meteor....):</p>
+<div style="text-align: center;">
+  <a href="./SPMN_Detection.gif" target="_blank">
+    <img src="SPMN_Detection.gif" alt="SPMN meteor" width="50%">
+  </a>
+</div>
+<p>>And Here you can see the resulting process of Meteor tracking using Grad-CAM from different layers (below left image). The blue box shows the region of interest of the outer layer (with less resolution but more accuracy). This region of interest comes from a layer from the CNN with low resolution and because of this, represents a huge area of the image. We can use the Grad-CAM analysis of this layer to be sure that we are pointing to the right image portion, but we need more accuracy. Once the algorithm finds this blue box, then start finding the region of interest of the inner layer of the CNN (using the activations of the layer), but only take into consideration the ones that are inside the blue box. As explained, the inner layers have higher resolution but less accuracy. We then select the weighted region of interest as the red box, and it corresponds to the Meteor.</p>
+<p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
+
+<br>
+<div style="text-align: center;">
+  <a href="./IEEC_CAM_analysis_example.gif" target="_blank">
+    <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" width="30%">
+  </a>    
+  <a href="./example3_final.gif" target="_blank">
+    <img src="example3_final.gif" alt="Meteor Detection Trajectory" width="30%">
+  </a>
+</div>
+<br>
+<br>
+<p>>The code to analyze the Grad-CAM and get the weighted array:</p>
+<br>
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<span style="color: #00ff00">
+#cls=0 is the meteor class on the classification process, and level=-1 is to focus on the last convolutional layer of the ResNet 34 </span><pre style="margin: 0; line-height: 125%">
+cls=0
+level=-1<span style="color: #ff0000">
+
+with</span> HookBwd(learn.model[0][level]) <span style="color: #ff0000">as</span> hookg:<span style="color: #ff0000"> 
+  with</span> Hook(learn.model[0][level]) <span style="color: #ff0000">as</span> hook:
+    output = learn.model(x1)
+    act = hook.stored
+  output[0,cls].backward()
+  grad = hookg.stored
+w = grad[0].mean(dim=[1,2], keepdim=True)
+cam_map = (w * act[0]).sum(0)
+<span style="color: #00ff00">#Normalize the weights </span>
+avg_acts = torch.div(cam_map,torch.max(cam_map))
+<span style="color: #00ff00">#At this point you&#39;ll find in avg_acts an array of weights, indicating the regions of interest in the image </span>
+<span style="color: #00ff00">#The dimension of the array depends on the layer you are watching at</span>
+<span style="color: #00ff00">#Now, repeat the same with the level -5, which is the first convolutional layer of the ResNet 34</span>
+level = -5
+<span style="color: #00ff00">#...</span>
+  
+<span style="color: #00ff00">#At the end you&#39;ll have two arrays with different sizes, both having the weights, from 0 to 1 (0 means no interest, 1 means the highest interest)</span>
+  </pre></div>
+
+<p>>This code snippet is taken from this wonderful notebook from fast.ai <a href='https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb' target="_blank">repo</a></p>  
+<p>>You can find more information about the model training in my Masters degree dissertation (in spanish), in my github library <a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf'>GuAIta</a></p>
+<p>>As said before, the key topics on this are:</a></p>
+<ul>
+	<li>We used a pre-trained ResNet34 network, and we use Transfer Learning with a set of 57k images. Using Transfer Learning allows us to prepare our model quickly and accurately with a reduced dataset</li>
+  <li>We used Data Augmentation to avoid overfitting</li>
+  <li>Using multi layer CAM analysis allows us to track the meteor without the need of labeling the datset with the position of the meteor</li>
+</ul>
+<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning), and get a tool that detects and tracks the meteors without even having to label it's position before</p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+
+<p id="orion"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Orion Nebula (M42, NGC 1976)]</h2>
+</div>
+<p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="./orion.jpeg" target="_blank">
+    <img src="orion.jpeg" alt="Orion Nebula" width="30%">
+  </a>
+  <p  style="font-size: 9px">Orion Nebula</p>
+</div>
+<br>
+<br>
+<p id="whirpool"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Whirpool Galaxy (M51a, NGC 5194)]</h2>
+</div>
+<p>>20cm Newton telescope, with DSLR camera. 30 images of 180 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="./whirpool.jpeg" target="_blank">
+    <img src="whirpool.jpeg" alt="whirpool Galaxy" width="30%">
+  </a>    
+  <p  style="font-size: 9px">Whirpool Galaxy</p>
+</div>
+<br>
+<br>
+<p id="dumbbell"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Dumbbell Nebula (M27 o NGC 6853)]</h2>
+</div>
+<p>>20cm Newton telescope, with DSLR camera. 30 images of 120 sec. exposure each one, with ISO 800. Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="./dumbbell_2.png" target="_blank">
+    <img src="dumbbell_2.png" alt="dumbbell Nebula" width="30%">
+  </a>
+  <p  style="font-size: 9px">Dumbbell Nebula</p>
+</div>
+
+<p id="autoencoders"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Using Autoencoders to add exposure to Galaxy Images]</h2>
+</div>
+<p>>To understand this post is important to understand what autoencoders are. I'm working with autoencoders a long time ago, and i'm absolutelly in love about the properties they have.</p>
+<p>>An autoencoder is just a Neural Network but with a specific topology, used to learn data encodings in an unsupervised manner. The autoencoders can learn a set of data, producing a dimensional reduction, while training the network to be able to ignore noise.</p>
+<p>>In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
+Credits: https://www.jeremyjordan.me/autoencoders/)</p>
+<div style="text-align: center;">
+  <a href="./autoencoder.png" target="_blank">
+    <img src="autoencoder.png" alt="Autoencoder" width="30%">
+  </a>
+  <p  style="font-size: 9px">https://www.jeremyjordan.me/autoencoders/</p>
+</div>
+
+
+<p>>Now let's imagine that we train this autoencoder to be able to reproduce the input. We can feed the neural network with galaxy images and train it to produce the exit as a reconstruction of the input. Note: the dataset used comes from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+
+<div style="text-align: center;">
+  <a href="./autoencoder2.png" target="_blank">
+    <img src="autoencoder2.jpg" alt="Autoencoder2" width="50%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>At this point we'll have a neural network that is able to reconstruct a galaxy image from a input image galaxy...mmm...maybe not so spectacular, but with some interesting features.</p>
+
+<p>>If we split our autoencoder in 2 parts, the encoder and the decoder, we'll have the following features.
+With the encoder we'll be able to generate a dimensional reduction of each galaxy. Note that the bootleneck layer is also known as latent space.</p>
+
+<div style="text-align: center;">
+  <a href="./autoencoder3.png" target="_blank">
+    <img src="autoencoder3.jpg" alt="Autoencoder3" width="50%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>And the other part of the autoencoder, the decoder, can be used to choose a point in our latent space ang reconstruct the corresponding galaxy.</p>
+
+<div style="text-align: center;">
+  <a href="./autoencoder4.png" target="_blank">
+    <img src="autoencoder4.jpg" alt="Autoencoder4" width="50%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>Ok, now that we understand what an autoencoder can do for us, let's try something different.
+Imagine that we create a dataset with galaxy images with some noise added and train the network to genereate the same galaxy without noise.
+Then we train the autoencoder with the noisy data as the inputs, and the clean data the outputs.
+Some examples i did:</p>
+
+<div style="text-align: center;">
+  <a href="./ex1.jpg" target="_blank">
+    <img src="ex1.jpg" alt="Example1" width="30%">
+  </a>
+  <a href="./ex2.jpg" target="_blank">
+    <img src="ex2.jpg" alt="Example2" width="30%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>Note that these are test images, separated from the train set in order to test the autoencoder once the training was finished. So the autoencoder had never seen those images, and was able to reproduce a version without noise. Nice.</p>
+
+<p>>Now, let's think about another use of the autoencoder.
+Some amateur astronomers (i'm one of them), have small telescopes wich give very faint galaxy images. To be able to generate good galaxy images with a amateur telescope is needed a good CCD, several exposure time, and a very good telescope calibration (polar alignment). In some cases, is very dificult to have long exposure images.
+So, why not to train our autoencoder with galaxy images manipulated to have low exposure as inputs, and the original galaxy images as the output?</p>
+<p>>We are going to train the autoencoder with more than 61k galaxy images of (106x106 pixels), and the autoencoder will learn how to generate a "normal" galaxy image from a low exposure one.</p>
+
+<div style="text-align: center;">
+  <a href="./all.jpg" target="_blank">
+    <img src="all.jpg" alt="Galaxies" width="50%">
+  </a>
+  <p  style="font-size: 9px"> https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+<p>>The result is not perfect, but looks nice.
+  <ul>
+    <li>Original: is the original image in the dataset.</li>
+    <li>Low exposure: is the image modified to force a low exposure version and the input of the autoencoder.</li>
+    <li>Reconstructed: is the resulting autoencoder output.</li></p>
+
+    <div style="text-align: center;">
+      <a href="./comparision.jpg" target="_blank">
+        <img src="comparision.jpg" alt="Comparision" width="50%">
+      </a>
+      <p  style="font-size: 9px"> Own creation</p>
+    </div>
+    
+
+<p>>Note that the point here is to get a reconstructed image as similar as possible to the Original one. And, also keep in mind that these are galaxy images never seen by our autoencoder, so the trick here is that the autoencoder, when receive a low exposure image of a galaxy (that the autoencoder had never seen), is able to reproduce a galaxy image without the low exposure.</p>
+<p>>And last, with Keras, the definition of this autoencoder is pretty easy.
+First, we read the dataset and split it into training set and test (10% of the data set to test).</p>
+
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">x_train, x_test = train_test_split(x_train, test_size=0.1, random_state=42)
+x_train_noise = simulate_low_exposure(x_train)
+x_test_noise = simulate_low_exposure(x_test)
+  
+<span style="color: #ff0000">def</span> <span style="color: #ffff00">simulate_low_exposure</span>(x,max,min,perc): 
+      <span style="color: #ff0000">return</span> np.where(x-perc&gt;min,x-perc, min)
+</pre></div>
+    
+	
+	
+  <p>>The simulate low exposure function is just a noisy function not exactly a low exposure (to be honest), but do the trick.
+And finally we define the autoencoder, a very simple one:</p>
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #ff0000">def</span> <span style="color: #ffff00">build_one_layer_autoencoder</span>(img_shape, code_size):
+  <span style="color: #00ff00"># The encoder</span>
+  encoder = Sequential()
+  encoder.add(InputLayer(img_shape))
+  encoder.add(Flatten())
+  encoder.add(Dense(code_size))
+
+  <span style="color: #00ff00"># The decoder</span>
+  decoder = Sequential()
+  decoder.add(InputLayer((code_size,)))
+  decoder.add(Dense(np.prod(img_shape))) 
+  decoder.add(Reshape(img_shape))
+
+  <span style="color: #ff0000">return</span> encoder, decoder
+
+</pre></div>
+
+	
+<p>>The function parameters are the image shape and the size of the bootleneck layer (number of nodes), and returns the encoder and the decoder sepparately in order to allow us to play :)</p>
+	
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#The size of the first layer will be width x Height of the IMAGE_SHAPE, and the bootleneck layer will be, for example 1000 nodes.</span>
+  encoder, decoder = build_one_layer_autoencoder(IMG_SHAPE, 1000)
+  inp_shape = Input(IMG_SHAPE)
+  code = encoder(inp_shape )
+  reconstruction = decoder(code)
+  autoencoder = Model(inp,reconstruction)
+  autoencoder.compile(optimizer=<span style="color: #87ceeb">&#39;adamax&#39;</span>, loss=<span style="color: #87ceeb">&#39;mse&#39;</span>)
+  
+  <span style="color: #00ff00">#And now we are ready to train the autoencoder with the noisy galaxies (x_train_noise) as input and the original galaxies (x_train) as output.</span>
+  <span style="color: #00ff00">#Also x_test_noise and x_test are the test dataset.</span>
+  history = autoencoder.fit(x=x_train_noise, y=x_train, epochs=10, validation_data=[x_test_noise, x_test])
+  </pre></div>
+  
+
+<p>>that's all. Just posted a little bit of the code, the most interesting.
+There are a lot of posts of noise reduction using autoencoders, i got the idea and some code snippets reading some of them.</p>
+<p>>I like the approach to treating low exposure as noise.</p>
+<p>This post was orignary posted at:https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh</p>
+<br>
+<br>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;"><h2 class="counter-item">Thanks for visiting!</h2></div>
+</body>
+</html>
+
+
+
