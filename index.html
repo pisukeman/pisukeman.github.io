@@ -76,7 +76,7 @@ a {
   <br>
 	<li>Collaborating in:</li>
 	<ul>
-    <li><a href='https://observatoridepujalt.cat/'>Board member at Fundació Ernest Guille i Moliné</a></li>
+    <li><a href='https://observatoridepujalt.cat/'>Board member at Fundació Ernest Guille i Moliné (Observatori de Pujalt)</a></li>
     <li><a href='https://www.tedxigualada.com'>Co-founder at TEDx Igualada</a></li>
 		<li><a href='https://www.meetup.com/es-ES/IGD-Tech-Drinks'>Co-founder at meetup group IGD Tech&Drinks</a></li>
 		<li><a href='https://astroanoia.cat'>Co-founder at Astroanoia</a></li>
@@ -110,12 +110,13 @@ a {
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
   <h2>[Meteor tracking using multi layer Grad-CAM analysis]</h2>
 </div>  
-<p>>Previously I was working on a <a href="#meteors">model to automatically detect meteors in images /videos</a>. This model allow us to detect if a meteor was on an image/video frame with huge precision. 
+<p>>Previously we were working on a <a href="#meteors">model to automatically detect meteors in images /videos</a>. This model allow us to detect if a meteor was on an image/video frame with huge precision. 
 <p>>But, as an extension to this work, we wanted to not only detect meteors but track it's position in the picture as well. This tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
 <p>>With this methodology and algorithm developed we are able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using CAM, and specifically using multi layer Grad-CAM analysis</p>
 <p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
-<p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. 
+<p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. </p>
 <br>
+<p>>All this work was published in a Paper on Planetary and Space Science, available <a href='https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub'>here</a> and also published on <a href="https://arxiv.org/abs/2310.16826">Arxiv</a></p>
 <p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif, wait for the meteor....):</p>
 <div style="text-align: center;">
   <a href="./SPMN_Detection.gif" target="_blank">
@@ -132,6 +133,16 @@ a {
   <a href="./example3_final.gif" target="_blank">
     <img src="example3_final.gif" alt="Meteor Detection Trajectory" width="30%">
   </a>
+</div>
+<br>
+<br>
+<p>>Here you can see an schemma about how the tracking is done analyzing the ResNET layers:
+</p>
+<br>
+<div style="text-align: center;">
+  <a href="./schemma.jpg" target="_blank">
+    <img src="schemma.jpg" alt="Meteor Tracking" width="70%">
+  </a>    
 </div>
 <br>
 <br>
@@ -161,7 +172,6 @@ level = -5
 <span style="color: #00ff00">#At the end you&#39;ll have two arrays with different sizes, both having the weights, from 0 to 1 (0 means no interest, 1 means the highest interest)</span>
 </pre></div>
 <p>>This code snippet is taken from this wonderful notebook from fast.ai <a href='https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb' target="_blank">repo</a></p>  
-<br>
 <br>
 <p>>Here an example of how to find the ROI using the Grad-Cam (image on the left), and then the selection of the meteor using the activations inside the ROI:</p>
   <div style="text-align: center;">
