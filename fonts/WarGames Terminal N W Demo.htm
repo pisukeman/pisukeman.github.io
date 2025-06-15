@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>WOFF Font Example</title>
+  <style type="text/css">
+    @font-face {
+      font-family: 'WarGames Terminal N W';
+      src: url('WarGames Terminal N W.woff') format('woff');
+    }
+    .custom-text {
+      font-family: 'WarGames Terminal N W';
+      font-size: 22px;
+      line-height: 22px; /* THIS IS REQUIRED TO MAKE THE HACKED WOFF WORK OK */
+    }
+  </style>
+</head>
+<body>
+  <div class="custom-text">
+WarGames Terminal N W<br>
+abcdefghijklmnopqrstuvwxyz<br>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+1234567890`~!@#$%^&*()_+-=<br>
+[]{};':",./<>?\| <br>
+  </div>
+<div class="custom-text" style="color: red;">ERROR, the mouse selection of text highlighting overlaps the lines above and below and that should not happen.</div>
+</body>
+</html>
