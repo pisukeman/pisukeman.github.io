@@ -18,7 +18,7 @@ body {
   margin: 0;
   overflow: hidden;
   padding: 2rem;
-  color: #8AD2FF;
+  color: #8AD2FF;   
 /*  font: 1.0rem Inconsolata, monospace;*/
   font-family: 'WarGamesTerminal', Inconsolata, monospace;
 
@@ -66,7 +66,11 @@ a {
 <p>>My Stuff:</p>
 <ul>
 	<li>Space Stuff</li>
-	<ul>    
+	<ul>   
+    <li><a href='#astropicslab'>AstropicsLab, a project to create AI models to help process amateur astrophotographies</a></li>
+    <ul><li>Noise reduction and star removal models, created with +35k astronomical images</li>
+      
+    </ul> 
     <li><a href='https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub'>Paper published in Planetary and Space Science</a></li>
     <ul><li>Eloy Peña-Asensio, Josep M. Trigo-Rodríguez, Pau Grèbol-Tomàs, David Regordosa-Avellana, Albert Rimola,
             Deep machine learning for meteor monitoring: Advances with transfer learning and gradient-weighted class activation mapping,
@@ -106,13 +110,46 @@ a {
 </ul>
 <br>
 <br>
+<p id="astropicslab"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Astropics Lab]</h2>
+</div>  
+<div style="text-align: center;">
+  <a href="https://www.astropicslab.com" target="_blank">
+    <img src="https://astropicslab.com/wp-content/uploads/2024/11/logo_blanc_transparent.png" alt="AstropicsLab" height="25%">
+  </a>
+</div>
+
+<p>>AstroPics Lab is a clever AI-powered web tool designed to enhance amateur astrophotography. It offers two main features:</p>
+
+<p>Denoise Model – A neural network trained on over 35000 space images removes a wide range of noise types (like Gaussian, thermal, cosmic rays, salt‑and‑pepper, etc.) by processing 256 × 256-pixel blocks and reconstructing a clean, detailed result </p>
+<div style="text-align: center;">
+      <img src="https://astropicslab.com/wp-content/uploads/2024/11/comparativa_2-1024x424.png" alt="denoise" height="25%">
+</div>
+<p>We divide the image into small blocks, on which we apply the AI ​​model to reduce noise. Finally, we put the blocks back together and create a final image without noise</p>
+<div style="text-align: center;">
+      <img src="https://astropicslab.com/wp-content/uploads/2024/04/ultra_jelly_2.gif" alt="denoise" height="40%">
+</div>
+
+<p>Star Removal Model – Allows users to reduce or remove stars in images (often used to highlight nebulae or deep-sky objects) while preserving fine structural details </p>
+<div style="text-align: center;">
+      <img src="pipeline_detail.png" alt="starremoval" height="40%">
+</div>
+<p>>Go take a look <a href='https://www.astropicslab.com' target="_blank">the project</a> :)</p>
+<p>>This project is called AL in honor of the great physicist and meteorologist Albert Borras, director of the Pujalt Observatory for 16 years, co-founder of Astroanoia and Anoiameteo, science communicator, and above all, a great friend. Ad astra dude! </p>
+<div style="text-align: center;">
+   <a href="https://instagram.com/pisukeman" target="_blank"></a>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Albertborras.png" alt="alimanya" height="20%">
+</div>
+<br>
+<br>
 <p id="images"></p>
 <div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
   <h2>[My astrophotography images]</h2>
 </div>  
 <p>>These images are taken from my hometown Igualada, with an ED APO 80mm f/6 Refractor telescope or with a 20cm Newton telescope, with ASI 533 MC PRO Color.  Stacked with Siril. Post-processed with Photoshop</p>
 <div style="text-align: center;">
-  <a href="https://instagram.com/pisukeman" target="_blank">
+  <a href="https://ca.wikipedia.org/wiki/Albert_Borr%C3%A0s_i_Gonz%C3%A1lez" target="_blank">
     <img src="images.png" alt="My Images" height="50%">
   </a>
 </div>
