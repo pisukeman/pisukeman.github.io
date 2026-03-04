@@ -1,0 +1,501 @@
+<html>
+<head>
+<style>
+
+html { 
+	overflow-y: scroll; 
+}
+@font-face {
+  font-family: 'WarGamesTerminal';
+  src: url('./fonts/WarGames Terminal N W.woff') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  /*position: absolute;*/
+  background-color: #262324;
+  /*background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);*/
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  color: #8AD2FF;   
+/*  font: 1.0rem Inconsolata, monospace;*/
+  font-family: 'WarGamesTerminal', Inconsolata, monospace;
+
+  /*text-shadow: 0 0 5px #C8C8C8;*/
+  }
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  /*background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);*/
+  pointer-events: none;
+
+}
+
+::selection {
+  background: #0080FF;
+  text-shadow: none;
+}
+
+pre {
+  margin: 0;
+}
+a {
+  color: white;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+<h1>Pisukeman Site</h1>
+<!--<p style="font-size: 11px"><a href="./index_en.html">EN</a> | <a href="./index.html">ES</a></p>-->
+<p>>I'm David Regordosa. I love AI and Space, and that's why I created this page, to share the things I do.</p>
+<div>
+<img src="pisukeman_nasa.png" alt="Nerd" height="300px">
+<p  style="font-size: 9px">pisukeman from another multiverse</p>
+</div>
+<br>
+<p>>My Stuff:</p>
+<ul>
+	<li>Space Stuff</li>
+	<ul>   
+    <li><a href='#astropicslab'>AstropicsLab, a project to create AI models to help process amateur astrophotographies</a></li>
+    <ul><li>Noise reduction and star removal models, created with +35k astronomical images</li>
+      
+    </ul> 
+    <li><a href='https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub'>Paper published in Planetary and Space Science</a></li>
+    <ul><li>Eloy Peña-Asensio, Josep M. Trigo-Rodríguez, Pau Grèbol-Tomàs, David Regordosa-Avellana, Albert Rimola,
+            Deep machine learning for meteor monitoring: Advances with transfer learning and gradient-weighted class activation mapping,
+            Planetary and Space Science,
+          Volume 238,2023,105802,ISSN 0032-0633</li>
+    </ul>
+    <li><a href='https://www.tecnologiaeinnovacion.defensa.gob.es/es-es/Presentacion/deseid_2023/Paginas/Presentaci%C3%B3n.aspx'>Participation in Conference: DESEID 2023</a></li>
+    <ul><li>Eloy Peña Asensio, Josep Maria Trigo Rodríguez, David Regordosa, Juan Miguel Sánchez Lozano, Pau Grèbol-Tomàs and Albert Rimola.MINISTERIO DE DEFENSA "Inteligencia Artificial para la Monitorización de Objetos Aeroespaciales y Bolas de Fuego en el Rango Visible"</li>
+    </ul>
+    <li><a href='https://fireballs.ndc.nasa.gov/meteoroids2022/'>Participation in Conference: Meteoroids 2022</a></li>
+    <ul><li>Machine Learning Techniques for Meteor Detection and Tracking. E. Peña-Asensio, J. M. Trigo-Rodríguez, A. Rimola, D. Regordosa-Avellana</li>
+    </ul>
+    <li><a href='#images'>My astrophotography images</a> [INSTAGRAM] [<a href='https://www.instagram.com/pisukeman/' target="_blank">My Instagram</a>]</li>
+    <li><a href='#gradCAM'>Meteor tracking using multi layer Grad-CAM analysis</a> [POST] [<a href='https://arxiv.org/abs/2310.16826' target="_blank">Arxiv Paper</a>]</li>
+    <li><a href='#m101_sn'>Image of M101 with supernova SN2023ixf</a> [IMAGE]</li>
+    <li><a href='#bingmeimages'>BingMeImages: a small tool to create image datasets using Bing API</a> [POST] [<a href='https://github.com/pisukeman/bingMeImages' target="_blank">Github library</a>]</li>
+		<li><a href='#meteors'>Meteor detection using transfer learning on a ResNet34</a> [POST] [<a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf' target="_blank">PDF in Spanish</a>]</li>
+		<li><a href='#autoencoders'>Using Autoencoders to add exposure to Galaxy Images</a> [POST] [<a href='https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh' target="_blank">Dev.To Post</a>]</li></li>
+	</ul>
+  <br>
+	<li>Collaborating in:</li>
+	<ul>
+    <li><a href='https://observatoridepujalt.cat/'>Board member at Fundació Ernest Guille i Moliné (Observatori de Pujalt)</a></li>
+    <li><a href='https://www.tedxigualada.com'>Co-founder at TEDx Igualada</a></li>
+		<li><a href='https://astroanoia.cat'>Co-founder at Astroanoia</a></li>
+    <li><a href='https://www.ticanoia.cat'>Board member at TIC Anoia</a></li>
+	</ul>
+  <br>
+  <li> Personal links:</li>
+  <ul>
+    <li><a href='https://www.linkedin.com/in/davidregordosa/'>Linkedin Profile</a></li>
+    <li><a href='http://twitter.com/pisukeman'>Twitter Profile</a></li>
+    <li><a href='https://www.instagram.com/pisukeman/'>Instagram Profile</a></li>
+    <li><a href='https://github.com/pisukeman'>Github</a></li>
+  </ul>
+</ul>
+<br>
+<br>
+<p id="astropicslab"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Astropics Lab]</h2>
+</div>  
+<div style="text-align: center;">
+  <a href="https://www.astropicslab.com" target="_blank">
+    <img src="https://astropicslab.com/wp-content/uploads/2024/11/logo_blanc_transparent.png" alt="AstropicsLab" height="25%">
+  </a>
+</div>
+
+<p>>AstroPics Lab is a clever AI-powered web tool designed to enhance amateur astrophotography. It offers a lot of features:</p>
+
+<p>Remove noise, enhance object, remove/reduce stars, apply color automatically, upscale 2x image, intelligent crop, autostretch, luminance layers, change palette, modify colors, 3d effects, enhance stars, etc.Denoise Model</p>
+ <p>  – One of the key functionalities is a neural network trained on over 35000 space images to remove a wide range of noise types (like Gaussian, thermal, cosmic rays, salt‑and‑pepper, etc.) by processing 256 × 256-pixel blocks and reconstructing a clean, detailed result </p>
+<div style="text-align: center;">
+      <img src="https://astropicslab.com/wp-content/uploads/2024/11/comparativa_2-1024x424.png" alt="denoise" height="25%">
+</div>
+<p>We divide the image into small blocks, on which we apply the AI ​​model to reduce noise. Finally, we put the blocks back together and create a final image without noise</p>
+<div style="text-align: center;">
+      <img src="https://astropicslab.com/wp-content/uploads/2024/04/ultra_jelly_2.gif" alt="denoise" height="40%">
+</div>
+
+<p>Also a Star Removal Model – Allows users to reduce or remove stars in images (often used to highlight nebulae or deep-sky objects) while preserving fine structural details </p>
+<div style="text-align: center;">
+      <img src="pipeline_detail.png" alt="starremoval" height="40%">
+</div>
+<p>>And a lot of other functionalities developed using AI! Go take a look <a href='https://www.astropicslab.com' target="_blank">the project</a> :)</p>
+<p>>This project is called AL in honor of the great physicist and meteorologist Albert Borras, director of the Pujalt Observatory for 16 years, co-founder of Astroanoia and Anoiameteo, science communicator, and above all, a great friend. Ad astra dude! </p>
+<div style="text-align: center;">
+   <a href="https://instagram.com/pisukeman" target="_blank"></a>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Albertborras.png" alt="alimanya" height="20%">
+</div>
+<br>
+<br>
+<p id="images"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[My astrophotography images]</h2>
+</div>  
+<p>>These images are taken from my hometown Igualada, with an ED APO 80mm f/6 Refractor telescope or with a 20cm Newton telescope, with ASI 533 MC PRO Color.  Stacked with Siril. Post-processed with Photoshop</p>
+<div style="text-align: center;">
+  <a href="https://ca.wikipedia.org/wiki/Albert_Borr%C3%A0s_i_Gonz%C3%A1lez" target="_blank">
+    <img src="images.png" alt="My Images" height="50%">
+  </a>
+</div>
+<p>>Go take a look to my <a href='https://instagram.com/pisukeman' target="_blank">insta account</a> and subscribe! :)</p>
+<br>
+<br>
+<p id="gradCAM"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Meteor tracking using multi layer Grad-CAM analysis]</h2>
+</div>  
+<p>>Previously we were working on a <a href="#meteors">model to automatically detect meteors in images /videos</a>. This model allow us to detect if a meteor was on an image/video frame with huge precision. 
+<p>>But, as an extension to this work, we wanted to not only detect meteors but track it's position in the picture as well. This tracking is done using Class Activation Maps (CAM) which were first introduced by MIT in <a href='https://arxiv.org/abs/1512.04150'>Learning Deep Features for Discriminative Localization</a>.</p>
+<p>>With this methodology and algorithm developed we are able to detect where the meteor is in the image, without the need of a previous process of labeling each meteor in the images. We can do this, using CAM, and specifically using multi layer Grad-CAM analysis</p>
+<p>>A CAM is a weighted activation map, that it's generated for each image, and that helps to identify the region of the image the CNN is looking to classify the image as a meteor.</p>
+<p>>Our proposal method is to use Grad-CAM (a type of CAM based on apply the activation and the Gradient of each layer) on the last layer of the CNN to generate a Region of Interest (ROI). Once we have the ROI, We analyze deeper layers of the CNN that have higher resolution, but are less acurate in the prediction. We cross the ROI and the activations of the first CNN layer to get a more precise prediction of the meteor position on image. </p>
+<br>
+<p>>All this work was published in a Paper on Planetary and Space Science, available <a href='https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub'>here</a> and also published on <a href="https://arxiv.org/abs/2310.16826">Arxiv</a></p>
+<p>>Here you can see an example of a meteor captured by the <a href='http://www.spmn.uji.es/'>SPMN</a> (it's a gif, wait for the meteor....):</p>
+<div style="text-align: center;">
+  <a href="./SPMN_Detection.gif" target="_blank">
+    <img src="SPMN_Detection.gif" alt="SPMN meteor" width="50%">
+  </a>
+</div>
+<p>>And Here you can see the resulting process of Meteor tracking using Grad-CAM from different layers (below left image). The blue box shows the region of interest of the outer layer (with less resolution but more accuracy). This region of interest comes from a layer from the CNN with low resolution and because of this, represents a huge area of the image. We can use the Grad-CAM analysis of this layer to be sure that we are pointing to the right image portion, but we need more accuracy. Once the algorithm finds this blue box, then start finding the region of interest of the inner layer of the CNN (using the activations of the layer), but only take into consideration the ones that are inside the blue box. As explained, the inner layers have higher resolution but less accuracy. We then select the weighted region of interest as the red box, and it corresponds to the Meteor.</p>
+<p>>Also, as the algorithm works frame by frame, it's easy to calculate the trajectory tracking the red boxes (below right image)</p>
+<br>
+<div style="text-align: center;">
+  <a href="./IEEC_CAM_analysis_example.gif" target="_blank">
+    <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" width="30%">
+  </a>    
+  <a href="./example3_final.gif" target="_blank">
+    <img src="example3_final.gif" alt="Meteor Detection Trajectory" width="30%">
+  </a>
+</div>
+<br>
+<br>
+<p>>Here you can see an schemma about how the tracking is done analyzing the ResNET layers:
+</p>
+<br>
+<div style="text-align: center;">
+  <a href="./schemma.jpg" target="_blank">
+    <img src="schemma.jpg" alt="Meteor Tracking" width="70%">
+  </a>    
+</div>
+<br>
+<br>
+<p>>The code to analyze the Grad-CAM and get the weighted array:</p>
+<br>
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
+<span style="color: #00ff00">
+#cls=0 is the meteor class on the classification process, and level=-1 is to focus on the last convolutional layer of the ResNet 34 </span><pre style="margin: 0; line-height: 125%">
+cls=0
+level=-1<span style="color: #ff0000">
+
+with</span> HookBwd(learn.model[0][level]) <span style="color: #ff0000">as</span> hookg:<span style="color: #ff0000"> 
+  with</span> Hook(learn.model[0][level]) <span style="color: #ff0000">as</span> hook:
+    output = learn.model(x1)
+    act = hook.stored
+  output[0,cls].backward()
+  grad = hookg.stored
+w = grad[0].mean(dim=[1,2], keepdim=True)
+cam_map = (w * act[0]).sum(0)
+<span style="color: #00ff00">#Normalize the weights </span>
+avg_acts = torch.div(cam_map,torch.max(cam_map))
+<span style="color: #00ff00">#At this point you&#39;ll find in avg_acts an array of weights, indicating the regions of interest in the image </span>
+<span style="color: #00ff00">#The dimension of the array depends on the layer you are watching at</span>
+<span style="color: #00ff00">#Now, repeat the same with the level -5, which is the first convolutional layer of the ResNet 34</span>
+level = -5
+<span style="color: #00ff00">#...</span>
+<span style="color: #00ff00">#At the end you&#39;ll have two arrays with different sizes, both having the weights, from 0 to 1 (0 means no interest, 1 means the highest interest)</span>
+</pre></div>
+<p>>This code snippet is taken from this wonderful notebook from fast.ai <a href='https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb' target="_blank">repo</a></p>  
+<br>
+<p>>Here an example of how to find the ROI using the Grad-Cam (image on the left), and then the selection of the meteor using the activations inside the ROI:</p>
+  <div style="text-align: center;">
+    <a href="./example_paper_f.gif" target="_blank">
+      <img src="example_paper_f.gif" alt="Meteor Detection" width="80%">
+    </a>    
+  </div>
+<p>>As said before, the key topics on this are:</a></p>
+<ul>
+	<li>We used a pre-trained ResNet34 network</li>
+  <li>We used Data Augmentation to avoid overfitting</li>
+  <li>Using multi layer Grad-CAM analysis allows us to track the meteor without the need of labeling the datset with the position of the meteor</li>
+</ul>
+<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning), and get a tool that detects and tracks the meteors without even having to label it's position before</p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+<p id="m101_sn"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Image of Galaxy M101 with supernova SN2023ixf]</h2>
+</div>
+<p>>20cm Newton telescope, with ASI 533 MC PRO Color. 5 images of 180 sec. Stacked with Siril. Post-processed with Photoshop</p>
+<p>>Highlighted in the image the supernova <a href="https://en.wikipedia.org/wiki/SN_2023ixf">SN2023ixf</a></p>
+<div style="text-align: center;">
+  <a href="./m101_SN.png" target="_blank">
+    <img src="m101_SN.png" alt="M101" width="30%">
+  </a>
+  <p  style="font-size: 9px">Galaxy M101 with supernova SN2023ixf</p>
+</div>
+<br>
+<br>
+<p id="bingmeimages"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[BingMeImages: a small tool to create image datasets using Bing API]</h2>
+</div>  
+<p>>I was working on some models to automatically colorize black and white deep space images.</p>
+<p>>So, the first step was to get some images from Galaxies, Nebulas, etc...I was searching for existing datasets, but I decided to build my own custom tool.</p>
+<p>>That's why I build BingMeImages, a custom python library that does some of the tasks needed to build a image dataset. Basically:</p>
+<ul>
+	<li>1-Uses the Bing API to query for images</li>
+  <li>2-The Bing API creates a set of folders with images, one folder for each query. The library, get all the images from the different folders and store them in a single one</li>
+  <li>3-Resize the images to a specific pixel size</li>
+  <li>4-Remove duplicates comparing image hashes</li>
+</ul>
+<p>>The result is that you can, for example, query for all the Messier and NGC objects, and the get a consolidated dataset of about 3k images, without duplicates, in less than an hour.</p>
+<p>>For example, you can run the library with:</p>
+<br>
+<!-- HTML generated using hilite.me --><div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#Example of how to generate queries</span>
+  my_objects=[]
+  <span style="color: #ff0000">for</span> num in range(1, 111,):
+      my_objects.append(<span style="color: #87ceeb">&#39;MESSIER &#39;</span>+str(num))
+  <span style="color: #ff0000">for</span> num in range(1, 7840,):
+      my_objects.append(<span style="color: #87ceeb">&#39;NGC &#39;</span>+str(num)+<span style="color: #87ceeb">&#39; space&#39;</span>)
+  
+  <span style="color: #00ff00"># And then finally execute all the process with something like:</span>
+  <span style="color: #00ff00"># my_objects: the queries we want to send to Bing API</span>
+  <span style="color: #00ff00"># 200: the number of images we want to download for each query</span>
+  <span style="color: #00ff00"># ./ufo: the folder to store all the images</span>
+  <span style="color: #00ff00"># 160: we want the images to be resized to 160x160 pixels</span>
+  createDataset(my_objects,200,<span style="color: #87ceeb">&quot;./ufo&quot;</span>,160)
+  </pre></div>
+  
+<p>>The resulting folder:</p>
+<div style="text-align: center;">
+  <a href="./dataset.png" target="_blank">
+    <img src="dataset.png" alt="Dataset" width="50%">
+  </a>
+</div>
+<br>
+<p>>You can download the python library on my Githbub: <a href='https://github.com/pisukeman/bingMeImages' target="_blank">BingMeImages</a></p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+
+
+<p id="meteors"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Meteor detection using transfer learning on a ResNet34]</h2>
+</div>  
+<p>>I was working on a model to automatically detect meteors in images/videos.</p>
+<p>>The model was created using 57k images from the Alphasky camera from <a href='https://observatoridepujalt.cat/alphasky/'>Observatori de Pujalt</a>, using a transfer learning process on a pretrained ResNet34 neural network</p>
+<p>>The dataset was not balanced due to the high number of no-meteor images compared to the ones with meteor on it. So, I used Data Augmentation to facilitate the model to generalize correctly and avoid overfitting.</p>
+<p>>Everything was done using <a href='https://www.fast.ai/'>Fast.ai</a> libraries</p>
+<br>
+<div style="text-align: center;">
+  <a href="./imgs.png" target="_blank">
+    <img src="imgs.png" alt="Meteors" width="50%">
+  </a>
+</div>
+<br>
+<p>>The resulting model has a 0.98 recall on meteor detection. The model is available to download and use <a href='https://github.com/pisukeman/guAIta/tree/master/models'>here (guAIta_latest_version.pkl) </a></p> 
+<br>
+<div style="text-align: center;">
+  <a href="./result.png" target="_blank">
+    <img src="result.png" alt="Result" width="25%">
+  </a>
+  <p  style="font-size: 9px">Model evaluation on test dataset</p>
+</div>
+<br>
+<p>>You can use the model installing first the <a href='https://anaconda.org/'>Anaconda</a> environment using <a href='https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml'>this yaml file</a></p>
+<p>>Once you set up the Anaconda environment, the inference can be done using this code snippet:</p>
+<br>
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">learn = load_learner(<span style="color: #87ceeb">&quot;guAIta_latest_version.pkl&quot;</span>)
+predict = learn.predict(image)
+<span style="color: #ff0000">if</span> (predict[0]==<span style="color: #87ceeb">&quot;meteor&quot;</span> and predict[2][0]&gt;scoring):
+           <span style="color: #00ff00">#Captured!</span>
+  </pre></div>
+<p>>You can find more information about the model training in my Masters degree dissertation (in spanish), in my github library <a href='https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf'>GuAIta</a></p>
+<p>>As said before, the key topics on this are:</a></p>
+<ul>
+	<li>We used a pre-trained ResNet34 network, and we use Transfer Learning with a set of 57k images. Using Transfer Learning allows us to prepare our model quickly and accurately with a reduced dataset</li>
+  <li>We used Data Augmentation to avoid overfitting</li>
+</ul>
+<p>>With this approach an astronomical observatory will easily train it's own model (using transfer learning)</p>
+<p>>All this work is explained on my Master DegreeYou can use the model installing first the <a href='https://anaconda.org/'>Anaconda</a> environment using <a href='https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml'>this yaml file</a></p>
+<p>>Thanks for reading!</p>
+<br>
+<br>
+
+
+<p id="autoencoders"></p>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;">
+  <h2>[Using Autoencoders to add exposure to Galaxy Images]</h2>
+</div>
+<p>>To understand this post is important to understand what autoencoders are. I'm working with autoencoders a long time ago, and i'm absolutelly in love about the properties they have.</p>
+<p>>An autoencoder is just a Neural Network but with a specific topology, used to learn data encodings in an unsupervised manner. The autoencoders can learn a set of data, producing a dimensional reduction, while training the network to be able to ignore noise.</p>
+<p>>In other words, and reducing the autoencoder to the minimum configuration possible, the autoencoder has an input layer, a hidden layer called "bootleneck" (because it's smaller than the input one), and an output layer with the same size as the input one. (check the image below. Credits:
+Credits: https://www.jeremyjordan.me/autoencoders/)</p>
+<div style="text-align: center;">
+  <a href="./autoencoder.png" target="_blank">
+    <img src="autoencoder.png" alt="Autoencoder" width="30%">
+  </a>
+  <p  style="font-size: 9px">https://www.jeremyjordan.me/autoencoders/</p>
+</div>
+
+
+<p>>Now let's imagine that we train this autoencoder to be able to reproduce the input. We can feed the neural network with galaxy images and train it to produce the exit as a reconstruction of the input. Note: the dataset used comes from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+
+<div style="text-align: center;">
+  <a href="./autoencoder2.png" target="_blank">
+    <img src="autoencoder2.jpg" alt="Autoencoder2" width="50%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>At this point we'll have a neural network that is able to reconstruct a galaxy image from a input image galaxy...mmm...maybe not so spectacular, but with some interesting features.</p>
+
+<p>>If we split our autoencoder in 2 parts, the encoder and the decoder, we'll have the following features.
+With the encoder we'll be able to generate a dimensional reduction of each galaxy. Note that the bootleneck layer is also known as latent space.</p>
+
+<div style="text-align: center;">
+  <a href="./autoencoder3.png" target="_blank">
+    <img src="autoencoder3.jpg" alt="Autoencoder3" width="50%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>And the other part of the autoencoder, the decoder, can be used to choose a point in our latent space ang reconstruct the corresponding galaxy.</p>
+
+<div style="text-align: center;">
+  <a href="./autoencoder4.png" target="_blank">
+    <img src="autoencoder4.jpg" alt="Autoencoder4" width="50%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>Ok, now that we understand what an autoencoder can do for us, let's try something different.
+Imagine that we create a dataset with galaxy images with some noise added and train the network to genereate the same galaxy without noise.
+Then we train the autoencoder with the noisy data as the inputs, and the clean data the outputs.
+Some examples i did:</p>
+
+<div style="text-align: center;">
+  <a href="./ex1.jpg" target="_blank">
+    <img src="ex1.jpg" alt="Example1" width="30%">
+  </a>
+  <a href="./ex2.jpg" target="_blank">
+    <img src="ex2.jpg" alt="Example2" width="30%">
+  </a>
+  <p  style="font-size: 9px">Own creation, using images from https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+
+<p>>Note that these are test images, separated from the train set in order to test the autoencoder once the training was finished. So the autoencoder had never seen those images, and was able to reproduce a version without noise. Nice.</p>
+
+<p>>Now, let's think about another use of the autoencoder.
+Some amateur astronomers (i'm one of them), have small telescopes wich give very faint galaxy images. To be able to generate good galaxy images with a amateur telescope is needed a good CCD, several exposure time, and a very good telescope calibration (polar alignment). In some cases, is very dificult to have long exposure images.
+So, why not to train our autoencoder with galaxy images manipulated to have low exposure as inputs, and the original galaxy images as the output?</p>
+<p>>We are going to train the autoencoder with more than 61k galaxy images of (106x106 pixels), and the autoencoder will learn how to generate a "normal" galaxy image from a low exposure one.</p>
+
+<div style="text-align: center;">
+  <a href="./all.jpg" target="_blank">
+    <img src="all.jpg" alt="Galaxies" width="50%">
+  </a>
+  <p  style="font-size: 9px"> https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/</p>
+</div>
+
+<p>>The result is not perfect, but looks nice.
+  <ul>
+    <li>Original: is the original image in the dataset.</li>
+    <li>Low exposure: is the image modified to force a low exposure version and the input of the autoencoder.</li>
+    <li>Reconstructed: is the resulting autoencoder output.</li></p>
+
+    <div style="text-align: center;">
+      <a href="./comparision.jpg" target="_blank">
+        <img src="comparision.jpg" alt="Comparision" width="50%">
+      </a>
+      <p  style="font-size: 9px"> Own creation</p>
+    </div>
+    
+
+<p>>Note that the point here is to get a reconstructed image as similar as possible to the Original one. And, also keep in mind that these are galaxy images never seen by our autoencoder, so the trick here is that the autoencoder, when receive a low exposure image of a galaxy (that the autoencoder had never seen), is able to reproduce a galaxy image without the low exposure.</p>
+<p>>And last, with Keras, the definition of this autoencoder is pretty easy.
+First, we read the dataset and split it into training set and test (10% of the data set to test).</p>
+
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">x_train, x_test = train_test_split(x_train, test_size=0.1, random_state=42)
+x_train_noise = simulate_low_exposure(x_train)
+x_test_noise = simulate_low_exposure(x_test)
+  
+<span style="color: #ff0000">def</span> <span style="color: #ffff00">simulate_low_exposure</span>(x,max,min,perc): 
+      <span style="color: #ff0000">return</span> np.where(x-perc&gt;min,x-perc, min)
+</pre></div>
+    
+	
+	
+  <p>>The simulate low exposure function is just a noisy function not exactly a low exposure (to be honest), but do the trick.
+And finally we define the autoencoder, a very simple one:</p>
+
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #ff0000">def</span> <span style="color: #ffff00">build_one_layer_autoencoder</span>(img_shape, code_size):
+  <span style="color: #00ff00"># The encoder</span>
+  encoder = Sequential()
+  encoder.add(InputLayer(img_shape))
+  encoder.add(Flatten())
+  encoder.add(Dense(code_size))
+
+  <span style="color: #00ff00"># The decoder</span>
+  decoder = Sequential()
+  decoder.add(InputLayer((code_size,)))
+  decoder.add(Dense(np.prod(img_shape))) 
+  decoder.add(Reshape(img_shape))
+
+  <span style="color: #ff0000">return</span> encoder, decoder
+
+</pre></div>
+
+	
+<p>>The function parameters are the image shape and the size of the bootleneck layer (number of nodes), and returns the encoder and the decoder sepparately in order to allow us to play :)</p>
+	
+<div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #00ff00">#The size of the first layer will be width x Height of the IMAGE_SHAPE, and the bootleneck layer will be, for example 1000 nodes.</span>
+  encoder, decoder = build_one_layer_autoencoder(IMG_SHAPE, 1000)
+  inp_shape = Input(IMG_SHAPE)
+  code = encoder(inp_shape )
+  reconstruction = decoder(code)
+  autoencoder = Model(inp,reconstruction)
+  autoencoder.compile(optimizer=<span style="color: #87ceeb">&#39;adamax&#39;</span>, loss=<span style="color: #87ceeb">&#39;mse&#39;</span>)
+  
+  <span style="color: #00ff00">#And now we are ready to train the autoencoder with the noisy galaxies (x_train_noise) as input and the original galaxies (x_train) as output.</span>
+  <span style="color: #00ff00">#Also x_test_noise and x_test are the test dataset.</span>
+  history = autoencoder.fit(x=x_train_noise, y=x_train, epochs=10, validation_data=[x_test_noise, x_test])
+  </pre></div>
+  
+
+<p>>that's all. Just posted a little bit of the code, the most interesting.
+There are a lot of posts of noise reduction using autoencoders, i got the idea and some code snippets reading some of them.</p>
+<p>>I like the approach to treating low exposure as noise.</p>
+<p>This post was orignary posted at:https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh</p>
+<br>
+<br>
+<div style="text-align: center; border-bottom: 2px dashed;border-top: 2px dashed;"><h2 class="counter-item">Thanks for visiting!</h2></div>
+</body>
+</html>
+
+
+
