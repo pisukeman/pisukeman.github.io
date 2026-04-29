@@ -3,936 +3,769 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PISUKEMAN // TERMINAL v2.0</title>
+<title>David Regordosa — Notes on AI and Deep Space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+*, *::before, *::after { box-sizing: border-box; }
 
-/* === FONTS === */
-@font-face {
-  font-family: 'WarGamesTerminal';
-  src: url('./fonts/WarGames Terminal N W.woff') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+:root {
+  --bg: #fdfcf7;
+  --text: #1a1a1a;
+  --muted: #6b6b66;
+  --rule: #d8d5cc;
+  --accent: #8b1a1a;
+  --code-bg: #f4f2ec;
+  --link: #1a3d6e;
 }
 
-/* === RESET & BASE === */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html {
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
+html { overflow-y: scroll; }
 
 body {
-  background-color: #060810;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  line-height: 1.62;
   margin: 0;
   padding: 0;
-  color: #8AD2FF;
-  font-family: 'WarGamesTerminal', 'Courier New', Courier, monospace;
-  font-size: 1rem;
-  line-height: 1.7;
-  min-height: 100vh;
-  position: relative;
+  font-feature-settings: "kern", "liga", "onum";
 }
 
-/* === CRT SCANLINES === */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.20) 0px,
-    rgba(0, 0, 0, 0.20) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  pointer-events: none;
-  z-index: 1000;
-}
-
-/* === CRT VIGNETTE === */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 55%,
-    rgba(0, 0, 40, 0.75) 100%
-  );
-  pointer-events: none;
-  z-index: 999;
-}
-
-/* === MAIN WRAPPER === */
-.terminal {
-  max-width: 920px;
+main {
+  max-width: 720px;
   margin: 0 auto;
-  padding: 2rem 2.5rem;
-  position: relative;
+  padding: 4rem 2rem 6rem;
 }
 
-/* === SUBTLE SCREEN FLICKER === */
-@keyframes flicker {
-  0%   { opacity: 1; }
-  91%  { opacity: 1; }
-  92%  { opacity: 0.96; }
-  93%  { opacity: 1; }
-  98%  { opacity: 1; }
-  98.5%{ opacity: 0.93; }
-  99%  { opacity: 1; }
-}
-.terminal {
-  animation: flicker 9s infinite;
-}
-
-/* === TYPOGRAPHY & GLOW === */
-h1, h2, h3 {
-  color: #8AD2FF;
-  text-shadow: 0 0 8px #8AD2FF, 0 0 22px rgba(138, 210, 255, 0.35);
-}
-
-p { margin: 0.6rem 0; }
-
-a {
-  color: #FFD060;
-  text-decoration: none;
-  text-shadow: 0 0 6px rgba(255, 208, 96, 0.45);
-}
-a:hover {
-  color: #FFFFFF;
-  text-shadow: 0 0 12px #FFFFFF, 0 0 25px #8AD2FF;
-}
-
-strong { color: #FFD060; }
-
-::selection {
-  background: #0055AA;
-  text-shadow: none;
-}
-
-/* === SCROLLBAR === */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #030508; }
-::-webkit-scrollbar-thumb { background: rgba(138, 210, 255, 0.35); }
-::-webkit-scrollbar-thumb:hover { background: rgba(138, 210, 255, 0.65); }
-
-/* === BLINKING CURSOR === */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-.cursor {
-  display: inline-block;
-  width: 0.55em;
-  height: 1.05em;
-  background: #8AD2FF;
-  animation: blink 1.1s step-end infinite;
-  vertical-align: middle;
-  box-shadow: 0 0 10px #8AD2FF;
-  margin-left: 2px;
-}
-
-/* === BOOT HEADER === */
-.boot-header {
-  border: 1px solid rgba(138, 210, 255, 0.6);
-  padding: 1.8rem 2rem 1.5rem;
+/* === TITLE BLOCK === */
+.title-block {
+  text-align: center;
   margin-bottom: 2.5rem;
-  position: relative;
-  background: rgba(0, 8, 25, 0.7);
-  box-shadow:
-    0 0 20px rgba(138, 210, 255, 0.18),
-    0 0 60px rgba(138, 210, 255, 0.05),
-    inset 0 0 40px rgba(0, 0, 20, 0.6);
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
 }
-.boot-header::before {
-  content: "[ PISUKEMAN.GITHUB.IO // PERSONAL TERMINAL v2.0 ]";
-  position: absolute;
-  top: -0.65em;
-  left: 1.2em;
-  background: #060810;
-  padding: 0 0.6em;
+.preprint-mark {
+  font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
-  color: rgba(138, 210, 255, 0.7);
-  letter-spacing: 2px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
 }
+h1.paper-title {
+  font-weight: 500;
+  font-size: 2.4rem;
+  line-height: 1.18;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.01em;
+}
+.authors {
+  font-size: 1.08rem;
+  margin-bottom: 0.25rem;
+}
+.affiliation {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.date {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.inline-links {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  margin-top: 1.4rem;
+  letter-spacing: 0.02em;
+}
+.inline-links a { margin: 0 0.45rem; }
 
-.site-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin: 0 0 0.4rem 0;
-  letter-spacing: 5px;
-  color: #8AD2FF;
-  text-shadow: 0 0 10px #8AD2FF, 0 0 30px rgba(138, 210, 255, 0.5), 0 0 60px rgba(138, 210, 255, 0.2);
+/* === ABSTRACT === */
+.abstract {
+  margin: 2.5rem 0 2rem;
+  padding: 0 1.8rem;
+  font-size: 0.97rem;
+  line-height: 1.7;
 }
+.abstract-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 0.7rem;
+  color: var(--muted);
+}
+.abstract p { margin: 0; }
 
-.site-subtitle {
-  font-size: 0.82rem;
-  color: #4A8AAA;
-  letter-spacing: 3px;
-  margin-bottom: 1.2rem;
+/* === KEYWORDS === */
+.keywords {
+  font-size: 0.94rem;
+  margin: 0 1.8rem 3rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--rule);
+  color: #333;
 }
-
-.boot-status {
-  font-size: 0.72rem;
-  color: #2A6A7A;
-  letter-spacing: 1px;
-  border-top: 1px solid rgba(138, 210, 255, 0.15);
-  padding-top: 0.8rem;
-  margin-top: 0.8rem;
+.keywords-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 0.5rem;
 }
-.boot-status span { color: #00CC44; text-shadow: 0 0 6px rgba(0, 204, 68, 0.5); }
 
 /* === SECTIONS === */
-.section {
-  margin-bottom: 2.5rem;
-  border: 1px solid rgba(138, 210, 255, 0.22);
-  padding: 1.8rem 1.8rem 1.5rem;
-  position: relative;
-  background: rgba(0, 4, 18, 0.5);
-  box-shadow: 0 0 12px rgba(138, 210, 255, 0.07), inset 0 0 25px rgba(0, 0, 10, 0.3);
+section { margin-bottom: 1.5rem; }
+
+h2.section-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 3rem 0 1rem;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+}
+h3.subsection {
+  font-weight: 600;
+  font-size: 1.18rem;
+  font-style: italic;
+  margin: 2rem 0 0.6rem;
+}
+.section-num {
+  color: var(--accent);
+  font-weight: 500;
+  font-style: normal;
+  margin-right: 0.55rem;
+  font-variant-numeric: lining-nums;
 }
 
-.section-label {
-  position: absolute;
-  top: -0.68em;
-  left: 1em;
-  background: #060810;
-  padding: 0 0.5em;
-  font-size: 0.7rem;
-  color: rgba(138, 210, 255, 0.55);
-  letter-spacing: 2px;
+/* === PARAGRAPHS === */
+p { margin: 0 0 1rem; }
+
+/* === LINKS === */
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26, 61, 110, 0.28);
+  transition: border-color 0.15s, color 0.15s;
+}
+a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
-.section-title {
-  font-size: 1.15rem;
-  color: #FFD060;
-  letter-spacing: 2px;
-  margin: 0 0 1.2rem 0;
-  text-shadow: 0 0 10px rgba(255, 208, 96, 0.5);
-  border-bottom: 1px solid rgba(255, 208, 96, 0.25);
-  padding-bottom: 0.6rem;
-}
-
-/* === PROMPT LINES === */
-.prompt {
-  padding-left: 0;
-}
-.prompt::before {
-  content: "> ";
-  color: #00DD55;
-  text-shadow: 0 0 8px rgba(0, 221, 85, 0.6);
-}
-
-/* === TREE LISTS === */
-ul {
-  list-style: none;
-  padding-left: 0.5rem;
-  margin: 0.5rem 0;
-}
-ul > li {
-  padding: 0.15rem 0;
-  padding-left: 1.6rem;
-  position: relative;
-}
-ul > li::before {
-  content: "├─";
-  position: absolute;
-  left: 0;
-  color: #3A7A99;
-}
-ul > li:last-child::before {
-  content: "└─";
-  color: #3A7A99;
-}
-
-ul ul {
+/* === LISTS === */
+ul, ol {
   padding-left: 1.5rem;
+  margin: 0.7rem 0 1.2rem;
 }
-ul ul > li::before {
-  content: "│  ├─";
-  color: #255566;
-}
-ul ul > li:last-child::before {
-  content: "│  └─";
-  color: #255566;
-}
+li { margin: 0.25rem 0; }
 
-/* === CODE BLOCKS === */
-.code-block {
-  background: #000A04;
-  border: 1px solid #003320;
-  border-left: 3px solid #00CC44;
-  padding: 1rem 1.2rem;
-  overflow-x: auto;
-  margin: 1.2rem 0;
-  box-shadow: 0 0 18px rgba(0, 204, 68, 0.08), inset 0 0 20px rgba(0, 0, 0, 0.4);
-  position: relative;
-}
-.code-block::before {
-  content: "// CODE";
-  display: block;
-  color: #00AA33;
-  font-size: 0.65rem;
-  letter-spacing: 3px;
-  margin-bottom: 0.7rem;
-  opacity: 0.6;
-}
-.code-block pre {
-  margin: 0;
-  line-height: 1.55;
-  overflow-x: auto;
-}
-
-/* Code syntax colors */
-.c-green  { color: #00CC44; text-shadow: 0 0 5px rgba(0,204,68,0.3); }
-.c-red    { color: #FF5555; }
-.c-yellow { color: #FFD060; }
-.c-sky    { color: #87CEEB; }
-
-/* === IMAGE CONTAINERS === */
-.img-wrap {
+/* === FIGURES === */
+figure {
+  margin: 1.6rem 0;
   text-align: center;
-  margin: 1.4rem 0;
-  padding: 1rem;
-  border: 1px solid rgba(138, 210, 255, 0.15);
-  background: rgba(0, 0, 8, 0.5);
 }
-.img-wrap img {
+figure img {
   max-width: 100%;
-  box-shadow: 0 0 20px rgba(138, 210, 255, 0.15);
+  height: auto;
+  border: 1px solid var(--rule);
+  background: #fff;
 }
-.img-wrap.flex {
+figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.86rem;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.5;
+  padding: 0 1rem;
+  text-align: center;
+}
+.fig-num {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text);
+  margin-right: 0.25em;
+}
+.fig-row {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 1rem;
+  gap: 1.2rem;
   flex-wrap: wrap;
+  align-items: flex-start;
+  margin: 1.6rem 0;
 }
-.img-caption {
-  font-size: 0.68rem;
-  color: #3A6A80;
-  margin-top: 0.6rem;
-  letter-spacing: 1px;
-}
-
-/* === LINKS GRID === */
-.links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  gap: 0.7rem;
-  margin-top: 0.8rem;
-}
-.link-tile {
-  border: 1px solid rgba(138, 210, 255, 0.25);
-  padding: 0.65rem 1rem;
-  text-align: center;
-  background: rgba(0, 8, 25, 0.5);
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-}
-.link-tile:hover {
-  border-color: rgba(255, 208, 96, 0.7);
-  box-shadow: 0 0 12px rgba(255, 208, 96, 0.15);
-  background: rgba(15, 12, 0, 0.5);
-}
-.link-tile a {
-  display: block;
-  font-size: 0.82rem;
-  letter-spacing: 1px;
-}
-.link-tile .link-icon {
-  display: block;
-  font-size: 0.65rem;
-  color: #3A6A80;
-  letter-spacing: 2px;
-  margin-bottom: 0.2rem;
+.fig-row figure {
+  flex: 1;
+  min-width: 220px;
+  max-width: 340px;
+  margin: 0;
 }
 
-/* === ASCII DIVIDER === */
-.ascii-div {
-  text-align: center;
-  color: #2A5A70;
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  margin: 1.5rem 0;
-  opacity: 0.7;
+/* === CODE === */
+pre, code {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace;
+  font-feature-settings: "liga" 0;
 }
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1rem 1.2rem;
+  margin: 1.2rem 0;
+  overflow-x: auto;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+.code-block pre { margin: 0; color: #2a2a28; }
+.code-comment { color: #8a8a82; font-style: italic; }
+.code-keyword { color: #8b1a1a; font-weight: 500; }
+.code-string  { color: #1a4d2e; }
+.code-fn      { color: #5a4a1a; font-weight: 500; }
 
-/* === SECTION MEGA DIVIDER === */
-.mega-div {
-  text-align: center;
-  color: #3A7A99;
-  font-size: 0.78rem;
-  letter-spacing: 4px;
-  margin: 3rem 0 2rem;
-  padding: 0.5rem 0;
-  border-top: 1px solid rgba(138, 210, 255, 0.15);
-  border-bottom: 1px solid rgba(138, 210, 255, 0.15);
-  text-shadow: 0 0 8px rgba(138, 210, 255, 0.2);
+/* === META BLOCK (gear specs etc.) === */
+.meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  background: var(--code-bg);
+  border-left: 2px solid var(--muted);
+  padding: 0.8rem 1.1rem;
+  margin: 1.2rem 0 1.5rem;
+  color: #333;
+  line-height: 1.55;
 }
-
-/* === STATUS BAR (FOOTER) === */
-.status-bar {
-  border-top: 1px solid rgba(138, 210, 255, 0.25);
-  margin-top: 3rem;
-  padding: 0.6rem 0;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.68rem;
-  color: #2A5A70;
-  letter-spacing: 1px;
-}
-.status-bar .status-ok {
-  color: #00AA33;
-  text-shadow: 0 0 6px rgba(0, 170, 51, 0.4);
-}
+.meta div { margin: 0.1rem 0; }
+.meta strong { font-weight: 600; color: var(--text); }
 
 /* === PROFILE === */
-.profile-grid {
+.profile {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  margin: 1rem 0 1.5rem;
   flex-wrap: wrap;
 }
-.profile-pic {
-  flex-shrink: 0;
-  text-align: center;
+.profile-img { flex: 0 0 auto; }
+.profile-img img {
+  width: 200px;
+  height: auto;
+  border: 1px solid var(--rule);
+  background: #fff;
 }
-.profile-pic img {
-  border: 1px solid rgba(138, 210, 255, 0.4);
-  box-shadow: 0 0 25px rgba(138, 210, 255, 0.15);
-  display: block;
-}
-.profile-stats {
+.profile-text {
   flex: 1;
-  min-width: 220px;
+  min-width: 260px;
 }
-.stat-line {
+.profile-text p:last-child { margin-bottom: 0; }
+
+/* === BADGE / METRIC === */
+.metric {
+  font-family: 'Inter', sans-serif;
   font-size: 0.82rem;
-  color: #5A9ABB;
-  letter-spacing: 1px;
-  margin: 0.3rem 0;
-}
-.stat-line .stat-key { color: #4A8A9A; }
-.stat-line .stat-val { color: #8AD2FF; }
-
-/* === RECALL BADGE === */
-.badge {
-  display: inline-block;
-  border: 1px solid #00CC44;
-  padding: 0.1em 0.6em;
-  font-size: 0.85rem;
-  color: #00CC44;
-  text-shadow: 0 0 8px rgba(0, 204, 68, 0.6);
-  box-shadow: 0 0 10px rgba(0, 204, 68, 0.15);
-  letter-spacing: 1px;
+  font-weight: 600;
+  background: #1a4d2e;
+  color: #fff;
+  padding: 0.12em 0.55em;
+  border-radius: 2px;
+  letter-spacing: 0.02em;
 }
 
+/* === PUBLICATIONS === */
+.pubs-section { counter-reset: pub; }
+.pub-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0 1.5rem;
+}
+.pub-entry {
+  counter-increment: pub;
+  position: relative;
+  padding: 0.85rem 0 0.95rem 2.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.pub-entry:last-child { border-bottom: none; }
+.pub-entry::before {
+  content: "[" counter(pub) "]";
+  position: absolute;
+  left: 0;
+  top: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.84rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.pub-venue {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+.pub-title {
+  font-size: 1.06rem;
+  line-height: 1.36;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.pub-title a { border-bottom-color: rgba(26, 61, 110, 0.18); }
+.pub-authors {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #444;
+  line-height: 1.45;
+}
+.pub-authors .me {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* === FOOTER === */
+footer {
+  margin-top: 4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  main { padding: 2.2rem 1.2rem 4rem; }
+  body { font-size: 17.5px; }
+  h1.paper-title { font-size: 1.85rem; }
+  h2.section-title { font-size: 1.3rem; }
+  .abstract, .keywords { padding-left: 0.5rem; padding-right: 0.5rem; margin-left: 0; margin-right: 0; }
+  .keywords { padding-left: 0.9rem; }
+  .profile { gap: 1.2rem; }
+  .profile-img img { width: 150px; }
+}
 </style>
 </head>
 <body>
+<main>
 
-<div class="terminal">
+<!-- ============== TITLE BLOCK ============== -->
+<header class="title-block">
+  <div class="preprint-mark">Personal Notebook · v1.0</div>
+  <h1 class="paper-title">Notes on Artificial Intelligence and Deep Space</h1>
+  <div class="authors">David Regordosa</div>
+  <div class="affiliation">Independent researcher · Igualada, Catalonia</div>
+  <div class="date">April 2026</div>
+  <div class="inline-links">
+    <a href="#publications">Publications</a> ·
+    <a href="https://github.com/pisukeman">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/davidregordosa/">LinkedIn</a> ·
+    <a href="http://twitter.com/pisukeman">Twitter</a> ·
+    <a href="https://www.instagram.com/pisukeman/">Instagram</a>
+  </div>
+</header>
 
-  <!-- ╔══════════════════════════════════════╗ -->
-  <!-- ║            BOOT HEADER               ║ -->
-  <!-- ╚══════════════════════════════════════╝ -->
-  <div class="boot-header">
-    <h1 class="site-title">PISUKEMAN<span class="cursor"></span></h1>
-    <div class="site-subtitle">// DAVID REGORDOSA // AI &amp; SPACE RESEARCH // PERSONAL TERMINAL //</div>
-    <div class="boot-status">
-      SYS_BOOT: <span>OK</span>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      NET: <span>CONNECTED</span>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      FIELDS: <span>AI · ASTROPHOTOGRAPHY · ML</span>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      STATUS: <span>ONLINE</span>
+<!-- ============== ABSTRACT ============== -->
+<section class="abstract">
+  <div class="abstract-label">Abstract</div>
+  <p>This page is a working notebook of personal projects at the intersection of artificial intelligence, machine learning, and amateur astrophotography. It documents a series of tools and experiments — from convolutional models for meteor detection and tracking, to autoencoders for galaxy image restoration, to a web platform for AI-assisted astrophotography processing. Each section presents the motivation, method, and results, together with links to the underlying code and publications.</p>
+</section>
+
+<div class="keywords">
+  <span class="keywords-label">Keywords</span>
+  Artificial Intelligence · Deep Learning · Astrophotography · Meteor Detection · Grad-CAM · Transfer Learning · Autoencoders
+</div>
+
+<!-- ============== 1. PUBLICATIONS ============== -->
+<section class="pubs-section" id="publications">
+  <h2 class="section-title"><span class="section-num">1.</span>Publications &amp; conferences</h2>
+
+  <h3 class="subsection">1.1. Peer-reviewed publications</h3>
+  <ol class="pub-list">
+    <li class="pub-entry">
+      <div class="pub-venue">Planetary and Space Science · 2023</div>
+      <div class="pub-title"><a href="https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub">Deep machine learning for meteor monitoring with transfer learning and Grad-CAM</a></div>
+      <div class="pub-authors">Peña-Asensio · Trigo-Rodríguez · Grèbol-Tomàs · <span class="me">Regordosa-Avellana</span> · Rimola</div>
+    </li>
+    <li class="pub-entry">
+      <div class="pub-venue">arXiv preprint · 2310.16826</div>
+      <div class="pub-title"><a href="https://arxiv.org/abs/2310.16826">Deep machine learning for meteor monitoring with transfer learning and Grad-CAM</a></div>
+      <div class="pub-authors">Peña-Asensio · Trigo-Rodríguez · Grèbol-Tomàs · <span class="me">Regordosa-Avellana</span> · Rimola</div>
+    </li>
+  </ol>
+
+  <h3 class="subsection">1.2. Conferences</h3>
+  <ol class="pub-list">
+    <li class="pub-entry">
+      <div class="pub-venue">DESEID 2023 · Ministerio de Defensa de España</div>
+      <div class="pub-title"><a href="https://www.tecnologiaeinnovacion.defensa.gob.es/es-es/Presentacion/deseid_2023/">IA para la Monitorización de Objetos Aeroespaciales y Bolas de Fuego</a></div>
+    </li>
+    <li class="pub-entry">
+      <div class="pub-venue">Meteoroids 2022 · NASA</div>
+      <div class="pub-title"><a href="https://fireballs.ndc.nasa.gov/meteoroids2022/">Machine learning techniques for meteor detection and tracking</a></div>
+    </li>
+  </ol>
+</section>
+
+<!-- ============== 2. ABOUT ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">2.</span>About the author</h2>
+  <div class="profile">
+    <div class="profile-img">
+      <img src="kreto.jpg" alt="David Regordosa">
+    </div>
+    <div class="profile-text">
+      <p>David Regordosa is an independent researcher based in Igualada, Catalonia, with a long-standing interest in artificial intelligence and deep-space imaging. His work sits at the intersection of machine learning research and amateur observational astronomy, and is shared through collaborations with non-profit science organisations and academic publications.</p>
+      <p>He serves as a board member of the <a href="https://observatoridepujalt.cat/">Pujalt Observatory (Fundació Ernest Guille i Moliné)</a> and of <a href="https://www.ticanoia.cat">TIC Anoia</a>, and is a co-founder of <a href="https://www.tedxigualada.com">TEDx Igualada</a> and <a href="https://astroanoia.cat">Astroanoia</a>.</p>
     </div>
   </div>
+</section>
 
-  <!-- IDENTIFICATION -->
-  <div class="section">
-    <span class="section-label">[ IDENTIFICATION ]</span>
-    <div class="profile-grid">
-      <div class="profile-pic">
-        <img src="pisukeman_nasa.png" alt="Pisukeman" height="260">
-        <div class="img-caption">// pisukeman from another multiverse</div>
-      </div>
-      <div class="profile-stats">
-        <p class="prompt">I'm David Regordosa. I love AI and Space, and that's why I created this page — to share the things I do.</p>
-        <div class="ascii-div">────────────────────────────────</div>
-        <div class="stat-line"><span class="stat-key">FIELD_01 :</span> <span class="stat-val">Artificial Intelligence</span></div>
-        <div class="stat-line"><span class="stat-key">FIELD_02 :</span> <span class="stat-val">Deep Space / Astrophotography</span></div>
-        <div class="stat-line"><span class="stat-key">FIELD_03 :</span> <span class="stat-val">Machine Learning Research</span></div>
-        <div class="stat-line"><span class="stat-key">LOCATION :</span> <span class="stat-val">Igualada, Catalonia</span></div>
-        <div class="stat-line"><span class="stat-key">STATUS   :</span> <span class="stat-val">Permanently curious</span></div>
-      </div>
-    </div>
+<!-- ============== 2. ASTROPICSLAB ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">3.</span>AstropicsLab — AI tools for amateur astrophotography</h2>
+  <p>AstropicsLab (<a href="https://www.astropicslab.com">astropicslab.com</a>) is a free, AI-powered web tool that bundles a collection of neural-network models for the enhancement of amateur astrophotography images. Its design goal is not to compete with the established professional pipelines but to make image processing accessible to amateurs who may lack the time or budget to engage with the existing toolchain. The application is in active development; at the time of writing, version 2.0&nbsp;Beta is the current public release. Tutorials and downloads are available from the project site.</p>
+
+  <h3 class="subsection">3.1. Processing suite</h3>
+  <p>The current release covers most stages of a typical astrophotography post-processing pipeline:</p>
+  <ul>
+    <li><strong>AI denoising</strong> — multi-noise neural model (see §3.2).</li>
+    <li><strong>Star removal and reduction</strong> — separates the stellar field from extended structure (see §3.3).</li>
+    <li><strong>Object enhancement</strong> — sharpens nebular and galactic detail.</li>
+    <li><strong>Auto-colourisation</strong> — assigns or corrects colour for monochrome and miscalibrated targets.</li>
+    <li><strong>2× super-resolution upscaling.</strong></li>
+    <li><strong>Gradient and background removal.</strong></li>
+    <li><strong>Auto-stretch with manual levels and curves overrides.</strong></li>
+    <li><strong>Luminance-layer separation</strong> for independent processing of structure and colour.</li>
+    <li><strong>Palette manipulation</strong> and three-dimensional rendering effects.</li>
+    <li><strong>Star enhancement</strong> for the final output.</li>
+  </ul>
+
+  <h3 class="subsection">3.2. Denoising model</h3>
+  <p>A neural network trained on more than 35,000 astronomical images. The model addresses the broad range of noise sources commonly encountered in deep-sky imaging — Gaussian, colour-Gaussian and gradient-Gaussian noise, read and thermal noise, sky-background noise, cosmic-ray events, Poisson noise, speckle noise, and salt-and-pepper noise — by partitioning the input image into 256×256 pixel blocks, processing each block independently, and reassembling the cleaned blocks into the final output. Method details are available in the technical note <em><a href="https://astropicslab.com/wp-content/uploads/2025/11/denoise.pdf">A denoising pipeline for deep-sky astrophotography</a></em>.</p>
+  <figure>
+    <img src="https://astropicslab.com/wp-content/uploads/2024/11/comparativa_2-1024x424.png" alt="Denoise comparison">
+    <figcaption><span class="fig-num">Figure 1.</span> Before / after comparison of the denoising model on a deep-sky target.</figcaption>
+  </figure>
+  <figure>
+    <img src="https://astropicslab.com/wp-content/uploads/2024/04/ultra_jelly_2.gif" alt="Denoise process" style="max-height:280px;">
+    <figcaption><span class="fig-num">Figure 2.</span> Block-by-block denoising procedure: the input image is tiled, each tile is processed independently, and the tiles are reassembled into the final result.</figcaption>
+  </figure>
+
+  <h3 class="subsection">3.3. Star removal model</h3>
+  <p>This model reduces or removes stars from astronomical images while preserving the fine structural details of nebulae and other deep-sky objects — a common technique used to highlight extended structure that would otherwise be dominated by the stellar field.</p>
+  <figure>
+    <img src="pipeline_detail.png" alt="Star removal pipeline">
+    <figcaption><span class="fig-num">Figure 3.</span> Star-removal pipeline.</figcaption>
+  </figure>
+
+  <p style="font-style: italic; color: var(--muted); font-size: 0.96rem; padding: 0.8rem 1rem; border-left: 2px solid var(--rule);">
+    The project is named <strong>AL</strong> in honour of Albert Borràs (1924–2024) — physicist, meteorologist, director of the Pujalt Observatory for sixteen years, co-founder of Astroanoia and Anoiameteo, science communicator, and a great friend, whose insistence on making science accessible to everyone is part of the spirit of this project. <em>Ad astra.</em>
+  </p>
+  <figure>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Albertborras.png" alt="Albert Borràs" style="max-height:200px;">
+    <figcaption><span class="fig-num">Figure 4.</span> Albert Borràs (1924–2024).</figcaption>
+  </figure>
+</section>
+
+<!-- ============== 3. ASTROPHOTOGRAPHY ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">4.</span>Astrophotography</h2>
+  <p>A selection of deep-sky images captured from Igualada, Catalonia. The complete and continuously updated gallery is available on <a href="https://instagram.com/pisukeman">Instagram</a>.</p>
+  <div class="meta">
+    <div><strong>Refractor:</strong> ED APO 80&nbsp;mm <em>f</em>/6</div>
+    <div><strong>Reflector:</strong> 200&nbsp;mm Newtonian</div>
+    <div><strong>Sensor:</strong> ZWO ASI 533 MC Pro (colour)</div>
+    <div><strong>Stacking:</strong> Siril</div>
+    <div><strong>Post-processing:</strong> Adobe Photoshop</div>
   </div>
+  <figure>
+    <a href="https://instagram.com/pisukeman" target="_blank">
+      <img src="images.png" alt="Astrophotography images">
+    </a>
+    <figcaption><span class="fig-num">Figure 5.</span> A selection of recent captures.</figcaption>
+  </figure>
+</section>
 
-  <!-- EXTERNAL LINKS -->
-  <div class="section">
-    <span class="section-label">[ EXTERNAL LINKS ]</span>
-    <div class="links-grid">
-      <div class="link-tile">
-        <span class="link-icon">// SOCIAL</span>
-        <a href="https://www.linkedin.com/in/davidregordosa/" target="_blank">LINKEDIN</a>
-      </div>
-      <div class="link-tile">
-        <span class="link-icon">// SOCIAL</span>
-        <a href="http://twitter.com/pisukeman" target="_blank">TWITTER</a>
-      </div>
-      <div class="link-tile">
-        <span class="link-icon">// IMAGES</span>
-        <a href="https://www.instagram.com/pisukeman/" target="_blank">INSTAGRAM</a>
-      </div>
-      <div class="link-tile">
-        <span class="link-icon">// CODE</span>
-        <a href="https://github.com/pisukeman" target="_blank">GITHUB</a>
-      </div>
-    </div>
-  </div>
+<!-- ============== 4. GRAD-CAM ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">5.</span>Meteor tracking via multi-layer Grad-CAM analysis</h2>
+  <p>This work extends the binary meteor-detection model described in §8 with a localisation procedure that does not require labelled positions. Class Activation Maps (CAM), originally introduced by <a href="https://arxiv.org/abs/1512.04150">Zhou et al.</a>, identify the spatial regions of an input image that contribute most strongly to a network's classification decision.</p>
+  <p>We apply Grad-CAM to the final convolutional layer of a ResNet-34 to obtain a coarse Region of Interest (ROI) for the meteor class. We then propagate the ROI to earlier convolutional layers, whose higher spatial resolution refines the localisation; the intersection of the activations at multiple depths yields a precise per-frame meteor position. Iterated frame by frame on a video sequence, the procedure recovers the meteor trajectory.</p>
+  <p>The method was published in <em><a href="https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub">Planetary and Space Science</a></em> and is also available on <a href="https://arxiv.org/abs/2310.16826">arXiv</a> — see §1.</p>
 
-  <!-- COLLABORATIONS -->
-  <div class="section">
-    <span class="section-label">[ COLLABORATIONS ]</span>
-    <ul>
-      <li><a href="https://observatoridepujalt.cat/" target="_blank">Fundació Ernest Guille i Moliné — Observatori de Pujalt</a> <span style="color:#3A6A80; font-size:0.82rem;">// Board Member</span></li>
-      <li><a href="https://www.tedxigualada.com" target="_blank">TEDx Igualada</a> <span style="color:#3A6A80; font-size:0.82rem;">// Co-founder</span></li>
-      <li><a href="https://astroanoia.cat" target="_blank">Astroanoia</a> <span style="color:#3A6A80; font-size:0.82rem;">// Co-founder</span></li>
-      <li><a href="https://www.ticanoia.cat" target="_blank">TIC Anoia</a> <span style="color:#3A6A80; font-size:0.82rem;">// Board Member</span></li>
-    </ul>
-  </div>
+  <figure>
+    <a href="./SPMN_Detection.gif" target="_blank">
+      <img src="SPMN_Detection.gif" alt="SPMN meteor capture" style="max-width:65%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 6.</span> Meteor captured by the <a href="http://www.spmn.uji.es/">SPMN</a> network. Animated tracking output.</figcaption>
+  </figure>
 
-  <!-- PUBLICATIONS -->
-  <div class="section">
-    <span class="section-label">[ PUBLICATIONS &amp; CONFERENCES ]</span>
-    <h2 class="section-title">ACADEMIC OUTPUT</h2>
-    <ul>
-      <li>
-        <a href="https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub" target="_blank">Paper — Planetary and Space Science (2023)</a>
-        <br><span style="font-size:0.78rem; color:#3A6A80;">Peña-Asensio · Trigo-Rodríguez · Grèbol-Tomàs · Regordosa-Avellana · Rimola — Deep machine learning for meteor monitoring with transfer learning and Grad-CAM</span>
-      </li>
-      <li>
-        <a href="https://www.tecnologiaeinnovacion.defensa.gob.es/es-es/Presentacion/deseid_2023/" target="_blank">Conference — DESEID 2023</a>
-        <br><span style="font-size:0.78rem; color:#3A6A80;">Ministerio de Defensa — "IA para la Monitorización de Objetos Aeroespaciales y Bolas de Fuego"</span>
-      </li>
-      <li>
-        <a href="https://fireballs.ndc.nasa.gov/meteoroids2022/" target="_blank">Conference — Meteoroids 2022</a>
-        <br><span style="font-size:0.78rem; color:#3A6A80;">Machine Learning Techniques for Meteor Detection and Tracking</span>
-      </li>
-    </ul>
-  </div>
+  <p>In the visualisation, the blue bounding box corresponds to the ROI extracted from a deep convolutional layer (low spatial resolution, high semantic accuracy), while the red bounding box corresponds to the weighted ROI from an early layer (high spatial resolution). The intersection localises the meteor; iterating across frames yields its trajectory.</p>
 
-
-  <!-- ╔══════════════════════════════════════╗ -->
-  <!-- ║         SPACE RESEARCH LOGS          ║ -->
-  <!-- ╚══════════════════════════════════════╝ -->
-  <div class="mega-div">/////// SPACE &amp; AI RESEARCH LOGS ///////</div>
-
-
-  <!-- ASTROPICSLAB -->
-  <div class="section" id="astropicslab">
-    <span class="section-label">[ PROJECT_01 ]</span>
-    <h2 class="section-title">ASTROPICS LAB</h2>
-
-    <div class="img-wrap">
-      <a href="https://www.astropicslab.com" target="_blank">
-        <img src="https://astropicslab.com/wp-content/uploads/2024/11/logo_blanc_transparent.png" alt="AstropicsLab" style="max-height:70px;">
+  <div class="fig-row">
+    <figure>
+      <a href="./IEEC_CAM_analysis_example.gif" target="_blank">
+        <img src="IEEC_CAM_analysis_example.gif" alt="Multi-layer Grad-CAM" style="max-height:220px;">
       </a>
-    </div>
-
-    <p class="prompt">AI-powered web tool designed to enhance amateur astrophotography.</p>
-    <p style="color:#4A8A9A; font-size:0.85rem;">
-      FEATURES: Remove noise · Enhance object · Remove/reduce stars · Apply color · Upscale 2x · Intelligent crop · Autostretch · Luminance layers · Change palette · Modify colors · 3D effects · Enhance stars
-    </p>
-
-    <div class="ascii-div">──────────────────────────────────────────</div>
-
-    <p><strong>// DENOISE MODEL</strong></p>
-    <p>Neural network trained on over 35,000 space images. Removes Gaussian, thermal, cosmic ray, salt‑and‑pepper noise and more by processing 256×256‑pixel blocks and reconstructing a clean, detailed result.</p>
-
-    <div class="img-wrap">
-      <img src="https://astropicslab.com/wp-content/uploads/2024/11/comparativa_2-1024x424.png" alt="denoise comparison">
-      <div class="img-caption">// Before / After denoising comparison</div>
-    </div>
-
-    <p>Image divided into small blocks → AI model removes noise per block → blocks reassembled into clean final image.</p>
-
-    <div class="img-wrap">
-      <img src="https://astropicslab.com/wp-content/uploads/2024/04/ultra_jelly_2.gif" alt="denoise process" style="max-height:280px;">
-    </div>
-
-    <p><strong>// STAR REMOVAL MODEL</strong></p>
-    <p>Reduces or removes stars from images (used to highlight nebulae or deep-sky objects) while preserving fine structural details.</p>
-
-    <div class="img-wrap">
-      <img src="pipeline_detail.png" alt="star removal pipeline">
-      <div class="img-caption">// Star removal pipeline detail</div>
-    </div>
-
-    <p class="prompt">Go take a look at <a href="https://www.astropicslab.com" target="_blank">the project</a> :)</p>
-
-    <div class="ascii-div">──────────────────────────────────────────</div>
-
-    <p class="prompt">This project is called <strong>AL</strong> in honor of Albert Borras — physicist, meteorologist, director of Pujalt Observatory for 16 years, co-founder of Astroanoia and Anoiameteo, science communicator, and above all, a great friend.</p>
-    <p style="color:#FFD060; letter-spacing:2px; font-size:0.9rem;">// AD ASTRA DUDE!</p>
-
-    <div class="img-wrap">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Albertborras.png" alt="Albert Borras" style="max-height:200px;">
-    </div>
+      <figcaption><span class="fig-num">Figure 7a.</span> Multi-layer Grad-CAM activation overlay.</figcaption>
+    </figure>
+    <figure>
+      <a href="./example3_final.gif" target="_blank">
+        <img src="example3_final.gif" alt="Meteor trajectory" style="max-height:220px;">
+      </a>
+      <figcaption><span class="fig-num">Figure 7b.</span> Reconstructed meteor trajectory.</figcaption>
+    </figure>
   </div>
 
+  <figure>
+    <a href="./schemma.jpg" target="_blank">
+      <img src="schemma.jpg" alt="Tracking schema" style="max-width:80%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 8.</span> Layer-wise tracking pipeline applied to the ResNet-34 backbone.</figcaption>
+  </figure>
 
-  <!-- ASTROPHOTOGRAPHY -->
-  <div class="section" id="images">
-    <span class="section-label">[ LOG_01: ASTROPHOTOGRAPHY ]</span>
-    <h2 class="section-title">MY ASTROPHOTOGRAPHY IMAGES</h2>
+  <p>The following snippet, adapted from the <a href="https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb">fast.ai CAM notebook</a>, shows the Grad-CAM extraction at a single layer:</p>
+  <div class="code-block">
+<pre><span class="code-comment"># cls=0 is the meteor class. level=-1 selects the last conv layer of ResNet-34.</span>
+cls = 0
+level = -1
 
-    <p class="prompt">Taken from my hometown Igualada.</p>
-    <p style="font-size:0.82rem; color:#4A8A9A;">
-      GEAR_01 : ED APO 80mm f/6 Refractor telescope<br>
-      GEAR_02 : 20cm Newton telescope<br>
-      SENSOR  : ASI 533 MC PRO Color<br>
-      STACK   : Siril<br>
-      PROCESS : Photoshop
-    </p>
-
-    <div class="img-wrap">
-      <a href="https://instagram.com/pisukeman" target="_blank">
-        <img src="images.png" alt="My Images">
-      </a>
-    </div>
-
-    <p class="prompt">Go take a look at my <a href="https://instagram.com/pisukeman" target="_blank">Instagram account</a> and subscribe! :)</p>
-  </div>
-
-
-  <!-- GRADCAM -->
-  <div class="section" id="gradCAM">
-    <span class="section-label">[ RESEARCH_01: GRAD-CAM ]</span>
-    <h2 class="section-title">METEOR TRACKING USING MULTI-LAYER GRAD-CAM ANALYSIS</h2>
-
-    <p class="prompt">Previously working on a <a href="#meteors">model to detect meteors in images/videos</a>. That model detects if a meteor is present with very high precision.</p>
-    <p class="prompt">Extension: not just detect meteors, but <strong>track their position</strong> using Class Activation Maps (CAM), first introduced by MIT in <a href="https://arxiv.org/abs/1512.04150">Learning Deep Features for Discriminative Localization</a>.</p>
-
-    <p><strong>// HOW IT WORKS</strong></p>
-    <p>A CAM is a weighted activation map generated for each image that identifies the region the CNN focuses on to classify the image as a meteor.</p>
-    <p>Our method: apply Grad-CAM on the last CNN layer → generate Region of Interest (ROI) → analyze inner layers with higher resolution → cross ROI with first-layer activations → precise meteor position. No position labeling required.</p>
-
-    <div class="ascii-div">──────────────────────────────────────────</div>
-
-    <p class="prompt">Published in Planetary and Space Science — <a href="https://www.sciencedirect.com/science/article/pii/S003206332300171X?via%3Dihub">paper here</a> · also on <a href="https://arxiv.org/abs/2310.16826">Arxiv</a>.</p>
-    <p class="prompt">Example: meteor captured by <a href="http://www.spmn.uji.es/">SPMN</a> — gif, wait for it...</p>
-
-    <div class="img-wrap">
-      <a href="./SPMN_Detection.gif" target="_blank">
-        <img src="SPMN_Detection.gif" alt="SPMN meteor" style="max-width:55%;">
-      </a>
-      <div class="img-caption">// SPMN meteor capture</div>
-    </div>
-
-    <p>Blue box = ROI from outer CNN layer (low resolution, high accuracy). Red box = weighted ROI from inner layer (high resolution) = the meteor. Frame-by-frame → trajectory.</p>
-
-    <div class="img-wrap flex">
-      <div>
-        <a href="./IEEC_CAM_analysis_example.gif" target="_blank">
-          <img src="IEEC_CAM_analysis_example.gif" alt="Meteor Detection" style="max-height:220px;">
-        </a>
-        <div class="img-caption">// Grad-CAM layers analysis</div>
-      </div>
-      <div>
-        <a href="./example3_final.gif" target="_blank">
-          <img src="example3_final.gif" alt="Meteor Trajectory" style="max-height:220px;">
-        </a>
-        <div class="img-caption">// Trajectory tracking</div>
-      </div>
-    </div>
-
-    <p>Schema of how the tracking is done by analyzing the ResNET layers:</p>
-    <div class="img-wrap">
-      <a href="./schemma.jpg" target="_blank">
-        <img src="schemma.jpg" alt="Meteor Tracking Schema" style="max-width:70%;">
-      </a>
-    </div>
-
-    <p>Code to analyze the Grad-CAM and obtain the weighted array:</p>
-    <div class="code-block">
-<span class="c-green">#cls=0 is the meteor class. level=-1 focuses on last conv layer of ResNet34</span>
-<pre>cls=0
-level=-1<span class="c-red">
-
-with</span> HookBwd(learn.model[0][level]) <span class="c-red">as</span> hookg:<span class="c-red">
-  with</span> Hook(learn.model[0][level]) <span class="c-red">as</span> hook:
-    output = learn.model(x1)
-    act = hook.stored
-  output[0,cls].backward()
-  grad = hookg.stored
-w = grad[0].mean(dim=[1,2], keepdim=True)
+<span class="code-keyword">with</span> HookBwd(learn.model[0][level]) <span class="code-keyword">as</span> hookg:
+    <span class="code-keyword">with</span> Hook(learn.model[0][level]) <span class="code-keyword">as</span> hook:
+        output = learn.model(x1)
+        act = hook.stored
+    output[0, cls].backward()
+    grad = hookg.stored
+w = grad[0].mean(dim=[1, 2], keepdim=<span class="code-keyword">True</span>)
 cam_map = (w * act[0]).sum(0)
-<span class="c-green">#Normalize the weights</span>
+
+<span class="code-comment"># Normalise weights to [0, 1]: regions of interest in the input image.</span>
 avg_acts = torch.div(cam_map, torch.max(cam_map))
-<span class="c-green">#avg_acts: array of weights [0..1] indicating regions of interest in the image</span>
-<span class="c-green">#Dimension depends on the layer you're looking at</span>
-<span class="c-green">#Repeat for level=-5 (first conv layer of ResNet34) for higher resolution</span>
-level = -5
-<span class="c-green">#...
-#Result: two weight arrays at different resolutions</span></pre>
-    </div>
-    <p>Snippet from the <a href="https://github.com/fastai/fastbook/blob/master/18_CAM.ipynb" target="_blank">fast.ai CAM notebook</a>.</p>
 
-    <p>Example: finding the ROI with Grad-CAM, then selecting the meteor using activations inside the ROI:</p>
-    <div class="img-wrap">
-      <a href="./example_paper_f.gif" target="_blank">
-        <img src="example_paper_f.gif" alt="Meteor Detection Process" style="max-width:80%;">
-      </a>
-    </div>
-
-    <p><strong>// KEY TOPICS</strong></p>
-    <ul>
-      <li>Pre-trained ResNet34 + Transfer Learning</li>
-      <li>Data Augmentation to prevent overfitting</li>
-      <li>Multi-layer Grad-CAM enables tracking without position labeling</li>
-    </ul>
-    <p class="prompt">With this approach any astronomical observatory can easily train its own model and get a tool that detects and tracks meteors without labeling their positions first.</p>
+<span class="code-comment"># Repeat at level=-5 (first conv layer) for a higher-resolution map,</span>
+<span class="code-comment"># then combine the two activations to obtain a precise localisation.</span>
+level = -5</pre>
   </div>
 
+  <figure>
+    <a href="./example_paper_f.gif" target="_blank">
+      <img src="example_paper_f.gif" alt="Detection process" style="max-width:80%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 9.</span> End-to-end procedure: a coarse ROI from Grad-CAM is refined by inner-layer activations within the ROI.</figcaption>
+  </figure>
 
-  <!-- M101 SUPERNOVA -->
-  <div class="section" id="m101_sn">
-    <span class="section-label">[ CAPTURE_01: M101 + SN2023IXF ]</span>
-    <h2 class="section-title">GALAXY M101 WITH SUPERNOVA SN2023IXF</h2>
+  <p><strong>Take-away.</strong> Combining Grad-CAM activations across layers of a transfer-learned ResNet-34 enables meteor tracking without requiring positional annotations in the training data. Any astronomical observatory in possession of a labelled detection dataset can therefore obtain a tracking system at no additional labelling cost.</p>
+</section>
 
-    <p style="font-size:0.82rem; color:#4A8A9A;">
-      TELESCOPE : 20cm Newton<br>
-      SENSOR    : ASI 533 MC PRO Color<br>
-      FRAMES    : 5 × 180 sec<br>
-      STACK     : Siril / POST: Photoshop
-    </p>
-    <p>Highlighted in the image: supernova <a href="https://en.wikipedia.org/wiki/SN_2023ixf">SN2023ixf</a></p>
+<!-- ============== 5. M101 + SN ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">6.</span>The galaxy M101 with supernova SN&nbsp;2023ixf</h2>
+  <p>An observation of the Pinwheel Galaxy (M101) shortly after the appearance of supernova <a href="https://en.wikipedia.org/wiki/SN_2023ixf">SN&nbsp;2023ixf</a>, captured from Igualada.</p>
+  <div class="meta">
+    <div><strong>Telescope:</strong> 200&nbsp;mm Newtonian</div>
+    <div><strong>Sensor:</strong> ZWO ASI 533 MC Pro (colour)</div>
+    <div><strong>Integration:</strong> 5 × 180&nbsp;s</div>
+    <div><strong>Stacking / post:</strong> Siril, Adobe Photoshop</div>
+  </div>
+  <figure>
+    <a href="./m101_SN.png" target="_blank">
+      <img src="m101_SN.png" alt="M101 with SN 2023ixf" style="max-width:60%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 10.</span> Galaxy M101 with the supernova SN&nbsp;2023ixf marked.</figcaption>
+  </figure>
+</section>
 
-    <div class="img-wrap">
-      <a href="./m101_SN.png" target="_blank">
-        <img src="m101_SN.png" alt="M101 Galaxy" style="max-width:45%;">
-      </a>
-      <div class="img-caption">// Galaxy M101 with supernova SN2023ixf</div>
-    </div>
+<!-- ============== 6. BINGMEIMAGES ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">7.</span>BingMeImages — bulk image dataset construction via the Bing API</h2>
+  <p>While building generative models for the colourisation of monochrome deep-space images, we required a large, diverse training set. To that end we developed BingMeImages, a small Python utility for the bulk construction of image datasets from the Bing search API.</p>
+  <p>The pipeline performs four steps:</p>
+  <ol>
+    <li>Query the Bing API for each search term and download the returned images.</li>
+    <li>Consolidate per-query folders into a single output directory.</li>
+    <li>Resize all images to a target resolution.</li>
+    <li>Remove near-duplicates by perceptual hashing.</li>
+  </ol>
+  <p>Querying the full Messier and NGC catalogues yields approximately 3,000 deduplicated images in under one hour.</p>
+
+  <div class="code-block">
+<pre><span class="code-comment"># Build the query list for the Messier and NGC catalogues.</span>
+my_objects = []
+<span class="code-keyword">for</span> num <span class="code-keyword">in</span> range(1, 111):
+    my_objects.append(<span class="code-string">'MESSIER '</span> + str(num))
+<span class="code-keyword">for</span> num <span class="code-keyword">in</span> range(1, 7840):
+    my_objects.append(<span class="code-string">'NGC '</span> + str(num) + <span class="code-string">' space'</span>)
+
+<span class="code-comment"># Run the full pipeline:</span>
+<span class="code-comment">#   my_objects : list of queries</span>
+<span class="code-comment">#   200        : images to download per query</span>
+<span class="code-comment">#   ./ufo      : output directory</span>
+<span class="code-comment">#   160        : resize target (160 x 160 pixels)</span>
+createDataset(my_objects, 200, <span class="code-string">"./ufo"</span>, 160)</pre>
   </div>
 
+  <figure>
+    <a href="./dataset.png" target="_blank">
+      <img src="dataset.png" alt="Resulting dataset" style="max-width:65%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 11.</span> Sample of the consolidated, deduplicated image dataset.</figcaption>
+  </figure>
+  <p>Source code: <a href="https://github.com/pisukeman/bingMeImages">github.com/pisukeman/bingMeImages</a>.</p>
+</section>
 
-  <!-- BINGMEIMAGES -->
-  <div class="section" id="bingmeimages">
-    <span class="section-label">[ TOOL_01: BINGMEIMAGES ]</span>
-    <h2 class="section-title">BINGMEIMAGES — IMAGE DATASET BUILDER VIA BING API</h2>
+<!-- ============== 7. METEOR DETECTION ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">8.</span>Meteor detection via transfer learning on ResNet-34</h2>
+  <p>A binary classifier for the automatic detection of meteors in still images and video frames. The model is trained on 57,000 frames captured by the AlphaSky all-sky camera at the <a href="https://observatoridepujalt.cat/alphasky/">Pujalt Observatory</a>, using transfer learning on a ResNet-34 backbone pretrained on ImageNet, and built with the <a href="https://www.fast.ai/">fast.ai</a> framework.</p>
+  <p>The dataset is strongly imbalanced — non-meteor frames vastly outnumber meteor frames — and the imbalance is mitigated through aggressive data augmentation rather than resampling, which preserves the natural distribution of negatives at training time.</p>
 
-    <p class="prompt">I was working on models to automatically colorize black and white deep space images. First step: build a dataset.</p>
-    <p class="prompt">That's why I built BingMeImages — a custom Python library to build image datasets in bulk.</p>
+  <figure>
+    <a href="./imgs.png" target="_blank">
+      <img src="imgs.png" alt="Dataset samples" style="max-width:65%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 12.</span> Representative samples from the dataset: meteor (positive) and no-meteor (negative) frames.</figcaption>
+  </figure>
 
-    <p><strong>// PIPELINE</strong></p>
-    <ul>
-      <li>Query Bing API for images by search term</li>
-      <li>Consolidate images from multiple query folders into a single one</li>
-      <li>Resize images to a specified pixel size</li>
-      <li>Remove duplicates by comparing image hashes</li>
-    </ul>
-    <p>Result: query all Messier + NGC objects → ~3k images, deduplicated, in under an hour.</p>
+  <p>On the held-out test set the model achieves a recall of <span class="metric">0.98</span> at the meteor class. The trained weights are released as <a href="https://github.com/pisukeman/guAIta/tree/master/models">guAIta_latest_version.pkl</a>.</p>
 
-    <div class="code-block">
-<span class="c-green">#Generate queries for Messier and NGC objects</span>
-<pre>my_objects = []
-<span class="c-red">for</span> num in range(1, 111):
-    my_objects.append(<span class="c-sky">'MESSIER '</span> + str(num))
-<span class="c-red">for</span> num in range(1, 7840):
-    my_objects.append(<span class="c-sky">'NGC '</span> + str(num) + <span class="c-sky">' space'</span>)
+  <figure>
+    <a href="./result.png" target="_blank">
+      <img src="result.png" alt="Evaluation result" style="max-width:40%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 13.</span> Confusion-matrix evaluation on the held-out test set.</figcaption>
+  </figure>
 
-<span class="c-green"># Execute the full process</span>
-<span class="c-green"># my_objects : queries to send to Bing API</span>
-<span class="c-green"># 200        : images to download per query</span>
-<span class="c-green"># ./ufo      : folder to store all images</span>
-<span class="c-green"># 160        : resize to 160x160 pixels</span>
-createDataset(my_objects, 200, <span class="c-sky">"./ufo"</span>, 160)</pre>
-    </div>
-
-    <div class="img-wrap">
-      <a href="./dataset.png" target="_blank">
-        <img src="dataset.png" alt="Dataset" style="max-width:55%;">
-      </a>
-      <div class="img-caption">// Resulting consolidated image dataset</div>
-    </div>
-
-    <p class="prompt">Download the library: <a href="https://github.com/pisukeman/bingMeImages" target="_blank">BingMeImages on Github</a></p>
-  </div>
-
-
-  <!-- METEOR DETECTION -->
-  <div class="section" id="meteors">
-    <span class="section-label">[ MODEL_01: METEOR DETECTION ]</span>
-    <h2 class="section-title">METEOR DETECTION USING TRANSFER LEARNING ON RESNET34</h2>
-
-    <p class="prompt">Model to automatically detect meteors in images/videos.</p>
-    <p>Created using 57,000 images from the Alphasky camera of <a href="https://observatoridepujalt.cat/alphasky/">Observatori de Pujalt</a>, using transfer learning on a pretrained ResNet34.</p>
-    <p>Dataset imbalance problem (far more no-meteor images) → solved with Data Augmentation. Built with <a href="https://www.fast.ai/">Fast.ai</a>.</p>
-
-    <div class="img-wrap">
-      <a href="./imgs.png" target="_blank">
-        <img src="imgs.png" alt="Meteors" style="max-width:55%;">
-      </a>
-      <div class="img-caption">// Dataset samples: meteor vs no-meteor</div>
-    </div>
-
-    <p class="prompt">Result: <span class="badge">RECALL: 0.98</span> on meteor detection. Model available: <a href="https://github.com/pisukeman/guAIta/tree/master/models">guAIta_latest_version.pkl</a></p>
-
-    <div class="img-wrap">
-      <a href="./result.png" target="_blank">
-        <img src="result.png" alt="Result" style="max-width:30%;">
-      </a>
-      <div class="img-caption">// Model evaluation on test dataset</div>
-    </div>
-
-    <p>Setup with <a href="https://anaconda.org/">Anaconda</a> using <a href="https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml">this yaml file</a>. Inference:</p>
-
-    <div class="code-block">
-<pre>learn = load_learner(<span class="c-sky">"guAIta_latest_version.pkl"</span>)
+  <p>Inference is straightforward; the environment is provided as an <a href="https://github.com/pisukeman/guAIta/blob/master/guAIta_conda_env.yml">Anaconda YAML</a>:</p>
+  <div class="code-block">
+<pre>learn = load_learner(<span class="code-string">"guAIta_latest_version.pkl"</span>)
 predict = learn.predict(image)
-<span class="c-red">if</span> (predict[0] == <span class="c-sky">"meteor"</span> <span class="c-red">and</span> predict[2][0] > scoring):
-    <span class="c-green">#Captured!</span></pre>
-    </div>
-
-    <p>Full details in my Master's dissertation (Spanish): <a href="https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf">GuAIta PDF</a></p>
-
-    <p><strong>// KEY TOPICS</strong></p>
-    <ul>
-      <li>Pre-trained ResNet34 + Transfer Learning on 57k images — fast and accurate with a reduced dataset</li>
-      <li>Data Augmentation to prevent overfitting</li>
-    </ul>
+<span class="code-keyword">if</span> predict[0] == <span class="code-string">"meteor"</span> <span class="code-keyword">and</span> predict[2][0] > scoring:
+    <span class="code-comment"># meteor captured</span></pre>
   </div>
 
+  <p>The full methodology is documented in the corresponding Master's dissertation (in Spanish): <a href="https://github.com/pisukeman/guAIta/blob/master/Meteor_detection_Deep_Learning.pdf">Meteor detection with deep learning</a>.</p>
+</section>
 
-  <!-- AUTOENCODERS -->
-  <div class="section" id="autoencoders">
-    <span class="section-label">[ RESEARCH_02: AUTOENCODERS ]</span>
-    <h2 class="section-title">USING AUTOENCODERS TO ADD EXPOSURE TO GALAXY IMAGES</h2>
+<!-- ============== 8. AUTOENCODERS ============== -->
+<section>
+  <h2 class="section-title"><span class="section-num">9.</span>Restoring exposure in galaxy images with autoencoders</h2>
+  <p>Autoencoders are neural networks with a constrained topology — input layer, smaller "bottleneck" hidden layer, and output layer of the same size as the input — designed to learn compressed, denoised data representations in an unsupervised manner.</p>
 
-    <p class="prompt">Autoencoders: Neural Networks with a specific topology to learn data encodings in an unsupervised manner — dimensional reduction while learning to ignore noise.</p>
-    <p>Minimum configuration: input layer → hidden "bottleneck" layer (smaller) → output layer (same size as input).</p>
+  <figure>
+    <a href="./autoencoder.png" target="_blank">
+      <img src="autoencoder.png" alt="Autoencoder diagram" style="max-width:38%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 14.</span> Schematic of a single-layer autoencoder. <em>Source: J. Jordan, jeremyjordan.me/autoencoders/.</em></figcaption>
+  </figure>
 
-    <div class="img-wrap">
-      <a href="./autoencoder.png" target="_blank">
-        <img src="autoencoder.png" alt="Autoencoder diagram" style="max-width:32%;">
+  <p>We train an autoencoder on galaxy images from the <a href="https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/">Galaxy Zoo</a> dataset on the Zooniverse platform (61,000 images at 106×106 pixels) and split the trained network into its encoder (input → latent code) and decoder (latent code → reconstruction) components.</p>
+
+  <div class="fig-row">
+    <figure>
+      <a href="./autoencoder3.jpg" target="_blank">
+        <img src="autoencoder3.jpg" alt="Encoder" style="max-height:180px;">
       </a>
-      <div class="img-caption">// Source: jeremyjordan.me/autoencoders/</div>
-    </div>
-
-    <p>Train on galaxy images to reproduce the input. Dataset: <a href="https://www.zooniverse.org/projects/zookeeper/galaxy-zoo/">Zooniverse Galaxy Zoo</a>.</p>
-
-    <div class="img-wrap">
-      <a href="./autoencoder2.jpg" target="_blank">
-        <img src="autoencoder2.jpg" alt="Autoencoder training" style="max-width:55%;">
+      <figcaption><span class="fig-num">Figure 15a.</span> Encoder.</figcaption>
+    </figure>
+    <figure>
+      <a href="./autoencoder4.jpg" target="_blank">
+        <img src="autoencoder4.jpg" alt="Decoder" style="max-height:180px;">
       </a>
-    </div>
+      <figcaption><span class="fig-num">Figure 15b.</span> Decoder.</figcaption>
+    </figure>
+  </div>
 
-    <p>Split into encoder (input → latent space) and decoder (latent space → reconstruction):</p>
+  <p>The key training trick is asymmetric input/output pairing: low-exposure (synthetically attenuated) images are presented as inputs while their original counterparts are presented as targets. The network therefore learns a mapping from underexposed to fully-exposed images.</p>
 
-    <div class="img-wrap flex">
-      <div>
-        <a href="./autoencoder3.jpg" target="_blank">
-          <img src="autoencoder3.jpg" alt="Encoder" style="max-width:100%; max-height:180px;">
-        </a>
-        <div class="img-caption">// Encoder</div>
-      </div>
-      <div>
-        <a href="./autoencoder4.jpg" target="_blank">
-          <img src="autoencoder4.jpg" alt="Decoder" style="max-width:100%; max-height:180px;">
-        </a>
-        <div class="img-caption">// Decoder</div>
-      </div>
-    </div>
+  <div class="fig-row">
+    <figure>
+      <a href="./ex1.jpg" target="_blank"><img src="ex1.jpg" alt="Reconstruction example I" style="max-height:200px;"></a>
+      <figcaption><span class="fig-num">Figure 16a.</span> Reconstruction example I.</figcaption>
+    </figure>
+    <figure>
+      <a href="./ex2.jpg" target="_blank"><img src="ex2.jpg" alt="Reconstruction example II" style="max-height:200px;"></a>
+      <figcaption><span class="fig-num">Figure 16b.</span> Reconstruction example II.</figcaption>
+    </figure>
+  </div>
 
-    <p class="prompt">Key idea: train with galaxy images modified to have <strong>low exposure as inputs</strong> and original galaxy images as the output. The model learns to restore exposure.</p>
-    <p>Trained on 61k+ galaxy images (106×106 px). Noise removal results on test images (never seen by the autoencoder):</p>
+  <figure>
+    <a href="./comparision.jpg" target="_blank">
+      <img src="comparision.jpg" alt="Side-by-side comparison" style="max-width:60%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 17.</span> Side-by-side: original galaxy · synthetic low exposure · autoencoder reconstruction.</figcaption>
+  </figure>
 
-    <div class="img-wrap flex">
-      <a href="./ex1.jpg" target="_blank"><img src="ex1.jpg" alt="Example 1" style="max-height:200px;"></a>
-      <a href="./ex2.jpg" target="_blank"><img src="ex2.jpg" alt="Example 2" style="max-height:200px;"></a>
-    </div>
+  <figure>
+    <a href="./all.jpg" target="_blank">
+      <img src="all.jpg" alt="Training dataset samples" style="max-width:60%;">
+    </a>
+    <figcaption><span class="fig-num">Figure 18.</span> Random sample of the training dataset.</figcaption>
+  </figure>
 
-    <div class="img-wrap">
-      <a href="./comparision.jpg" target="_blank">
-        <img src="comparision.jpg" alt="Comparison" style="max-width:55%;">
-      </a>
-      <div class="img-caption">// Original &nbsp;|&nbsp; Low Exposure &nbsp;|&nbsp; Reconstructed</div>
-    </div>
-
-    <div class="img-wrap">
-      <a href="./all.jpg" target="_blank">
-        <img src="all.jpg" alt="All galaxies" style="max-width:55%;">
-      </a>
-      <div class="img-caption">// Training dataset samples</div>
-    </div>
-
-    <p>Code — read dataset, simulate low exposure, split:</p>
-    <div class="code-block">
+  <p>The simulation of low exposure is implemented as a per-pixel attenuation:</p>
+  <div class="code-block">
 <pre>x_train, x_test = train_test_split(x_train, test_size=0.1, random_state=42)
 x_train_noise = simulate_low_exposure(x_train)
-x_test_noise = simulate_low_exposure(x_test)
+x_test_noise  = simulate_low_exposure(x_test)
 
-<span class="c-red">def</span> <span class="c-yellow">simulate_low_exposure</span>(x, max, min, perc):
-    <span class="c-red">return</span> np.where(x - perc > min, x - perc, min)</pre>
-    </div>
+<span class="code-keyword">def</span> <span class="code-fn">simulate_low_exposure</span>(x, max, min, perc):
+    <span class="code-keyword">return</span> np.where(x - perc > min, x - perc, min)</pre>
+  </div>
 
-    <p>Define and train the autoencoder:</p>
-    <div class="code-block">
-<pre><span class="c-red">def</span> <span class="c-yellow">build_one_layer_autoencoder</span>(img_shape, code_size):
-  <span class="c-green"># The encoder</span>
-  encoder = Sequential()
-  encoder.add(InputLayer(img_shape))
-  encoder.add(Flatten())
-  encoder.add(Dense(code_size))
+  <p>Training the autoencoder:</p>
+  <div class="code-block">
+<pre><span class="code-keyword">def</span> <span class="code-fn">build_one_layer_autoencoder</span>(img_shape, code_size):
+    <span class="code-comment"># Encoder.</span>
+    encoder = Sequential()
+    encoder.add(InputLayer(img_shape))
+    encoder.add(Flatten())
+    encoder.add(Dense(code_size))
 
-  <span class="c-green"># The decoder</span>
-  decoder = Sequential()
-  decoder.add(InputLayer((code_size,)))
-  decoder.add(Dense(np.prod(img_shape)))
-  decoder.add(Reshape(img_shape))
+    <span class="code-comment"># Decoder.</span>
+    decoder = Sequential()
+    decoder.add(InputLayer((code_size,)))
+    decoder.add(Dense(np.prod(img_shape)))
+    decoder.add(Reshape(img_shape))
 
-  <span class="c-red">return</span> encoder, decoder
+    <span class="code-keyword">return</span> encoder, decoder
 
-<span class="c-green"># Bottleneck at 1000 nodes</span>
+<span class="code-comment"># 1,000-dimensional bottleneck.</span>
 encoder, decoder = build_one_layer_autoencoder(IMG_SHAPE, 1000)
 inp_shape = Input(IMG_SHAPE)
 code = encoder(inp_shape)
 reconstruction = decoder(code)
 autoencoder = Model(inp, reconstruction)
-autoencoder.compile(optimizer=<span class="c-sky">'adamax'</span>, loss=<span class="c-sky">'mse'</span>)
+autoencoder.compile(optimizer=<span class="code-string">'adamax'</span>, loss=<span class="code-string">'mse'</span>)
 
-<span class="c-green"># Train: noisy low-exposure input → clean output</span>
+<span class="code-comment"># Train: low-exposure inputs, original targets.</span>
 history = autoencoder.fit(
     x=x_train_noise, y=x_train,
     epochs=10,
-    validation_data=[x_test_noise, x_test]
+    validation_data=[x_test_noise, x_test],
 )</pre>
-    </div>
-
-    <p>Originally posted at: <a href="https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh" target="_blank">dev.to</a></p>
   </div>
 
+  <p>An earlier version of this work appeared on <a href="https://dev.to/pisukeman/autoencoders-to-add-exposure-to-galaxy-images-4jlh">dev.to</a>.</p>
+</section>
 
-  <!-- STATUS BAR / FOOTER -->
-  <div class="status-bar">
-    <span>PISUKEMAN.GITHUB.IO</span>
-    <span class="status-ok">// THANKS FOR VISITING! //</span>
-    <span>STATUS: <span class="status-ok">ONLINE</span></span>
-  </div>
+<footer>
+  <span>pisukeman.github.io</span>
+  <span>© 2026 David Regordosa</span>
+  <span>v1.0</span>
+</footer>
 
-</div>
-
+</main>
 </body>
 </html>
