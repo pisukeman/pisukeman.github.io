@@ -1,0 +1,116 @@
+{
+  "temperature": {
+    "max_c": 37.7,
+    "max_at": "19:33:27",
+    "min_c": 26.6,
+    "min_at": "20:36:47",
+    "drop_c": 11.1,
+    "lag_after_max_s": 323,
+    "lag_after_max_txt": "5 min 23 s",
+    "cooling_rate_c_per_min": 0.182,
+    "steepest_8min_c": 2.1,
+    "rebound_c": 0.8
+  },
+  "humidity_decomposition": {
+    "rh_start": 20.5,
+    "rh_end": 49.8,
+    "rh_end_at": "21:06:07",
+    "rh_expected_thermal_only": 34.6,
+    "thermal_share_pts": 14.2,
+    "moisture_share_pts": 15.2,
+    "note": "la HR sube 32 puntos: parte es solo enfriamiento (el aire frio satura antes) y parte es humedad real que entra"
+  },
+  "humidity": {
+    "rh_min": 17.4,
+    "rh_min_at": "19:36:57",
+    "rh_max": 49.8,
+    "rh_max_at": "21:06:07",
+    "rh_rise_pts": 32.4,
+    "dew_mean_c": 10.06,
+    "dew_sd_c": 2.68,
+    "dew_range_c": [
+      7.38,
+      15.72
+    ],
+    "ah_mean_gm3": 8.93,
+    "ah_sd_gm3": 1.8,
+    "ah_change_pct": 47.1
+  },
+  "light": {
+    "max_lx": 12277.0,
+    "max_at": "19:14:21",
+    "floor_lx": 0.0,
+    "sensor_resolution_lx": 0.54,
+    "drop_factor": 22735,
+    "orders_of_magnitude": 4.4,
+    "at_c1_lx": 7807.0,
+    "at_c2_lx": 5.2,
+    "at_max_lx": 0.0,
+    "from_1000_to_10_lx_s": 792,
+    "at_1000_lx": "20:17:10",
+    "at_10_lx": "20:30:22"
+  },
+  "video_vs_ephemeris": {
+    "n_frames": 2830,
+    "rms_uncovered": 0.0524,
+    "median_abs_error": 0.0019,
+    "p95_abs_error": 0.0399,
+    "note": "area solar medida en el video frente a la obscuracion calculada por efemeride; el sesgo residual es del umbral de deteccion y el oscurecimiento del limbo, no de la sincronizacion"
+  },
+  "ephemeris": {
+    "C1": {
+      "local": "19:36:17",
+      "alt": 16.28,
+      "az": 275.7,
+      "obscuration": 0.0
+    },
+    "C2": {
+      "local": "20:30:33",
+      "alt": 6.15,
+      "az": 284.2,
+      "obscuration": 1.0
+    },
+    "MAX": {
+      "local": "20:31:24",
+      "alt": 6.0,
+      "az": 284.4,
+      "obscuration": 1.0
+    },
+    "C3": {
+      "local": "20:32:15",
+      "alt": 5.84,
+      "az": 284.5,
+      "obscuration": 1.0
+    },
+    "C4": {
+      "local": "21:23:08",
+      "alt": -3.29,
+      "az": 292.8,
+      "obscuration": 0.0
+    },
+    "totality_s": 101.5,
+    "sunset": "21:04:30",
+    "site": {
+      "name": "Anquela del Pedregal (Guadalajara)",
+      "lat": 40.744444,
+      "lon": -1.735556,
+      "elev_m": 1284.0
+    },
+    "magnitude": 1.0125
+  },
+  "contacts_measured": {
+    "C2_frame": 1944,
+    "C2_note": "ultimo fotograma con creciente visible",
+    "C3_frame": 1999,
+    "C3_note": "anillo de diamantes",
+    "corona_frames": [
+      1995,
+      1998
+    ],
+    "black_frames": [
+      1945,
+      1994
+    ],
+    "black_seconds": 100
+  }
+}

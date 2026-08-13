@@ -1,0 +1,10 @@
+# Original del Seestar: 89 MB. No es versiona; la web fa servir eclipsi_resumen.mp4 (15 MB).
+video.mp4
+
+# Tot el que hi ha a build/ es reproduible amb tools/ i nomes serveix en local:
+# miniatures, estadistiques per fotograma, previsualitzacions, el selector de
+# fotogrames i el GeoJSON descarregat de Natural Earth.
+build/
+
+# Efemeride descarregada per Skyfield (16 MB)
+*.bsp

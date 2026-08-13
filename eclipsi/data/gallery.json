@@ -1,0 +1,74 @@
+[
+ {
+  "frame": 0,
+  "time": "19:25:41",
+  "file": "assets/f0000.jpg",
+  "caption": "Disc solar sencer, amb taques visibles. Onze minuts abans del primer contacte."
+ },
+ {
+  "frame": 318,
+  "time": "19:36:17",
+  "file": "assets/f0318.jpg",
+  "caption": "Primer contacte. La Lluna toca la vora del disc; a ull nu encara no es nota."
+ },
+ {
+  "frame": 700,
+  "time": "19:49:21",
+  "file": "assets/f0700.jpg",
+  "caption": "El mos ja és inconfusible."
+ },
+ {
+  "frame": 1200,
+  "time": "20:05:41",
+  "file": "assets/f1200.jpg",
+  "caption": "Gairebé mig disc cobert."
+ },
+ {
+  "frame": 1700,
+  "time": "20:22:21",
+  "file": "assets/f1700.jpg",
+  "caption": "La creixent s'estreny de pressa en els últims minuts."
+ },
+ {
+  "frame": 1944,
+  "time": "20:30:29",
+  "file": "assets/f1944.jpg",
+  "caption": "Últim fotograma amb fotosfera visible, quatre segons abans del segon contacte."
+ },
+ {
+  "frame": 1970,
+  "time": "20:31:22",
+  "file": "assets/f1970.jpg",
+  "caption": "Totalitat. Negre absolut: el filtre solar encara hi era posat."
+ },
+ {
+  "frame": 1996,
+  "time": "20:32:14",
+  "file": "assets/f1996.jpg",
+  "caption": "Corona solar i protuberàncies, amb el filtre per fi retirat."
+ },
+ {
+  "frame": 1999,
+  "time": "20:32:20",
+  "file": "assets/f1999.jpg",
+  "caption": "Anell de diamants: reapareix la fotosfera al tercer contacte."
+ },
+ {
+  "frame": 2100,
+  "time": "20:35:42",
+  "file": "assets/f2100.jpg",
+  "caption": "Fina creixent de nou, ara per la banda contrària."
+ },
+ {
+  "frame": 2600,
+  "time": "20:52:21",
+  "file": "assets/f2600.jpg",
+  "caption": "El Sol, ja baix, s'envermelleix camí de l'horitzó."
+ },
+ {
+  "frame": 2900,
+  "time": "21:02:21",
+  "file": "assets/f2900.jpg",
+  "caption": "Últims fotogrames útils abans que el Sol es pongui."
+ }
+]

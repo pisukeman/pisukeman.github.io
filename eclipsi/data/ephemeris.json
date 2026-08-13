@@ -1,0 +1,41 @@
+{
+  "C1": {
+    "local": "19:36:17",
+    "alt": 16.28,
+    "az": 275.7,
+    "obscuration": 0.0
+  },
+  "C2": {
+    "local": "20:30:33",
+    "alt": 6.15,
+    "az": 284.2,
+    "obscuration": 1.0
+  },
+  "MAX": {
+    "local": "20:31:24",
+    "alt": 6.0,
+    "az": 284.4,
+    "obscuration": 1.0
+  },
+  "C3": {
+    "local": "20:32:15",
+    "alt": 5.84,
+    "az": 284.5,
+    "obscuration": 1.0
+  },
+  "C4": {
+    "local": "21:23:08",
+    "alt": -3.29,
+    "az": 292.8,
+    "obscuration": 0.0
+  },
+  "totality_s": 101.5,
+  "sunset": "21:04:30",
+  "site": {
+    "name": "Anquela del Pedregal (Guadalajara)",
+    "lat": 40.744444,
+    "lon": -1.735556,
+    "elev_m": 1284.0
+  },
+  "magnitude": 1.0125
+}

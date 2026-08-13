@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un eclipsi total, mesurat — Anquela del Pedregal, 12 d'agost de 2026</title>
+<meta name="description" content="Informe tecnic: timelapse d'un Seestar S50 sincronitzat amb sensors de llum, temperatura i humitat durant l'eclipsi total del 12 d'agost de 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --bg:#fdfcf7; --text:#1a1a1a; --muted:#6b6b66; --rule:#d8d5cc;
+  --accent:#8b1a1a; --code-bg:#f4f2ec; --link:#1a3d6e;
+  --c-lux:#8F6E15; --c-temp:#A32B45; --c-rh:#20719E; --c-ref:#8a8880;
+}
+html { overflow-y:scroll; -webkit-text-size-adjust:100%; }
+body { background:var(--bg); color:var(--text); margin:0;
+  font-family:'EB Garamond',Georgia,'Times New Roman',serif; font-size:19px; line-height:1.62;
+  font-feature-settings:"kern","liga","onum"; }
+main { max-width:720px; margin:0 auto; padding:4rem 2rem 6rem; }
+
+.title-block { text-align:center; margin-bottom:2.5rem; padding-bottom:2rem; border-bottom:1px solid var(--rule); }
+.preprint-mark { font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:1.5rem; }
+h1.paper-title { font-weight:500; font-size:2.4rem; line-height:1.18; margin:0 0 1.5rem; letter-spacing:-.01em; }
+.authors { font-size:1.08rem; margin-bottom:.25rem; }
+.affiliation { font-size:.95rem; font-style:italic; color:var(--muted); margin-bottom:.25rem; }
+.date { font-size:.92rem; color:var(--muted); }
+.inline-links { font-family:'Inter',sans-serif; font-size:.85rem; margin-top:1.1rem; }
+.inline-links a { margin:0 .5rem; }
+
+a { color:var(--link); text-decoration:none; border-bottom:1px solid rgba(26,61,110,.28); }
+a:hover { border-bottom-color:var(--link); }
+
+.abstract { background:var(--code-bg); border-left:2px solid var(--accent); padding:1.3rem 1.6rem;
+  margin:0 0 3rem; font-size:.97rem; line-height:1.6; }
+.abstract h2 { font-family:'Inter',sans-serif; font-size:.7rem; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); margin:0 0 .7rem; font-weight:600; }
+.abstract p { margin:0 0 .7rem; } .abstract p:last-child { margin-bottom:0; }
+
+h2.sec { font-family:'Inter',sans-serif; font-weight:600; font-size:1.02rem; letter-spacing:-.005em;
+  margin:3.4rem 0 1rem; padding-bottom:.4rem; border-bottom:1px solid var(--rule); }
+h2.sec .num { color:var(--accent); margin-right:.6rem; font-variant-numeric:tabular-nums; }
+h3.sub { font-family:'Inter',sans-serif; font-weight:600; font-size:.88rem; margin:2rem 0 .6rem; color:#3a3a38; }
+p { margin:0 0 1.1rem; }
+.lead { font-size:1.05rem; }
+
+figure { margin:2rem 0 2.4rem; }
+figure.wide { width:min(94vw,880px); margin-left:calc(360px - min(47vw,440px)); }
+@media (max-width:860px){ figure.wide { width:100%; margin-left:0; } }
+figcaption { font-size:.85rem; color:var(--muted); line-height:1.5; margin-top:.7rem;
+  padding-left:.9rem; border-left:2px solid var(--rule); }
+figcaption b { color:var(--text); font-weight:600; }
+
+video { width:100%; max-width:420px; display:block; margin:0 auto; border-radius:3px;
+  background:#0f1216; box-shadow:0 2px 18px rgba(0,0,0,.14); }
+
+table.data { width:100%; border-collapse:collapse; font-family:'Inter',sans-serif; font-size:.82rem; margin:1.4rem 0; }
+table.data th, table.data td { text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--rule); }
+table.data th { font-weight:600; color:var(--muted); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; }
+table.data td.n { font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
+table.data tr.hi td { background:rgba(139,26,26,.05); font-weight:600; }
+
+.keyfig { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+  background:var(--rule); border:1px solid var(--rule); margin:1.8rem 0; }
+.keyfig div { background:var(--bg); padding:1rem 1.1rem; }
+.keyfig .v { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:600; line-height:1.1;
+  font-variant-numeric:tabular-nums; }
+.keyfig .k { font-family:'Inter',sans-serif; font-size:.72rem; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.07em; margin-top:.35rem; }
+
+.chart { width:100%; }
+.chart svg { width:100%; height:auto; display:block; overflow:visible; }
+.notes { font-family:'Inter',sans-serif; font-size:.82rem; line-height:1.55; margin:.9rem 0 0; padding:0; list-style:none; }
+.notes li { display:flex; gap:.6rem; margin-bottom:.45rem; }
+.notes .badge { flex:0 0 auto; width:1.25rem; height:1.25rem; border-radius:50%; color:#fff;
+  font-size:.68rem; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:.13rem; }
+.notes b { font-weight:600; }
+.legend { font-family:'Inter',sans-serif; font-size:.78rem; color:var(--muted); margin:.5rem 0 0;
+  display:flex; gap:1.2rem; flex-wrap:wrap; }
+.legend span { display:flex; align-items:center; gap:.4rem; }
+.legend i { width:14px; height:3px; border-radius:2px; display:inline-block; }
+
+.gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.2rem; margin:1.8rem 0; }
+.gallery figure { margin:0; }
+.gallery img { width:100%; border-radius:2px; background:#000; display:block; }
+.gallery .t { font-family:'JetBrains Mono',monospace; font-size:.74rem; color:var(--accent); margin-top:.5rem; }
+.gallery .c { font-size:.82rem; color:var(--muted); line-height:1.45; margin-top:.2rem; }
+
+.tip { position:fixed; pointer-events:none; opacity:0; transition:opacity .1s; z-index:20;
+  background:#1a1a1a; color:#f5f3ec; font-family:'Inter',sans-serif; font-size:.76rem;
+  padding:.45rem .6rem; border-radius:4px; line-height:1.45; white-space:nowrap;
+  box-shadow:0 3px 14px rgba(0,0,0,.28); }
+.tip b { font-variant-numeric:tabular-nums; }
+
+footer { margin-top:4rem; padding-top:1.5rem; border-top:1px solid var(--rule);
+  font-family:'Inter',sans-serif; font-size:.8rem; color:var(--muted); }
+code { font-family:'JetBrains Mono',monospace; font-size:.82em; background:var(--code-bg); padding:.1em .35em; border-radius:2px; }
+.err { background:#fdf0f0; border-left:2px solid var(--accent); padding:1rem 1.2rem; font-size:.9rem; }
+</style>
+</head>
+<body>
+<main>
+
+<div class="title-block">
+  <div class="preprint-mark">Notes de camp · Astronomia</div>
+  <h1 class="paper-title">Un eclipsi total, mesurat</h1>
+  <div class="authors">Arnau Regordosa</div>
+  <div class="affiliation">Anquela del Pedregal, Guadalajara · 40,744° N, 1,736° O, 1.284 m</div>
+  <div class="date">12 d'agost de 2026</div>
+  <div class="inline-links">
+    <a href="index.html">← Portada</a>
+    <a href="data/">Dades</a>
+    <a href="#video">Vídeo</a>
+  </div>
+</div>
+
+<div class="abstract">
+  <h2>Resum</h2>
+  <p>El 12 d'agost de 2026 l'ombra de la Lluna va travessar el nord d'Espanya al final de la tarda.
+  La vam gravar amb un telescopi <b>Seestar S50</b> en timelapse, un fotograma cada dos segons, i alhora
+  vam registrar la <b>il·luminància</b> amb el sensor d'un mòbil (1 Hz) i la <b>temperatura i la
+  humitat</b> amb un registrador Elitech (0,1 Hz).</p>
+  <p>Això és el resultat de quadrar les tres coses sobre un mateix rellotge. La temperatura va caure
+  <b>11,1 °C</b> i va tocar fons <b>5 min 23 s després</b> del màxim: el retard tèrmic del terra, mesurat.
+  La llum va caure més de <b>quatre ordres de magnitud</b>. I l'àrea de Sol que es veu al vídeo coincideix
+  amb la que prediu la mecànica celeste amb un error mitjà del <b>0,19 %</b>.</p>
+</div>
+
+<p class="lead">Durant la totalitat el vídeo es queda completament a les fosques. No és cap avaria del
+telescopi: amb l'emoció del moment vam trigar gairebé dos minuts a treure el filtre solar. Quan per fi
+el vam retirar quedaven vuit segons de totalitat, els justos per caçar la corona i l'anell de diamants.
+Aquell forat negre, amb les gràfiques desplomant-se al costat, va acabar sent el millor moment del muntatge.</p>
+
+<h2 class="sec" id="video"><span class="num">1</span>El vídeo</h2>
+<p>Fotograma del telescopi a dalt; a sota, les quatre mesures dibuixant-se en la seva hora real. La
+il·luminància hi surt dues vegades, en escala logarítmica i lineal, pel que s'explica a la secció 4.
+El rellotge de la barra és hora local. Durant la totalitat el muntatge va a càmera lenta, i els nou
+fotogrames de la corona es mantenen gairebé un segon cadascun: en temps real duraven tres dècimes.</p>
+
+<p>La barra declara en tot moment el realçament aplicat a la imatge. Convé tenir-ho present:
+<b>la lluminositat de la imatge no és una mesura</b> — el telescopi ajustava l'exposició tot sol —
+mentre que la corba de lux sí que ho és.</p>
+
+<figure>
+  <video controls playsinline preload="metadata" poster="assets/f1996.jpg">
+    <source src="eclipsi_resumen.mp4" type="video/mp4">
+  </video>
+  <figcaption><b>Vídeo resum.</b> 3.011 fotogrames del Seestar S50, un cada 2 s, entre les 19:25:41
+  i les 21:04:51. Les corbes avancen segons l'hora real de cada fotograma, no segons el seu número, així
+  que les ralentitzacions no descuadren res.</figcaption>
+</figure>
+
+<h2 class="sec"><span class="num">2</span>Què prediu el cel</h2>
+<p>Abans de mirar cap dada convé saber què havia de passar. Aquestes són les circumstàncies
+calculades per al punt exacte d'observació amb l'efemèride DE421:</p>
+
+<table class="data">
+  <thead><tr><th>Contacte</th><th>Hora local</th><th class="n">Altura del Sol</th><th class="n">Azimut</th></tr></thead>
+  <tbody id="tbl-contacts"></tbody>
+</table>
+
+<div class="keyfig" id="kf-eclipse"></div>
+
+<p>El Sol era només a <b>6°</b> sobre l'horitzó durant la totalitat, i es va pondre mitja hora després.
+Això condiciona tot el que ve a continuació: cada mesura porta barrejada la caiguda natural del capvespre.</p>
+
+<h2 class="sec"><span class="num">3</span>Quadrar tres rellotges</h2>
+<p>El telescopi no marca l'hora al vídeo, i els altres dos aparells porten cadascun el seu rellotge. Per
+poder superposar les corbes calia fixar tres coses.</p>
+
+<h3 class="sub">El vídeo</h3>
+<p>La totalitat dóna una àncora nítida: hi ha un fotograma exacte en què desapareix l'última creixent
+(el 1944) i un altre en què reapareix la fotosfera (el 1999). Igualant el centre d'aquest interval amb
+el màxim calculat, i amb la cadència de 2,000 s/fotograma, el fotograma 0 cau a les <b>19:25:41</b>.
+La comprovació és que els contactes predits cauen llavors als fotogrames 1946,0 i 1997,0, a menys de
+dos fotogrames dels mesurats. La incertesa és d'uns ±5 s.</p>
+
+<h3 class="sub">El rellotge del mòbil anava avançat</h3>
+<p>Ajustant la corba de llum mesurada contra l'obscuració calculada — <code>lx(t) = tendència(t) ×
+(1 − obscuració(t + Δ))</code> — el residu té un mínim clar a <b>Δ = −55,5 s</b>. El registre de llum
+venia avançat gairebé un minut respecte de l'hora real, probablement per com l'aplicació tradueix el
+rellotge del sensor a hora del sistema. Està corregit a tot el que es mostra aquí.</p>
+
+<h3 class="sub">La prova que encaixa</h3>
+<p>La millor validació no és cap número de sincronització sinó una cosa independent: mesurar a cada
+fotograma quanta superfície de Sol queda descoberta i comparar-la amb la que dicta la mecànica celeste.</p>
+
+<figure class="wide">
+  <div class="chart" id="ch-sun"></div>
+  <div class="legend">
+    <span><i style="background:var(--c-lux)"></i> àrea mesurada al vídeo</span>
+    <span><i style="background:var(--c-ref)"></i> obscuració calculada (efemèride)</span>
+  </div>
+  <figcaption><b>Figura 1.</b> Fracció del disc solar sense cobrir. Els punts surten de comptar píxels
+  il·luminats a cada fotograma; la línia grisa, de la posició real de la Lluna. Error mitjà
+  <b id="v-rms"></b> sobre <b id="v-n"></b> fotogrames. La desviació que queda és del llindar de
+  detecció i de l'enfosquiment del limbe, no de l'ajust temporal.</figcaption>
+</figure>
+
+<h2 class="sec"><span class="num">4</span>La llum</h2>
+<p>És la magnitud que més canvia, i de bon tros: recorre més de quatre ordres de magnitud, de la llum
+d'una tarda serena a menys que un quart de lluna. Comencem per l'escala logarítmica, que és la que deixa
+veure els últims minuts; de seguida veurem que l'elecció de l'eix no és innocent.</p>
+
+<figure class="wide">
+  <div class="chart" id="ch-lux"></div>
+  <ul class="notes" id="nt-lux"></ul>
+  <figcaption><b>Figura 2.</b> Il·luminància en escala logarítmica. Són les 6.877 lectures crues de
+  phyphox, a 1 Hz, sense suavitzar ni delmar: els pics aïllats són ombres que van creuar el sensor i hi
+  són tal com es van registrar. El límit inferior del sensor és 0,54 lx; durant la totalitat la lectura
+  va ser zero, així que la caiguda real és encara més gran que la dibuixada.</figcaption>
+</figure>
+
+<p>L'interessant no és el fons del pou sinó el pendent. La llum triga <b id="v-1000-10"></b> a passar de
+1.000 a 10 lx — cent vegades menys llum — i bona part d'aquesta caiguda passa als últims minuts, quan la
+porció de Sol que queda és una ungla finíssima.</p>
+
+<h3 class="sub">El pou que aquella nit no vam veure</h3>
+<p>Durant l'eclipsi anàvem mirant aquesta mateixa corba a la pantalla del mòbil, i allà aquest pou no
+hi sortia. Vèiem un descens continu que arribava a zero i poca cosa més. No hi falta res: és l'escala.
+L'aplicació dibuixa en escala lineal, i allà el final s'aixafa contra l'eix.</p>
+
+<figure class="wide">
+  <div class="chart" id="ch-lux-lin"></div>
+  <figcaption><b>Figura 3.</b> Exactament les mateixes dades que la figura 2, en escala lineal — tal com
+  les vèiem al mòbil. L'eclipsi total és al punt on la corba toca l'eix.</figcaption>
+</figure>
+
+<p>L'aritmètica explica el desacord. Al primer contacte hi havia <b>7.807 lx</b>, que en un eix que
+arriba a 12.500 ocupen el <b>62 %</b> de l'altura. A les 20:17 en quedaven 1.000: el <b>8 %</b>. A les
+20:30, vint-i-un lux: el <b>0,17 %</b>. Tot l'esfondrament final, el que va de mil lux a la foscor total,
+passa <b>dins del 8 % inferior del gràfic</b>, on no hi cap.</p>
+
+<p>Quina de les dues és «la bona» depèn de què es vulgui explicar. La lineal és fidel a la magnitud
+física: diu que la major part dels lux es van perdre la primera hora, i és cert. La logarítmica és fidel
+als factors: diu que els últims catorze minuts van valer tant com tota l'hora anterior, i també és cert.
+La segona s'assembla més al que van sentir els nostres ulls, perquè la visió humana respon de manera
+aproximadament logarítmica i a més s'adapta sobre la marxa: per això durant gairebé tota la fase parcial
+un diria que no passa res, i de cop se'n va tot en orris.</p>
+
+<h2 class="sec"><span class="num">5</span>La temperatura</h2>
+<p>Aquí surt el resultat més bonic del dia, i cal una dada per apreciar-lo: el mínim de temperatura
+<em>no</em> coincideix amb el màxim de l'eclipsi.</p>
+
+<figure class="wide">
+  <div class="chart" id="ch-temp"></div>
+  <ul class="notes" id="nt-temp"></ul>
+  <figcaption><b>Figura 4.</b> Temperatura de l'aire. El màxim de l'eclipsi i el mínim tèrmic hi són
+  marcats: entre l'un i l'altre hi ha <b id="v-lag"></b>.</figcaption>
+</figure>
+
+<p>Aquest desfasament és <b>inèrcia tèrmica</b>. El que mesura el sensor no és la radiació solar sinó
+l'aire, i l'aire s'escalfa i es refreda sobretot per contacte amb el terra. Quan la Lluna tapa el Sol el
+terra deixa de rebre energia immediatament, però continua estant calent i continua cedint calor durant
+minuts. L'aire no toca fons fins que el terra s'ha refredat prou. Cinc minuts i mig és el temps que
+triga aquest sistema a respondre.</p>
+
+<p>Tampoc no hi va haver rebot: després del mínim la temperatura només va pujar <b id="v-reb"></b> abans
+de continuar baixant. El Sol va tornar, però ja era tan baix que la posta es va menjar la recuperació.</p>
+
+<h2 class="sec"><span class="num">6</span>La humitat</h2>
+<p>La humitat relativa fa el mirall de la temperatura: puja de <b id="v-rhmin"></b> a
+<b id="v-rhmax"></b>. És temptador llegir-ho com «va entrar humitat», però la humitat relativa depèn de
+dues coses alhora, i una d'elles és justament la que acaba de desplomar-se.</p>
+
+<p>L'aire fred satura abans: la mateixa quantitat de vapor dóna una humitat relativa més alta si baixa
+la temperatura. Convé, doncs, separar els dos efectes. La línia grisa és la humitat relativa que hi
+hauria si el vapor d'aigua de l'aire no hagués canviat <em>gens</em> i només actués el refredament.</p>
+
+<figure class="wide">
+  <div class="chart" id="ch-rh"></div>
+  <div class="legend">
+    <span><i style="background:var(--c-rh)"></i> humitat relativa mesurada</span>
+    <span><i style="background:var(--c-ref)"></i> només pel refredament (vapor constant)</span>
+  </div>
+  <ul class="notes" id="nt-rh"></ul>
+  <figcaption><b>Figura 5.</b> Descomposició de la pujada d'humitat relativa. La separació entre les dues
+  línies és vapor d'aigua que va entrar de debò a l'aire.</figcaption>
+</figure>
+
+<p>El repartiment surt gairebé a mitges. Prenent com a referència el <b id="v-rhstart"></b> dels primers
+minuts, la humitat relativa puja <b id="v-rhrise"></b> punts: <b id="v-rhth"></b> s'expliquen només pel
+refredament i <b id="v-rhmo"></b> són humitat de debò.
+El punt de rosada passa de <b id="v-dew"></b>, cosa que encaixa amb el que hom esperaria en caure la
+tarda en un erm a 1.284 m: s'acaba la convecció, el terra es refreda i la capa d'aire arran de terra es
+carrega d'humitat. Convé dir que part d'aquesta pujada també pot ser la resposta lenta del sensor
+capacitiu després d'un canvi tèrmic tan brusc.</p>
+
+<h2 class="sec"><span class="num">7</span>Fotogrames</h2>
+<div class="gallery" id="gallery"></div>
+
+<h2 class="sec"><span class="num">8</span>Instruments i dades</h2>
+<table class="data">
+  <thead><tr><th>Instrument</th><th>Mesura</th><th class="n">Cadència</th><th class="n">Mostres</th></tr></thead>
+  <tbody>
+    <tr><td>Seestar S50 (amb filtre solar)</td><td>Imatge</td><td class="n">2 s</td><td class="n">3.011</td></tr>
+    <tr><td>Sensor de llum stk6b9x (mòbil)</td><td>Il·luminància, 0,54 lx de resolució</td><td class="n">1 s</td><td class="n">6.877</td></tr>
+    <tr><td>Elitech RC-51H</td><td>Temperatura i humitat</td><td class="n">10 s</td><td class="n">601</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sub">Limitacions</h3>
+<p>Convé declarar què <em>no</em> són aquestes mesures:</p>
+<ul style="font-size:.95rem; line-height:1.55">
+  <li><b>La lluminositat de la imatge no és fotometria.</b> El Seestar ajustava l'exposició
+  automàticament, i a sobre aquí s'aplica un realçament per fotograma perquè les creixents finals es
+  vegin. El vídeo declara aquest factor a la pantalla. La mesura de llum és la corba de lux, no la
+  imatge.</li>
+  <li><b>El sensor de llum té un límit inferior.</b> La seva resolució és de 0,54 lx, així que els zeros
+  de la totalitat volen dir «per sota de 0,54 lx», no zero absolut. La caiguda real va ser més gran que
+  la que es dibuixa.</li>
+  <li><b>El rellotge del mòbil anava avançat 55,5 s</b> i s'ha corregit. El del registrador Elitech s'ha
+  donat per bo perquè la temperatura no té cap tret prou nítid per contrastar-lo contra l'efemèride; si
+  tingués desfasament, el retard tèrmic de 5 min 23 s es mouria amb ell.</li>
+  <li><b>La humitat pot portar retard instrumental.</b> Els sensors capacitius responen a poc a poc
+  després d'un canvi tèrmic brusc, així que part del vapor «real» de la secció 6 podria ser resposta del
+  sensor.</li>
+  <li><b>La sincronització del vídeo té ±5 s</b>, dominats per l'amplada dels contactes mesurats, no per
+  l'efemèride.</li>
+  <li><b>Les corbes són dades crues.</b> Ni el vídeo ni aquestes figures suavitzen res: la llum es
+  dibuixa amb les 6.877 mostres originals a 1 Hz i la temperatura i la humitat amb les 601 del
+  registrador, tal com surten dels fitxers. L'únic lloc on s'utilitza una mediana mòbil de 15 s és en
+  calcular els instants en què la llum creua 1.000 i 10 lx, perquè una mostra sorollosa no fixi l'hora.</li>
+</ul>
+
+<p>Tot el procés és reproduïble. Les dades crues i les derivades són a
+<a href="data/">/data</a>: sèries amb hora absoluta (<code>light.csv</code>, <code>thermo.csv</code>),
+l'efemèride calculada (<code>ephemeris.json</code>, <code>obscuration.csv</code>), les mesures extretes
+fotograma a fotograma (<code>frames.csv</code>) i l'anàlisi derivada (<code>insights.json</code>).
+Els guions són a <a href="tools/">/tools</a>.</p>
+
+<footer>
+  Efemèride calculada amb Skyfield sobre DE421. Contactes verificats contra les prediccions publicades
+  per a Molina de Aragón, a 10 km. Hora local peninsular (UTC+2).
+</footer>
+
+</main>
+<div class="tip" id="tip"></div>
+
+<script>
+const PAL = { lux:'#8F6E15', temp:'#A32B45', rh:'#20719E', ref:'#8a8880' };
+const tip = document.getElementById('tip');
+const pad = n => String(n).padStart(2,'0');
+const hhmm = m => pad(Math.floor(m/60)%24)+':'+pad(Math.round(m)%60);
+const hhmmss = m => { const s=Math.round(m*60); return pad(Math.floor(s/3600)%24)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60); };
+const toMin = t => { const p=t.split(':').map(Number); return p[0]*60+p[1]+(p[2]||0)/60; };
+const nf = (v,d=1) => v.toLocaleString('ca-ES',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+const W=880, H=300, M={t:18,r:16,b:30,l:52};
+const PW=W-M.l-M.r, PH=H-M.t-M.b;
+
+let clipSeq = 0;
+function makeChart(host, cfg) {
+  const {x0,x1,y0,y1,log,series,notes=[],yticks,ylabel,fmt,main:mainIdx=0} = cfg;
+  const sx = v => M.l + PW*(v-x0)/(x1-x0);
+  const ly = v => Math.log10(Math.max(v,y0));
+  const sy = log ? v => M.t + PH*(1-(ly(v)-ly(y0))/(ly(y1)-ly(y0)))
+                 : v => M.t + PH*(1-(v-y0)/(y1-y0));
+  const NS='http://www.w3.org/2000/svg';
+  const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const svg = el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img'});
+
+  const xt=[]; for(let m=Math.ceil(x0/15)*15;m<=x1;m+=15) xt.push(m);
+  xt.forEach(m=>{ const x=sx(m);
+    svg.appendChild(el('line',{x1:x,y1:M.t,x2:x,y2:M.t+PH,stroke:'#e2dfd6','stroke-width':1}));
+    const tx=el('text',{x:x,y:M.t+PH+18,'text-anchor':'middle',fill:'#6b6b66','font-size':11,'font-family':'Inter,sans-serif'});
+    tx.textContent=hhmm(m); svg.appendChild(tx); });
+  yticks.forEach(v=>{ const y=sy(v);
+    svg.appendChild(el('line',{x1:M.l,y1:y,x2:M.l+PW,y2:y,stroke:'#e2dfd6','stroke-width':1}));
+    const tx=el('text',{x:M.l-9,y:y+4,'text-anchor':'end',fill:'#6b6b66','font-size':11,'font-family':'Inter,sans-serif'});
+    tx.textContent=fmt?fmt(v):nf(v,0); svg.appendChild(tx); });
+  svg.appendChild(el('line',{x1:M.l,y1:M.t+PH,x2:M.l+PW,y2:M.t+PH,stroke:'#c9c6bd','stroke-width':1}));
+  if(ylabel){ const t=el('text',{x:M.l-9,y:M.t-6,'text-anchor':'end',fill:'#6b6b66','font-size':10.5,'font-family':'Inter,sans-serif'}); t.textContent=ylabel; svg.appendChild(t); }
+
+  // las series se recortan al area de dibujo (la luz empieza antes que el eje)
+  const cid='clip'+(++clipSeq);
+  const defs=el('defs',{}), cp=el('clipPath',{id:cid});
+  cp.appendChild(el('rect',{x:M.l,y:M.t-2,width:PW,height:PH+4}));
+  defs.appendChild(cp); svg.appendChild(defs);
+  const g=el('g',{'clip-path':`url(#${cid})`}); svg.appendChild(g);
+  series.forEach(s=>{
+    let d='',pen=false;
+    for(let i=0;i<s.t.length;i++){ const v=s.v[i];
+      if(v==null||isNaN(v)){pen=false;continue;}
+      d+=(pen?'L':'M')+sx(s.t[i]).toFixed(1)+' '+sy(v).toFixed(1)+' '; pen=true; }
+    g.appendChild(el('path',{d:d,fill:'none',stroke:s.color,'stroke-width':s.w||2,
+      'stroke-linejoin':'round','stroke-linecap':'round','stroke-dasharray':s.dash||'none',opacity:s.op||1}));
+  });
+
+  notes.forEach((n,i)=>{ const x=sx(n.t), y=sy(n.v);
+    svg.appendChild(el('line',{x1:x,y1:M.t,x2:x,y2:M.t+PH,stroke:n.color||PAL.ref,'stroke-width':1,'stroke-dasharray':'3 3',opacity:.55}));
+    svg.appendChild(el('circle',{cx:x,cy:y,r:9,fill:n.color||PAL.ref}));
+    const t=el('text',{x:x,y:y+3.6,'text-anchor':'middle',fill:'#fff','font-size':10.5,'font-weight':700,'font-family':'Inter,sans-serif'});
+    t.textContent=i+1; svg.appendChild(t); });
+
+  const main=series[mainIdx];
+  const cross=el('line',{x1:0,y1:M.t,x2:0,y2:M.t+PH,stroke:'#1a1a1a','stroke-width':1,opacity:0});
+  const dot=el('circle',{r:4.5,fill:main.color,stroke:'#fdfcf7','stroke-width':2,opacity:0});
+  svg.appendChild(cross); svg.appendChild(dot);
+  const hit=el('rect',{x:M.l,y:M.t,width:PW,height:PH,fill:'transparent'});
+  svg.appendChild(hit);
+
+  function move(ev){
+    const r=svg.getBoundingClientRect(), sc=W/r.width;
+    const px=(ev.clientX-r.left)*sc;
+    const mv=x0+(px-M.l)/PW*(x1-x0);
+    if(mv<x0||mv>x1) return hide();
+    let best=0,bd=1e9;
+    for(let i=0;i<main.t.length;i++){const d=Math.abs(main.t[i]-mv); if(d<bd){bd=d;best=i;}}
+    const X=sx(main.t[best]);
+    cross.setAttribute('x1',X); cross.setAttribute('x2',X); cross.setAttribute('opacity',.35);
+    let rows=`<b>${hhmmss(main.t[best])}</b>`;
+    series.forEach(s=>{ const v=s.v[best]; if(v==null||isNaN(v))return;
+      rows+=`<br>${s.name}: <b>${s.tip?s.tip(v):nf(v,1)}</b>`; });
+    if(main.v[best]!=null){ dot.setAttribute('cx',X); dot.setAttribute('cy',sy(main.v[best])); dot.setAttribute('opacity',1); }
+    tip.innerHTML=rows; tip.style.opacity=1;
+    tip.style.left=Math.min(ev.clientX+14,innerWidth-tip.offsetWidth-10)+'px';
+    tip.style.top=(ev.clientY-tip.offsetHeight-12)+'px';
+  }
+  function hide(){ tip.style.opacity=0; cross.setAttribute('opacity',0); dot.setAttribute('opacity',0); }
+  svg.addEventListener('pointermove',move);
+  svg.addEventListener('pointerleave',hide);
+  host.appendChild(svg);
+}
+
+function renderNotes(id, notes){
+  const ul=document.getElementById(id); if(!ul) return;
+  notes.forEach((n,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<span class="badge" style="background:${n.color||PAL.ref}">${i+1}</span>
+      <span><b>${n.time} · ${n.title}</b> — ${n.text}</span>`;
+    ul.appendChild(li);
+  });
+}
+
+fetch('data/series.json').then(r=>r.json()).then(D=>{
+  const I=D.insights, E=I.ephemeris;
+  const set=(id,v)=>{const e=document.getElementById(id); if(e)e.textContent=v;};
+
+  // --- taula de contactes
+  const rows=[['C1','Primer contacte','C1'],['C2','Segon contacte · comença la totalitat','C2'],
+              ['MAX','Màxim','MAX'],['C3','Tercer contacte · acaba la totalitat','C3'],
+              ['C4','Quart contacte','C4']];
+  const tb=document.getElementById('tbl-contacts');
+  rows.forEach(([k,label,key])=>{ const e=E[key]; if(!e)return;
+    const tr=document.createElement('tr'); if(k==='MAX') tr.className='hi';
+    tr.innerHTML=`<td>${label}</td><td class="n">${e.local}</td>
+      <td class="n">${nf(e.alt,2)}°</td><td class="n">${nf(e.az,1)}°</td>`;
+    tb.appendChild(tr); });
+
+  const kf=document.getElementById('kf-eclipse');
+  [[nf(E.totality_s,1)+' s','Durada de la totalitat'],
+   [nf(E.magnitude,3),'Magnitud'],
+   [nf(E.MAX.alt,1)+'°','Altura del Sol al màxim'],
+   [E.sunset,'Posta de Sol']].forEach(([v,k])=>{
+    const d=document.createElement('div'); d.innerHTML=`<div class="v">${v}</div><div class="k">${k}</div>`; kf.appendChild(d); });
+
+  const T0=toMin('19:25'), T1=toMin('21:09');
+  const C=t=>toMin(E[t].local);
+
+  // --- figura 1: area medida vs calculada
+  makeChart(document.getElementById('ch-sun'), {
+    x0:T0,x1:T1,y0:0,y1:1.05,log:false,yticks:[0,.25,.5,.75,1],
+    ylabel:'fracció de Sol descoberta', main:1,
+    fmt:v=>nf(v*100,0)+'%',
+    series:[{name:'Calculada',t:D.sun.t,v:D.sun.computed,color:PAL.ref,w:4,op:.5,tip:v=>nf(v*100,1)+'%'},
+            {name:'Mesurada al vídeo',t:D.sun.t,v:D.sun.measured,color:PAL.lux,w:1.6,tip:v=>nf(v*100,1)+'%'}]});
+  set('v-rms', nf(I.video_vs_ephemeris.median_abs_error*100,2)+' %');
+  set('v-n', I.video_vs_ephemeris.n_frames.toLocaleString('ca-ES'));
+
+  // --- figura 2: llum
+  const luxNotes=[
+    {t:C('C1'),v:I.light.at_c1_lx,time:E.C1.local,title:'Primer contacte',color:PAL.lux,
+     text:`la Lluna toca el disc i hi ha ${nf(I.light.at_c1_lx,0)} lx. A ull nu no passa res.`},
+    {t:toMin(I.light.at_1000_lx),v:1000,time:I.light.at_1000_lx,title:'1.000 lx',color:PAL.lux,
+     text:'la llum ja ha caigut a la desena part, però encara sembla una tarda normal.'},
+    {t:toMin(I.light.at_10_lx),v:10,time:I.light.at_10_lx,title:'10 lx',color:PAL.lux,
+     text:'en poc més de tretze minuts, cent vegades menys llum. Aquí ja és evident.'},
+    {t:C('MAX'),v:0.5,time:E.MAX.local,title:'Màxim',color:PAL.temp,
+     text:'lectura zero: per sota dels 0,54 lx que resol el sensor.'}];
+  makeChart(document.getElementById('ch-lux'), {
+    x0:T0,x1:T1,y0:.4,y1:16000,log:true,yticks:[1,10,100,1000,10000],
+    ylabel:'lux (escala logarítmica)', fmt:v=>nf(v,0), notes:luxNotes,
+    series:[{name:'Il·luminància',t:D.light.t,v:D.light.lx,color:PAL.lux,
+             tip:v=>v<=.55?'< 1 lx':nf(v,1)+' lx'}]});
+  renderNotes('nt-lux', luxNotes);
+  set('v-1000-10', Math.round(I.light.from_1000_to_10_lx_s/60)+' minuts');
+
+  // --- figura 3: la mateixa llum en escala lineal (el que es veia al mobil)
+  makeChart(document.getElementById('ch-lux-lin'), {
+    x0:T0,x1:T1,y0:0,y1:12500,log:false,yticks:[0,3000,6000,9000,12000],
+    ylabel:'lux (escala lineal)', fmt:v=>nf(v,0),
+    notes:[{t:C('MAX'),v:0,time:E.MAX.local,title:'Màxim',color:PAL.temp,
+            text:'el mateix instant que a la figura 2. Aquí només és el punt on la corba toca l\'eix.'}],
+    series:[{name:'Il·luminància',t:D.light.t,v:D.light.lx,color:PAL.lux,
+             tip:v=>v<=.55?'< 1 lx':nf(v,1)+' lx'}]});
+
+  // --- figura 4: temperatura
+  const tNotes=[
+    {t:toMin(I.temperature.max_at),v:I.temperature.max_c,time:I.temperature.max_at,
+     title:'Màxim, '+nf(I.temperature.max_c,1)+' °C',color:PAL.temp,
+     text:'el pic del dia, tres minuts abans que comenci l\'eclipsi.'},
+    {t:C('MAX'),v:27.1,time:E.MAX.local,title:'Màxim de l\'eclipsi',color:PAL.ref,
+     text:'el Sol està totalment tapat, però la temperatura encara està baixant.'},
+    {t:toMin(I.temperature.min_at),v:I.temperature.min_c,time:I.temperature.min_at,
+     title:'Mínim, '+nf(I.temperature.min_c,1)+' °C',color:PAL.temp,
+     text:`${I.temperature.lag_after_max_txt} després del màxim. Aquest retard és la inèrcia tèrmica del terra.`}];
+  makeChart(document.getElementById('ch-temp'), {
+    x0:T0,x1:T1,y0:26,y1:38.5,log:false,yticks:[27,30,33,36,38],ylabel:'°C',
+    fmt:v=>nf(v,0), notes:tNotes,
+    series:[{name:'Temperatura',t:D.thermo.t,v:D.thermo.temp,color:PAL.temp,tip:v=>nf(v,1)+' °C'}]});
+  renderNotes('nt-temp', tNotes);
+  set('v-lag', I.temperature.lag_after_max_txt);
+  set('v-reb', nf(I.temperature.rebound_c,1)+' °C');
+
+  // --- figura 5: humitat
+  const H=I.humidity_decomposition;
+  const rNotes=[
+    {t:toMin(I.humidity.rh_min_at),v:I.humidity.rh_min,time:I.humidity.rh_min_at,
+     title:'Mínim, '+nf(I.humidity.rh_min,1)+' %',color:PAL.rh,
+     text:'aire molt sec, amb el terra encara a gairebé 38 graus.'},
+    {t:toMin(H.rh_end_at),v:H.rh_end,time:H.rh_end_at,title:'Màxim, '+nf(H.rh_end,1)+' %',color:PAL.rh,
+     text:`dels ${nf(H.rh_end-H.rh_start,1)} punts de pujada, ${nf(H.thermal_share_pts,1)} són només refredament i ${nf(H.moisture_share_pts,1)} vapor que entra de debò.`}];
+  makeChart(document.getElementById('ch-rh'), {
+    x0:T0,x1:T1,y0:15,y1:52,log:false,yticks:[20,30,40,50],ylabel:'% humitat relativa',
+    fmt:v=>nf(v,0), notes:rNotes,
+    series:[{name:'Mesurada',t:D.thermo.t,v:D.thermo.rh,color:PAL.rh,tip:v=>nf(v,1)+' %'},
+            {name:'Només refredament',t:D.thermo.t,v:D.thermo.rh_th,color:PAL.ref,w:1.8,dash:'5 4',tip:v=>nf(v,1)+' %'}]});
+  renderNotes('nt-rh', rNotes);
+  set('v-rhmin', nf(I.humidity.rh_min,1)+' %');
+  set('v-rhmax', nf(I.humidity.rh_max,1)+' %');
+  set('v-rhstart', nf(H.rh_start,1)+' %');
+  set('v-rhrise', nf(H.rh_end-H.rh_start,1));
+  set('v-rhth', nf(H.thermal_share_pts,1));
+  set('v-rhmo', nf(H.moisture_share_pts,1));
+  set('v-dew', nf(I.humidity.dew_range_c[0],1)+' a '+nf(I.humidity.dew_range_c[1],1)+' °C');
+}).catch(e=>{
+  document.getElementById('ch-sun').innerHTML =
+    '<div class="err">No s\'han pogut carregar les dades (<code>data/series.json</code>). '+
+    'Aquesta pàgina s\'ha de servir per HTTP, no obrir-se com a fitxer local.</div>';
+  console.error(e);
+});
+
+fetch('data/gallery.json').then(r=>r.json()).then(G=>{
+  const g=document.getElementById('gallery');
+  G.forEach(it=>{
+    const f=document.createElement('figure');
+    f.innerHTML=`<img src="${it.file}" alt="Fotograma ${it.frame}, ${it.time}" loading="lazy" width="760" height="760">
+      <div class="t">${it.time} · fotograma ${it.frame}</div><div class="c">${it.caption}</div>`;
+    g.appendChild(f);
+  });
+}).catch(()=>{});
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "sync": {
+    "frame0_local": "2026-08-12T19:25:41",
+    "sec_per_frame": 2.0,
+    "n_frames": 3011,
+    "last_frame_local": "2026-08-12T21:06:01",
+    "last_useful_frame": 2975,
+    "last_useful_local": "2026-08-12T21:04:51",
+    "light_clock_offset_s": -55.5
+  },
+  "light": {
+    "start": "2026-08-12T19:14:19.445706",
+    "end": "2026-08-12T21:08:55.445706",
+    "n": 6877,
+    "max_lx": 12276.900390625
+  },
+  "thermo": {
+    "start": "2026-08-12T19:26:07",
+    "end": "2026-08-12T21:06:07",
+    "n": 601,
+    "temp_max": 37.7,
+    "temp_max_at": "2026-08-12T19:33:27",
+    "temp_min": 26.6,
+    "temp_min_at": "2026-08-12T20:36:47",
+    "rh_min": 17.4,
+    "rh_max": 49.8
+  }
+}
