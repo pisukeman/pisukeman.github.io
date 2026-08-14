@@ -157,16 +157,21 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
      i la nota del processament a sota de tot, amplada sencera */
   .left{display:grid;grid-template-columns:minmax(0,38vw) minmax(0,1fr);
     gap:0 12px;align-items:start}
-  .frame{max-width:none;margin:0;grid-column:1;grid-row:1/span 4}
-  .clock,.phase,.vals,.play{grid-column:2}
-  .imgnote{grid-column:1/-1}
+  .frame{max-width:none;margin:0;grid-column:1;grid-row:1/span 3}
+  .clock,.phase,.play{grid-column:2}
+  .vals,.imgnote{grid-column:1/-1}
   .clock{font-size:1.55rem;margin-top:0}
-  .phase{font-size:.76rem;min-height:0;margin-top:.3rem}
-  /* les tres lectures en una sola línia: apilades es menjaven 85 px de gràfica.
+  /* Dues línies reservades sempre. El text de la fase canvia de llargada segons el
+     moment («Totalitat · el filtre solar encara hi era posat» n'ocupa dues), i si
+     aquest bloc creixia, les gràfiques —que es reparteixen el que sobra— s'encongien
+     a mig arrossegar. És el mateix motiu del min-height que ja hi ha a l'escriptori. */
+  .phase{font-size:.76rem;min-height:2.7em;margin-top:.3rem;overflow:hidden}
+  /* les tres lectures en una sola línia i a tota l'amplada: apilades es menjaven 85 px
+     de gràfica, i a la columna estreta passaven d'una línia a dues segons què marcaven.
      El nom de cada magnitud no es veu (el diu el color, i el títol de la gràfica de
      sota) però hi continua sent per a qui llegeixi la pàgina amb un lector */
-  .vals{display:flex;flex-wrap:wrap;margin-top:.5rem;gap:.2rem .85rem}
-  .val{font-size:.8rem;gap:.35rem}
+  .vals{display:flex;flex-wrap:nowrap;margin-top:.5rem;gap:0 .85rem}
+  .val{font-size:.8rem;gap:.35rem;flex:0 0 auto;white-space:nowrap}
   .val b{margin-left:0;font-size:.9rem}
   .val span{position:absolute;width:1px;height:1px;overflow:hidden;
     clip-path:inset(50%);white-space:nowrap}
@@ -193,6 +198,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   .clock{font-size:1.3rem}
   .play{height:32px;margin-top:8px}
   .chart{padding:4px 5px 2px}
+  /* aquí les lectures tornen al costat del fotograma, que hi caben de sobres, amb
+     dues files reservades perquè embolicar-se o no tampoc mogui res */
+  .vals{grid-column:2;flex-wrap:wrap;min-height:3em;gap:.2rem .8rem}
 }
 /* mòbil ajagut: hi ha amplada de sobres i poca alçada, o sigui que es recupera la
    disposició de dues columnes amb el fotograma petit */
