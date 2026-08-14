@@ -100,9 +100,10 @@ video{width:100%;max-width:380px;border-radius:10px;background:#000;display:bloc
   font-weight:600;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:.15s}
 .play:hover{background:#232b36;border-color:var(--gold)}
 
-/* el control lliscant queda alineat amb l'àrea de dibuix de les gràfiques */
-.ctrl{margin-top:10px;padding-left:52px;padding-right:12px}
-@media(max-width:880px){.ctrl{padding-left:52px}}
+/* El control lliscant queda alineat amb l'àrea de dibuix de les gràfiques. L'encoixinat
+   horitzontal el posa el JS a partir dels marges reals del dibuix (MARG()), que canvien amb
+   l'amplada: així no hi ha el mateix número escrit en dos llocs. */
+.ctrl{margin-top:10px}
 input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;margin:0;cursor:pointer;display:block}
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--surf2);border:1px solid var(--line)}
 input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--surf2);border:1px solid var(--line)}
@@ -118,6 +119,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .mark.e{transform:translateX(-100%)}  .mark.e::before{left:100%}
 .mark.hi{color:var(--gold);font-weight:600}
 .mark.hi::before{background:var(--gold)}
+/* cada marca porta la versió llarga i la curta; en pantalles estretes no hi caben
+   les llargues (se solaparien 59 px en una pista de 300 px) */
+.mark .sm{display:none}
 /* C2, màxim i C3 caben en 1,7 min: es dibuixen com una franja, no com tres marques */
 .band{position:absolute;top:0;height:6px;min-width:5px;border-radius:3px;
   background:var(--gold);box-shadow:0 0 0 1px rgba(240,184,73,.35)}
@@ -134,7 +138,78 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .toggle button{border:0;background:transparent;color:var(--dim);font:inherit;font-size:.74rem;
   padding:3px 9px;border-radius:5px;cursor:pointer}
 .toggle button[aria-pressed=true]{background:var(--surf2);color:var(--tx);font-weight:600}
-.chart svg{width:100%;height:auto;display:block}
+/* L'alçada la mana el contenidor i l'SVG l'omple: a PC són 140 px fixos i a mòbil el
+   que sobri. El JS llegeix aquesta alçada i hi ajusta el viewBox, o sigui que mai
+   s'escala res: un píxel de l'SVG és sempre un píxel de pantalla. */
+.chart .plot{height:140px}
+.chart svg{width:100%;height:100%;display:block}
+
+/* ---------- explorador a mòbil: tot el panell en una sola pantalla ----------
+   Fotograma i lectures a dalt, les tres gràfiques repartint-se l'alçada que queda i
+   el control a baix. Cap element canvia de lloc al DOM: només com es col·loca. */
+@media(max-width:880px){
+  .expl{padding:12px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:8px;
+    height:calc(100vh - 16px);height:calc(100svh - 16px);max-height:860px}
+  /* svh i no dvh expressament: així la barra d'adreces apareixent i desapareixent
+     no recol·loca les gràfiques mentre s'arrossega */
+  .exp2{display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+  /* fotograma a l'esquerra ocupant tota la columna, lectures i botó a la dreta,
+     i la nota del processament a sota de tot, amplada sencera */
+  .left{display:grid;grid-template-columns:minmax(0,38vw) minmax(0,1fr);
+    gap:0 12px;align-items:start}
+  .frame{max-width:none;margin:0;grid-column:1;grid-row:1/span 4}
+  .clock,.phase,.vals,.play{grid-column:2}
+  .imgnote{grid-column:1/-1}
+  .clock{font-size:1.55rem;margin-top:0}
+  .phase{font-size:.76rem;min-height:0;margin-top:.3rem}
+  /* les tres lectures en una sola línia: apilades es menjaven 85 px de gràfica.
+     El nom de cada magnitud no es veu (el diu el color, i el títol de la gràfica de
+     sota) però hi continua sent per a qui llegeixi la pàgina amb un lector */
+  .vals{display:flex;flex-wrap:wrap;margin-top:.5rem;gap:.2rem .85rem}
+  .val{font-size:.8rem;gap:.35rem}
+  .val b{margin-left:0;font-size:.9rem}
+  .val span{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip-path:inset(50%);white-space:nowrap}
+  .play{margin-top:10px;height:36px;font-size:.84rem;touch-action:manipulation}
+  .imgnote{margin-top:.4rem;font-size:.7rem}
+  .right{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px}
+  .charts{flex:1;min-height:0;gap:8px;grid-template-rows:repeat(3,minmax(0,1fr))}
+  .chart{display:flex;flex-direction:column;min-height:0;padding:6px 6px 2px;
+    touch-action:pan-y}                  /* el gest horitzontal mou el temps; el vertical, la pàgina */
+  .chart .plot{flex:1;min-height:0;height:auto}
+  .chead{padding:0 4px 1px;line-height:1.25}
+  .chead h4{font-size:.8rem} .chead .now{font-size:.86rem}
+  .toggle button{padding:4px 10px}
+  .ctrl{margin-top:0}
+  input[type=range]{padding:11px 0;touch-action:pan-y}  /* diana de 28 px sense engreixar la pista */
+  .marks{height:22px;margin-top:0}
+  .mark{font-size:.68rem}
+  .mark .lg{display:none} .mark .sm{display:inline}
+}
+/* pantalles curtes (iPhone SE i companyia): es guanya alçada per a les gràfiques */
+@media(max-width:880px) and (max-height:620px){
+  .left{grid-template-columns:minmax(0,32vw) minmax(0,1fr)}
+  .phase{display:none}
+  .clock{font-size:1.3rem}
+  .play{height:32px;margin-top:8px}
+  .chart{padding:4px 5px 2px}
+}
+/* mòbil ajagut: hi ha amplada de sobres i poca alçada, o sigui que es recupera la
+   disposició de dues columnes amb el fotograma petit */
+@media(max-width:880px) and (orientation:landscape) and (max-height:520px){
+  .exp2{flex-direction:row;gap:14px}
+  .left{flex:0 0 38%;align-content:start;
+    grid-template-columns:minmax(0,110px) minmax(0,1fr)}
+  .phase{display:block}       /* aquí sí que hi ha lloc per a la fase */
+  .right{flex:1;min-width:0}
+}
+/* pantalles tàctils: polze prou gran per posar-hi el dit a sobre */
+.touchtip{display:none}
+@media(max-width:880px) and (pointer:coarse){.touchtip{display:inline}}
+@media(pointer:coarse){
+  input[type=range]::-webkit-slider-thumb{width:26px;height:26px;margin-top:-11px}
+  input[type=range]::-moz-range-thumb{width:26px;height:26px}
+}
 
 /* ---------- anotacions ---------- */
 .noteg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
@@ -232,9 +307,10 @@ footer .wrap{display:flex;gap:26px;flex-wrap:wrap;justify-content:space-between}
 
 <section class="wrap">
   <h2><span class="n">03</span>Explora l'eclipsi</h2>
-  <p class="sub">Mou el control o prem el botó: el fotograma i les tres gràfiques es mouen alhora.</p>
+  <p class="sub">Mou el control o prem el botó: el fotograma i les tres gràfiques es mouen alhora.<span
+    class="touchtip"> També pots arrossegar el dit directament sobre qualsevol de les tres gràfiques.</span></p>
 
-  <div class="expl">
+  <div class="expl" id="expl">
     <div class="exp2">
 
       <div class="left">
@@ -252,23 +328,23 @@ footer .wrap{display:flex;gap:26px;flex-wrap:wrap;justify-content:space-between}
       </div>
 
       <div class="right">
-        <div class="charts">
+        <div class="charts" id="charts">
           <div class="chart">
             <div class="chead"><h4>Il·luminància</h4><span class="u" id="luxunit">lux · logarítmica</span>
               <div class="toggle"><button id="blog" aria-pressed="true">log</button><button id="blin" aria-pressed="false">lineal</button></div>
             </div>
-            <div id="ch-lux"></div>
+            <div class="plot" id="ch-lux"></div>
           </div>
           <div class="chart">
             <div class="chead"><h4>Temperatura</h4><span class="u">graus centígrads</span><span class="now" id="nowtemp"></span></div>
-            <div id="ch-temp"></div>
+            <div class="plot" id="ch-temp"></div>
           </div>
           <div class="chart">
             <div class="chead"><h4>Humitat relativa</h4><span class="u">per cent</span><span class="now" id="nowrh"></span></div>
-            <div id="ch-rh"></div>
+            <div class="plot" id="ch-rh"></div>
           </div>
         </div>
-        <div class="ctrl">
+        <div class="ctrl" id="ctrl">
           <input type="range" id="slider" min="0" max="0" value="0" step="1" aria-label="Moment de l'eclipsi">
           <div class="marks" id="marks"></div>
         </div>
@@ -384,32 +460,41 @@ const NS='http://www.w3.org/2000/svg';
 const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e};
 const $=id=>document.getElementById(id);
 
-/* L'SVG es dibuixa a la mida real en pixels del seu contenidor: aixi el text dels
-   eixos mesura sempre el que diu, independentment de l'amplada de la columna. */
-const CH=140,CM={t:10,r:12,b:22,l:52};
+/* L'SVG es dibuixa a la mida real en pixels del seu contenidor -- ara tambe en alcada --
+   aixi el text dels eixos mesura sempre el que diu, independentment de la mida que li
+   toqui. En pantalla estreta els marges i la lletra s'encongeixen, pero no mes del
+   compte: l'etiqueta mes llarga de l'eix ("10.000") ocupa uns 33 px a 10 px de cos,
+   o sigui que amb 44 de marge i 8 de separacio hi cap justa. */
+const narrow=()=>(window.innerWidth||1280)<=880;
+const MARG=()=>narrow()?{t:8,r:8,b:18,l:44}:{t:10,r:12,b:22,l:52};
 let clipN=0;
 
 function Chart(host,cfg){
   const o={cfg,host};
   o.build=()=>{
     host.innerHTML='';
-    const c=o.cfg, log=c.log;
+    const c=o.cfg, log=c.log, CM=MARG();
     const CW=Math.max(300,Math.round(host.clientWidth||620));
+    const CH=Math.max(60,Math.round(host.clientHeight||140));
     const PW=CW-CM.l-CM.r,PH=CH-CM.t-CM.b;
     const sx=v=>CM.l+PW*(v-c.x0)/(c.x1-c.x0);
     const l10=v=>Math.log10(Math.max(v,c.y0));
     const sy=log?v=>CM.t+PH*(1-(l10(v)-l10(c.y0))/(l10(c.y1)-l10(c.y0)))
                 :v=>CM.t+PH*(1-(v-c.y0)/(c.y1-c.y0));
-    o.sx=sx;o.sy=sy;o.CW=CW;
+    o.sx=sx;o.sy=sy;o.CW=CW;o.CH=CH;o.CM=CM;
     const svg=el('svg',{viewBox:`0 0 ${CW} ${CH}`,role:'img','aria-label':c.label});
     const step=PW>430?15:30;                       // menys marques si la columna es estreta
+    const FS=narrow()?10:11;
     for(let m=Math.ceil(c.x0/step)*step;m<=c.x1;m+=step){const x=sx(m);
       svg.appendChild(el('line',{x1:x,y1:CM.t,x2:x,y2:CM.t+PH,stroke:P.line,'stroke-width':1}));
-      const t=el('text',{x:x,y:CM.t+PH+15,'text-anchor':'middle',fill:P.dim,'font-size':11});
+      const t=el('text',{x:x,y:CM.t+PH+FS+4,'text-anchor':'middle',fill:P.dim,'font-size':FS});
       t.textContent=hm(m);svg.appendChild(t);}
-    c.yticks.forEach(v=>{const y=sy(v);
+    /* si l'area de dibuix es molt baixa, les etiquetes de l'eix vertical es tocarien:
+       se'n dibuixa una de cada dues. La corba no canvia gens, nomes la reixeta. */
+    const yt=(PH<58&&c.yticks.length>3)?c.yticks.filter((_,i)=>i%2===0):c.yticks;
+    yt.forEach(v=>{const y=sy(v);
       svg.appendChild(el('line',{x1:CM.l,y1:y,x2:CM.l+PW,y2:y,stroke:P.line,'stroke-width':1}));
-      const t=el('text',{x:CM.l-8,y:y+3.8,'text-anchor':'end',fill:P.dim,'font-size':11});
+      const t=el('text',{x:CM.l-8,y:y+(narrow()?3.5:3.8),'text-anchor':'end',fill:P.dim,'font-size':FS});
       t.textContent=c.fmt(v);svg.appendChild(t);});
     const cid='cp'+(++clipN),defs=el('defs',{}),cp=el('clipPath',{id:cid});
     cp.appendChild(el('rect',{x:CM.l,y:CM.t-2,width:PW,height:PH+4}));
@@ -438,6 +523,7 @@ function Chart(host,cfg){
     o.dot=el('circle',{r:5,fill:c.series[0].color,stroke:'#1a2029','stroke-width':2});
     svg.appendChild(o.cur);svg.appendChild(o.dot);
     host.appendChild(svg);
+    o.svg=svg;                                   // el fa servir l'arrossegament tactil
   };
   o.at=t=>{const s=o.cfg.series[0];let b=0,bd=1e9;
     for(let i=0;i<s.t.length;i++){const d=Math.abs(s.t[i]-t);if(d<bd){bd=d;b=i}}
@@ -551,15 +637,19 @@ Promise.all([fetch('data/series.json').then(r=>r.json()),
   band.title=`Totalitat · ${E.C2.local} a ${E.C3.local}`;
   mrk.appendChild(band);
 
-  [[C('C1'), 'C1 · '+hm(C('C1')), ''],
-   [C('MAX'), 'Totalitat · '+hm(C('MAX')), 'hi'],
-   [toMin(E.sunset), 'Posta de Sol · '+hm(toMin(E.sunset)), '']
-  ].forEach(([m,label,extra])=>{
+  /* Cada etiqueta porta la versio llarga i la curta: en una pista de 300 px les llargues
+     se solaparien (comprovat a checkmarks.cjs), i qui vulgui l'hora exacta la te al
+     rellotge gran. Tria el CSS, no el JS: aixi no cal redibuixar en girar el mobil. */
+  [[C('C1'), 'C1 · '+hm(C('C1')), 'C1', ''],
+   [C('MAX'), 'Totalitat · '+hm(C('MAX')), 'Totalitat', 'hi'],
+   [toMin(E.sunset), 'Posta de Sol · '+hm(toMin(E.sunset)), 'Posta', '']
+  ].forEach(([m,label,short,extra])=>{
     const p=pct(m); if(p<-2||p>102) return;
     const d=document.createElement('div');
     d.className='mark'+(extra?' '+extra:'')+(p<7?' s':p>93?' e':'');
     d.style.left=Math.min(100,Math.max(0,p)).toFixed(2)+'%';
-    d.textContent=label;
+    d.innerHTML=`<span class="lg">${label}</span><span class="sm">${short}</span>`;
+    d.title=label;
     mrk.appendChild(d);
   });
 
@@ -596,6 +686,54 @@ Promise.all([fetch('data/series.json').then(r=>r.json()),
   }
   sl.oninput=()=>{stop();show(+sl.value)};
 
+  /* fotograma mes proper a un instant donat */
+  const idxAt=m=>{let b=0,bd=1e9;
+    for(let i=0;i<S.t.length;i++){const d=Math.abs(S.t[i]-m);if(d<bd){bd=d;b=i}}
+    return b;};
+
+  /* ---------- arrossegar sobre les grafiques (nomes en pantalla estreta) ----------
+     A mobil les tres grafiques ocupen mig panell: son una diana molt mes gran que la
+     barra. Es lliga al contenidor i no a l'objecte Chart perque el de la llum es
+     reconstrueix cada cop que es canvia log/lineal. A PC no s'hi entra mai. */
+  const CHARTS={'ch-lux':()=>cLux,'ch-temp':()=>cTemp,'ch-rh':()=>cRh};
+  for(const id in CHARTS){
+    const host=$(id); if(!host||!host.addEventListener)continue;
+    let x0=0,y0=0,live=false,armed=false;
+    const scrub=ev=>{
+      const c=CHARTS[id](), sv=c&&c.svg;
+      if(!sv||!sv.getBoundingClientRect)return;
+      const r=sv.getBoundingClientRect(); if(!r.width)return;
+      const vx=(ev.clientX-r.left)/r.width*c.CW;          // pixels del viewBox
+      const f=Math.min(1,Math.max(0,(vx-c.CM.l)/(c.CW-c.CM.l-c.CM.r)));
+      const i=idxAt(c.cfg.x0+f*(c.cfg.x1-c.cfg.x0));
+      if(i===+sl.value)return;
+      sl.value=i;show(i);
+    };
+    /* Aqui no es mou res encara: primer cal saber si el dit va de costat (moure el
+       temps) o amunt i avall (moure la pagina). Fins que no es decideix, la grafica
+       no toca res; si acaba sent un toc sec, salta a aquell instant. */
+    host.addEventListener('pointerdown',ev=>{
+      if(!narrow())return;                                 // el navegador d'escriptori, igual que sempre
+      live=true;armed=false;x0=ev.clientX;y0=ev.clientY;
+    });
+    host.addEventListener('pointermove',ev=>{
+      if(!live)return;
+      if(!armed){
+        const dx=Math.abs(ev.clientX-x0),dy=Math.abs(ev.clientY-y0);
+        if(dy>dx&&dy>4){live=false;return}                 // va amunt i avall: es la pagina, no el temps
+        if(dx<5)return;
+        armed=true;stop();
+        if(host.setPointerCapture)try{host.setPointerCapture(ev.pointerId)}catch(e){}
+      }
+      scrub(ev);ev.preventDefault();
+    });
+    host.addEventListener('pointerup',ev=>{
+      if(live&&!armed&&Math.abs(ev.clientX-x0)<6&&Math.abs(ev.clientY-y0)<6){stop();scrub(ev)}
+      live=false;armed=false;
+    });
+    host.addEventListener('pointercancel',()=>{live=false;armed=false});
+  }
+
   let timer=null;
   const setBtn=(p)=>{$('playicon').textContent=p?'❚❚':'▶';
     $('playtxt').textContent=p?'Pausa':'Reprodueix'};
@@ -604,7 +742,11 @@ Promise.all([fetch('data/series.json').then(r=>r.json()),
     if(timer){stop();return}
     if(+sl.value>=+sl.max)sl.value=0;
     setBtn(true);
-    for(let n=0;n<S.sheets;n++)preload(n);
+    /* A PC es porten els deu fulls d'sprites de cop. A mobil no: son deu JPEG de
+       1920x1920, uns 150 MB un cop descodificats, i hi ha telefons que hi moren.
+       Amb el preload(sh+-1) que ja fa show() n'hi ha prou: a 55 ms per fotograma
+       es canvia de full cada dos segons llargs. */
+    if(!narrow())for(let n=0;n<S.sheets;n++)preload(n);
     timer=setInterval(()=>{
       const v=+sl.value+1;
       if(v>+sl.max){stop();return}
@@ -615,10 +757,13 @@ Promise.all([fetch('data/series.json').then(r=>r.json()),
 
   /* ---------- llista d'anotacions, clicable ---------- */
   const goTo=m=>{
-    let b=0,bd=1e9;
-    for(let i=0;i<S.t.length;i++){const d=Math.abs(S.t[i]-m);if(d<bd){bd=d;b=i}}
+    const b=idxAt(m);
     stop(); sl.value=b; show(b);
-    $('frame').scrollIntoView({block:'center',behavior:'smooth'});
+    /* a mobil el panell sencer ja fa una pantalla: centrar nomes el fotograma
+       deixaria les grafiques fora */
+    const dest=narrow()?$('expl'):$('frame');
+    if(dest&&dest.scrollIntoView)
+      dest.scrollIntoView({block:narrow()?'start':'center',behavior:'smooth'});
   };
   [['nl-lux',NOTES.lux,P.lux],['nl-temp',NOTES.temp,P.temp],['nl-rh',NOTES.rh,P.rh]]
   .forEach(([id,list,color])=>{
@@ -639,15 +784,35 @@ Promise.all([fetch('data/series.json').then(r=>r.json()),
   $('c-drop').textContent=Math.round(I.light.drop_factor/1000)+'.000×';
   $('c-err').textContent=nf(I.video_vs_ephemeris.median_abs_error*100,2)+' %';
 
-  /* Redibuixa a la nova amplada quan canvia la finestra. Va al final expressament:
+  /* L'unic lloc on es diu l'amplada de l'area de dibuix: el mateix numero que fa servir
+     Chart, o sigui que la barra i les grafiques no poden desalinear-se. */
+  const syncCtrl=()=>{const m=MARG(),c=$('ctrl');
+    if(c&&c.style){c.style.paddingLeft=m.l+'px';c.style.paddingRight=m.r+'px'}};
+  const relayout=()=>{cLux.build();cTemp.build();cRh.build();syncCtrl();show(+sl.value)};
+  syncCtrl();
+
+  /* Redibuixa a la nova mida quan canvia la finestra. Va al final expressament:
      si alguna cosa d'aqui falles, no s'ha d'emportar res del que hi ha a sobre. */
   if(typeof window.addEventListener==='function'){
     let rt=null,lastW=window.innerWidth;
     window.addEventListener('resize',()=>{
       if(window.innerWidth===lastW)return; lastW=window.innerWidth;
       clearTimeout(rt);
-      rt=setTimeout(()=>{cLux.build();cTemp.build();cRh.build();show(+sl.value)},180);
+      rt=setTimeout(relayout,180);
     });
+  }
+  /* A mobil l'alcada de cada grafica surt del que sobra dins del panell, i aixo pot
+     canviar sense que canvii l'amplada: el tipus de lletra que acaba de carregar-se,
+     una etiqueta que passa a dues linies. No hi ha bucle possible perque l'alcada la
+     fixa el flex i no el contingut de l'SVG. */
+  if(typeof ResizeObserver!=='undefined'){
+    const box=$('charts');
+    if(box){let ht=null,lastH=0;
+      new ResizeObserver(es=>{
+        const h=Math.round(es[0].contentRect.height);
+        if(Math.abs(h-lastH)<2)return; lastH=h;
+        clearTimeout(ht); ht=setTimeout(relayout,200);
+      }).observe(box);}
   }
 })
 .catch(e=>{
