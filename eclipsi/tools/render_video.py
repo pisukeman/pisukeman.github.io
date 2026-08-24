@@ -93,17 +93,23 @@ def build_edl():
     return edl
 
 
+# Los rotulos en pantalla van en catalan, con la misma terminologia que index.html
 def label_for(src, t, eph):
-    if 1945 <= src <= 1994: return "TOTALIDAD", "el filtro solar seguia puesto"
-    if 1995 <= src <= 1998: return "TOTALIDAD", "corona solar"
-    if 1999 <= src <= 2000: return "TERCER CONTACTO", "anillo de diamantes"
-    if 2001 <= src <= 2003: return "TERCER CONTACTO", "reaparece la fotosfera"
+    if 1945 <= src <= 1994: return "TOTALITAT", "el filtre solar encara hi era posat"
+    if 1995 <= src <= 1998: return "TOTALITAT", "corona solar"
+    if 1999 <= src <= 2000: return "TERCER CONTACTE", "anell de diamants"
+    if 2001 <= src <= 2003: return "TERCER CONTACTE", "reapareix la fotosfera"
     hm = t.strftime("%H:%M:%S")
-    if hm < eph["C1"]["local"]: return "ANTES DEL ECLIPSE", "disco solar integro"
-    if hm < eph["C2"]["local"]: return "PARCIAL", "la Luna entra en el disco"
-    if hm < eph["C3"]["local"]: return "TOTALIDAD", ""
-    if hm < eph.get("C4", {}).get("local", "23:59:59"): return "PARCIAL", "la Luna sale del disco"
-    return "PUESTA DE SOL", ""
+    if hm < eph["C1"]["local"]: return "ABANS DE L'ECLIPSI", "disc solar íntegre"
+    if hm < eph["C2"]["local"]: return "PARCIAL", "la Lluna entra al disc"
+    if hm < eph["C3"]["local"]: return "TOTALITAT", ""
+    if hm < eph.get("C4", {}).get("local", "23:59:59"): return "PARCIAL", "la Lluna surt del disc"
+    return "POSTA DE SOL", ""
+
+
+def ca(v, dec):
+    """Numero con la convencion catalana: punto de miles y coma decimal, como la web."""
+    return f"{v:,.{dec}f}".translate(str.maketrans({",": ".", ".": ","}))
 
 
 # --------------------------------------------------------------------- paneles
@@ -179,15 +185,15 @@ def main():
     LUX_LIM, LIN_LIM = (0.5, 16000), (0.0, 12500.0)
     T_LIM, R_LIM = (26.0, 38.5), (15.0, 52.0)
     panels = [
-        render_panel(lt_t, lt_v, LUX_LIM, True, C_LUX, "Iluminancia", "lux · escala logaritmica",
+        render_panel(lt_t, lt_v, LUX_LIM, True, C_LUX, "Il·luminància", "lux · escala logarítmica",
                      xticks, xlim, yticks=[1, 10, 100, 1000, 10000],
                      ylabels=["1", "10", "100", "1.000", "10.000"]),
-        render_panel(lt_t, lt_v, LIN_LIM, False, C_LUX, "Iluminancia", "lux · escala lineal",
+        render_panel(lt_t, lt_v, LIN_LIM, False, C_LUX, "Il·luminància", "lux · escala lineal",
                      xticks, xlim, yticks=[0, 4000, 8000, 12000],
                      ylabels=["0", "4.000", "8.000", "12.000"]),
-        render_panel(th_t, th_c, T_LIM, False, C_TEMP, "Temperatura", "grados centigrados",
+        render_panel(th_t, th_c, T_LIM, False, C_TEMP, "Temperatura", "graus centígrads",
                      xticks, xlim, yticks=[27, 30, 33, 36]),
-        render_panel(th_t, th_r, R_LIM, False, C_RH, "Humedad relativa", "por ciento",
+        render_panel(th_t, th_r, R_LIM, False, C_RH, "Humitat relativa", "per cent",
                      xticks, xlim, show_x=True, yticks=[20, 30, 40, 50]),
     ]
 
@@ -206,10 +212,10 @@ def main():
     F_XS  = ImageFont.truetype(os.path.join(fdir, "DejaVuSans.ttf"), 15)
     F_VAL = ImageFont.truetype(os.path.join(fdir, "DejaVuSans-Bold.ttf"), 23)
 
-    specs = [(LUX_LIM, True, C_LUX, lt_t, lt_v, "{:,.0f} lx"),
-             (LIN_LIM, False, C_LUX, lt_t, lt_v, "{:,.0f} lx"),
-             (T_LIM, False, C_TEMP, th_t, th_c, "{:.1f} °C"),
-             (R_LIM, False, C_RH, th_t, th_r, "{:.1f} %")]
+    specs = [(LUX_LIM, True, C_LUX, lt_t, lt_v, 0, "lx"),
+             (LIN_LIM, False, C_LUX, lt_t, lt_v, 0, "lx"),
+             (T_LIM, False, C_TEMP, th_t, th_c, 1, "°C"),
+             (R_LIM, False, C_RH, th_t, th_r, 1, "%")]
 
     def normalize(img):
         """Devuelve (imagen, ganancia aplicada). La ganancia se muestra en pantalla:
@@ -246,28 +252,28 @@ def main():
         d.rectangle([0, by, OUT_W, by + BAR_H], fill="#0b0e12")
         d.line([0, by, OUT_W, by], fill=GRID, width=2)
         d.text((28, by + 28), t.strftime("%H:%M:%S"), font=F_BIG, fill=INK)
-        d.text((320, by + 26), "hora local · 12 agosto 2026", font=F_SM, fill=INK_DIM)
+        d.text((320, by + 26), "hora local · 12 d'agost del 2026", font=F_SM, fill=INK_DIM)
         d.text((320, by + 52), "Anquela del Pedregal · Seestar S50", font=F_SM, fill=INK_DIM)
         # el realce aplicado a la imagen se declara: no es una medida fotometrica
         d.text((320, by + 80),
-               ("imagen sin realzar" if gain <= 1.02 else f"imagen realzada x{gain:.1f}"),
+               ("imatge sense realçar" if gain <= 1.02 else f"imatge realçada x{ca(gain, 1)}"),
                font=F_XS, fill="#6b7480")
         head, sub = label_for(src, t, eph)
-        col = "#e8b4bc" if "TOTALIDAD" in head or "CONTACTO" in head else INK_DIM
+        col = "#e8b4bc" if "TOTALITAT" in head or "CONTACTE" in head else INK_DIM
         d.text((OUT_W - 28, by + 28), head, font=F_MED, fill=col, anchor="ra")
         if sub:
             d.text((OUT_W - 28, by + 64), sub, font=F_SM, fill=INK_DIM, anchor="ra")
 
         # cabezal + valor actual en cada panel
         te = ep(t)
-        for i, (lim, log, color, ts, vs, fmt) in enumerate(specs):
+        for i, (lim, log, color, ts, vs, dec, unit) in enumerate(specs):
             y0 = IMG_H + BAR_H + i * PANEL_H
             d.line([xc, y0 + PLOT_T, xc, y0 + PLOT_T + PLOT_H], fill="#39424e", width=1)
             if ts[0] <= te <= ts[-1]:
                 v = float(np.interp(te, ts, vs))
                 yy = y0 + ypix(v, lim, log)
                 d.ellipse([xc - 6, yy - 6, xc + 6, yy + 6], fill=color, outline=BG, width=2)
-                txt = fmt.format(v).replace(",", ".")
+                txt = f"{ca(v, dec)} {unit}"
                 if log and v <= 0.6: txt = "< 1 lx"
                 d.text((OUT_W - 34, y0 + 6), txt, font=F_VAL, fill=INK, anchor="ra")
         return np.asarray(img)
